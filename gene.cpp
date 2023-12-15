@@ -24,14 +24,14 @@ namespace Genes {
     if(rate < 0 || rate > 1)
       throw std::invalid_argument("Invalid mutation rate! Accepted from 0 to 1");
 
-    unsigned int rand = Utils::random(0, 99);
-    bool mutate = rand < rate*100;
+    unsigned int rand = Utils::random(1, 100);
+    bool mutate = rand <= rate*100;
         
     if(mutate) this->Gene::rand_gene_value();
   }
           
 
   void Gene::rand_gene_value(){
-    this->value = Utils::random(0, 2);
+    this->value = Utils::random(0, 1);
   }
 }
