@@ -11,6 +11,8 @@ namespace Chromosomes {
       Chromosome(unsigned int size); 
       void set_genes(std::vector<Genes::Gene> genes);
       std::vector<Genes::Gene> get_genes();
+      void mutate(float rate);
+      void show();
     
     private:
       std::vector<Genes::Gene> genes;

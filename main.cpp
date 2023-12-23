@@ -7,14 +7,16 @@
 int main(){
   std::cout << "---Simple GA test---" << std::endl;
   
-
   unsigned int size = 10;
   Chromosomes::Chromosome chromosome = Chromosomes::Chromosome(size);
-  std::vector<Genes::Gene> genes = chromosome.get_genes();
+  chromosome.show();  
 
-  for(unsigned int i = 0; i < size; i++){
-    std::cout << genes[i].get_gene_value() << std::endl;
-  }
+  std::cout << "---first---" << std::endl;
+  chromosome.show();
+
+  chromosome.mutate(0.5);
+  std::cout << "---second---" << std::endl;
+  chromosome.show();
 
   return 0;
 }

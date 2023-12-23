@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vector>
 #include "gene.h"
 #include "chromosome.h"
@@ -21,5 +22,17 @@ namespace Chromosomes {
     for(unsigned int i = 0; i < size; i++)
       this->genes.push_back(Genes::Gene());
   }
+  
+  void Chromosome::mutate(float rate){
+    for(Genes::Gene& gene: this->genes)
+      gene.mutate(rate);
+  }
+  
+  void Chromosome::show(){
+    for(Genes::Gene gene: this->genes)
+      std::cout << gene.get_gene_value() << " ";
+    std::cout << std::endl;
+  }
+
 }
 

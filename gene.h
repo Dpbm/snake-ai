@@ -9,7 +9,7 @@ namespace Genes {
       void set_gene_value(unsigned int value);
       void mutate(float rate);
     private:
-      unsigned int value;
+      unsigned int value=0;
       void rand_gene_value();
   };
 }
