@@ -5,7 +5,7 @@
 #include "gene.h"
 
 int main(){
-  std::cout << "---Simple GA test---" << std::endl;
+  /**std::cout << "---Simple GA test---" << std::endl;
   
   unsigned int size = 10;
   Chromosomes::Chromosome chromosome = Chromosomes::Chromosome(size);
@@ -17,6 +17,40 @@ int main(){
   chromosome.mutate(0.5);
   std::cout << "---second---" << std::endl;
   chromosome.show();
+
+  std::vector<Genes::Gene> genes = chromosome.slice(3, 8);
+  for(Genes::Gene gene : genes){
+    std::cout << "sliced : " << gene.get_gene_value() << std::endl;
+  } 
+*/
+
+  unsigned int size = 10;
+  Chromosomes::Chromosome ch1 = Chromosomes::Chromosome(size);
+  Chromosomes::Chromosome ch2 = Chromosomes::Chromosome(size);
+
+  std::cout << "---Chromossome 1---" << std::endl;
+  ch1.show();
+  std::cout << "---Chromossome 2---" << std::endl;
+  ch2.show();
+  std::cout << "crossover"<<std::endl;
+  
+  unsigned int start = 3;
+  unsigned int end = 6;
+  std::vector<Genes::Gene> slice = ch1.slice(start,end);
+  for(Genes::Gene gene :slice){
+    std::cout <<gene.get_gene_value() << " ";
+  }
+  std::cout << std::endl;
+
+
+  ch2.crossover(start, end, slice);
+  std::cout << "CH1" <<std::endl;
+  ch1.show();
+
+  std::cout << "CH2" <<std::endl;
+  ch2.show();
+
+
 
   return 0;
 }

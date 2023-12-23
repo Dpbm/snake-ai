@@ -32,8 +32,8 @@ namespace Genes {
           
 
   void Gene::rand_gene_value(){
-    std::cout << " before: " << this->value;
+    //std::cout << " before: " << this->value;
     this->value = Utils::random(0, 1);
-    std::cout << " after: " << this->value << std::endl;
+    //std::cout << " after: " << this->value << std::endl;
   }
 }
