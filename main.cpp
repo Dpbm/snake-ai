@@ -3,6 +3,7 @@
 #include <vector>
 #include "chromosome.h"
 #include "gene.h"
+#include "population.h"
 
 int main(){
   /**std::cout << "---Simple GA test---" << std::endl;
@@ -24,7 +25,7 @@ int main(){
   } 
 */
 
-  unsigned int size = 10;
+ /** unsigned int size = 10;
   Chromosomes::Chromosome ch1 = Chromosomes::Chromosome(size);
   Chromosomes::Chromosome ch2 = Chromosomes::Chromosome(size);
 
@@ -49,7 +50,10 @@ int main(){
 
   std::cout << "CH2" <<std::endl;
   ch2.show();
+**/
 
+  Populations::Population population = Populations::Population(10, 5, 100);
+  population.show();
 
 
   return 0;

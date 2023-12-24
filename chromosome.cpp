@@ -7,10 +7,16 @@
 namespace Chromosomes {
   std::vector<Genes::Gene> genes;
   unsigned int total_genes;
+  int points;
 
-  Chromosome::Chromosome(unsigned int size){
+  Chromosome::Chromosome(unsigned int size, int points){
     this->Chromosome::add_genes(size);
     this->total_genes = size;
+    this->points = points;
+  }
+
+  Chromosome::Chromosome(int points){
+    this->points = points;
   }
   
   void Chromosome::set_genes(std::vector<Genes::Gene> genes){
@@ -67,6 +73,18 @@ namespace Chromosomes {
     for(Genes::Gene gene: this->genes)
       std::cout << gene.get_gene_value() << " ";
     std::cout << std::endl;
+  }
+
+  void Chromosome::update_points(int factor){
+    this->points += factor;
+  }
+
+  unsigned int Chromosome::get_size(){
+    return this->total_genes;
+  }
+  
+  int Chromosome::get_points(){
+    return this->points;
   }
 
 }
