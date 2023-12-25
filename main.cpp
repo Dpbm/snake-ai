@@ -58,7 +58,10 @@ int main(){
   char *title = (char*) malloc(5*sizeof(char));
   strcpy(title, "test");
   GUI::Game game = GUI::Game(title, WIDTH, HEIGHT);
-  while(!game.event_close());
+  game.set_food_pos();
+  while(!game.event_close()){
+    game.draw_food();
+  };
 
   free(title);
 
