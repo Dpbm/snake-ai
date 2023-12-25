@@ -1,13 +1,7 @@
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_video.h>
-#include <iostream>
-#include <ostream>
-#include <vector>
-#include "chromosome.h"
-#include "gene.h"
-#include "population.h"
-#include <SDL2/SDL.h>
 #include "constants.h"
+#include "gui.h"
+#include <cstdlib>
+#include <cstring>
 
 int main(){
   /**std::cout << "---Simple GA test---" << std::endl;
@@ -60,26 +54,13 @@ int main(){
   Populations::Population population = Populations::Population(10, 5, 100);
   population.show();
   */
-
-  if(SDL_Init(SDL_INIT_EVERYTHING) < 0){
-    std::cout << "Failed intializing SDL2!!" << std::endl;
-    return 1;
-  }
-
-  SDL_Window *window =SDL_CreateWindow("Test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_ALLOW_HIGHDPI);
   
-  if(window == NULL){
-    std::cout << "Failed on create window!" << std::endl;
-    return 1;
-  }
+  char *title = (char*) malloc(5*sizeof(char));
+  strcpy(title, "test");
+  GUI::Game game = GUI::Game(title, WIDTH, HEIGHT);
+  while(!game.event_close());
 
-  SDL_Event event;
-
-  while(true)
-    if(SDL_PollEvent(&event) && SDL_QUIT == event.type) break;
-  
-  SDL_DestroyWindow(window);
-  SDL_Quit();
+  free(title);
 
 
   return 0;
