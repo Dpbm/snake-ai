@@ -1,7 +1,7 @@
 #include "gui.h"
 #include "constants.h"
+#include "food.h"
 #include "player.h"
-#include "utils.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_rect.h>
@@ -12,7 +12,7 @@ namespace GUI {
   int width, height;
   SDL_Window *window;
   SDL_Renderer *render;
-  unsigned int food_x, food_y;
+  Foods::Food *food;
   Players::Player *player;
 
   Game::Game(char* title, int width, int height){
@@ -34,27 +34,16 @@ namespace GUI {
     return event;
   }
 
-  void Game::set_food_pos(){
-    this->food_x = Utils::get_random_pos(WIDTH, FOOD_W);
-    this->food_y = Utils::get_random_pos(HEIGHT, FOOD_H);
-  }
-
-  void Game::set_food_pos(unsigned int x, unsigned int y){
-    this->food_x = x;
-    this->food_y = y;
-  }
-
-  void Game::draw_food(){
+  void Game::render_food(){
     SDL_Rect *rect = new SDL_Rect; 
-    rect->x = this->food_x; 
-    rect->y = this->food_y;
+    rect->x = this->food->get_x(); 
+    rect->y = this->food->get_y();
     rect->h = FOOD_H;
     rect->w = FOOD_W;
     SDL_SetRenderDrawColor(this->render, 255, 255, 255, 255);
     SDL_RenderFillRect(this->render, rect);
     SDL_SetRenderDrawColor(this->render, 0, 0, 0, 255);
   }
-
 
   void Game::render_player(){
     SDL_Rect *rect = new SDL_Rect; 
@@ -78,6 +67,4 @@ namespace GUI {
   Players::Player* Game::get_player(){
     return this->player;
   }  
-
- 
 }

@@ -61,7 +61,6 @@ int main(){
   char *title = (char*) malloc(5*sizeof(char));
   strcpy(title, "test");
   GUI::Game game = GUI::Game(title, WIDTH, HEIGHT);
-  game.set_food_pos();
   
   SDL_Event *event = new SDL_Event;
 
@@ -92,7 +91,7 @@ int main(){
     }
 
     game.clear_screen();
-    game.draw_food();
+    game.render_food();
     game.render_player();
     game.show();
 
