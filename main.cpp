@@ -1,5 +1,8 @@
 #include "constants.h"
 #include "gui.h"
+#include "player.h"
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_timer.h>
 #include <cstdlib>
 #include <cstring>
 
@@ -59,12 +62,42 @@ int main(){
   strcpy(title, "test");
   GUI::Game game = GUI::Game(title, WIDTH, HEIGHT);
   game.set_food_pos();
-  while(!game.event_close()){
+  
+  SDL_Event event;
+
+  int last_moviment_time = 0;
+
+  do{
+
+    event = game.get_event();
+    Players::Player* player = game.get_player();
+
+    if(event.type == SDL_KEYDOWN && SDL_GetTicks() - last_moviment_time >= 100){
+      switch(event.key.keysym.sym){
+        case SDLK_UP:
+          player->move_up();
+          break;
+        case SDLK_DOWN:
+          player->move_down();
+          break;
+        case SDLK_LEFT:
+          player->move_left();
+          break;
+        case SDLK_RIGHT:
+          player->move_right();
+          break;
+        default:
+          break;
+      }
+      last_moviment_time = SDL_GetTicks();
+    }
+
     game.clear_screen();
     game.draw_food();
     game.render_player();
     game.show();
-  };
+
+  }while(event.type != SDL_QUIT);
 
   free(title);
 

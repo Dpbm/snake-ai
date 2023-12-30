@@ -2,7 +2,6 @@
 #define GUI_
 
 #include <SDL2/SDL.h>
-#include <vector>
 #include <iostream>
 #include "player.h"
 
@@ -18,6 +17,9 @@ namespace GUI {
       void render_player();
       void clear_screen();
       void show();
+      SDL_Event get_event();
+      Players::Player* get_player();
+
 
     private:
       int width, height;

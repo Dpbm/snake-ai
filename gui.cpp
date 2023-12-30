@@ -7,7 +7,6 @@
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
-#include <vector>
 
 namespace GUI {
   int width, height;
@@ -15,7 +14,6 @@ namespace GUI {
   SDL_Renderer *render;
   unsigned int food_x, food_y;
   Players::Player *player;
-
 
   Game::Game(char* title, int width, int height){
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -29,12 +27,13 @@ namespace GUI {
     SDL_DestroyWindow(this->window);
     SDL_Quit();
   }
-  
-  bool Game::event_close(){
+
+  SDL_Event Game::get_event(){
     SDL_Event event;
-    return SDL_PollEvent(&event) && event.type == SDL_QUIT;
+    SDL_PollEvent(&event);
+    return event;
   }
-  
+
   void Game::set_food_pos(){
     this->food_x = Utils::get_random_pos(WIDTH, FOOD_W);
     this->food_y = Utils::get_random_pos(HEIGHT, FOOD_H);
@@ -75,4 +74,10 @@ namespace GUI {
   void Game::show(){
     SDL_RenderPresent(this->render);
   }
+
+  Players::Player* Game::get_player(){
+    return this->player;
+  }  
+
+ 
 }
