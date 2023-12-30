@@ -12,6 +12,9 @@ namespace Players {
       void move_right();
       bool collision(unsigned int food_x, unsigned int food_y);
       void update_score();
+      unsigned int get_x();
+      unsigned int get_y();
+      unsigned int get_score();
 
     private:
       unsigned int x, y;

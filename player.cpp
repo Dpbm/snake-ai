@@ -47,4 +47,16 @@ namespace Players {
   void Player::update_score(){
     this->score += this->score_step;
   }
+
+  unsigned int Player::get_x(){
+    return this->x;
+  }
+
+  unsigned int Player::get_y(){
+    return this->y;
+  }
+
+  unsigned int Player::get_score(){
+    return this->score;
+  }
 }

@@ -60,7 +60,10 @@ int main(){
   GUI::Game game = GUI::Game(title, WIDTH, HEIGHT);
   game.set_food_pos();
   while(!game.event_close()){
+    game.clear_screen();
     game.draw_food();
+    game.render_player();
+    game.show();
   };
 
   free(title);
