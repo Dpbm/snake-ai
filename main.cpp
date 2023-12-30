@@ -63,17 +63,16 @@ int main(){
   GUI::Game game = GUI::Game(title, WIDTH, HEIGHT);
   game.set_food_pos();
   
-  SDL_Event event;
+  SDL_Event *event = new SDL_Event;
 
   int last_moviment_time = 0;
-
   do{
 
     event = game.get_event();
     Players::Player* player = game.get_player();
 
-    if(event.type == SDL_KEYDOWN && SDL_GetTicks() - last_moviment_time >= 100){
-      switch(event.key.keysym.sym){
+    if(event->type == SDL_KEYDOWN && SDL_GetTicks() - last_moviment_time >= DEBOUNCE_TIME){
+      switch(event->key.keysym.sym){
         case SDLK_UP:
           player->move_up();
           break;
@@ -97,7 +96,7 @@ int main(){
     game.render_player();
     game.show();
 
-  }while(event.type != SDL_QUIT);
+  }while(event->type != SDL_QUIT);
 
   free(title);
 

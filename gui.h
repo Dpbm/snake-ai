@@ -17,7 +17,7 @@ namespace GUI {
       void render_player();
       void clear_screen();
       void show();
-      SDL_Event get_event();
+      SDL_Event *get_event();
       Players::Player* get_player();
 
 

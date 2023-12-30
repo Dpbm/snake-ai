@@ -28,9 +28,9 @@ namespace GUI {
     SDL_Quit();
   }
 
-  SDL_Event Game::get_event(){
-    SDL_Event event;
-    SDL_PollEvent(&event);
+  SDL_Event* Game::get_event(){
+    SDL_Event *event = new SDL_Event;
+    SDL_PollEvent(event);
     return event;
   }
 

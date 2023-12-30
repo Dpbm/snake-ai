@@ -7,5 +7,6 @@
 #define FOOD_W 10
 #define PLAYER_H 10
 #define PLAYER_W 10
+#define DEBOUNCE_TIME 100
 
 #endif // ! CONSTANTS
