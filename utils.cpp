@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <random>
 #include "utils.h"
 
@@ -9,4 +10,10 @@ namespace Utils {
     
     return distr(eng);
   }
+  
+  unsigned int get_random_pos(unsigned int max_range, unsigned int factor){
+    unsigned int rand = Utils::random(0, max_range);
+    return rand-(rand%factor);
+  }
+
 }

@@ -32,10 +32,8 @@ namespace GUI {
   }
   
   void Game::set_food_pos(){
-    unsigned int rand_x = Utils::random(0, WIDTH);
-    unsigned int rand_y = Utils::random(0, HEIGHT);
-    this->food_x = rand_x-(rand_x%FOOD_W);
-    this->food_y = rand_y-(rand_y%FOOD_W);
+    this->food_x = Utils::get_random_pos(WIDTH, FOOD_W);
+    this->food_y = Utils::get_random_pos(HEIGHT, FOOD_H);
   }
 
   void Game::set_food_pos(unsigned int x, unsigned int y){
