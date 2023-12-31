@@ -96,4 +96,13 @@ namespace GUI {
     if(handle) this->Game::update_last_tick();
     return handle;
   }
+
+  Foods::Food* Game::get_food(){
+    return this->food;
+  }
+
+  void Game::regenerate_food(){
+    delete this->food;
+    this->food = new Foods::Food();
+  }
 }

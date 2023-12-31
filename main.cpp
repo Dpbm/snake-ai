@@ -1,4 +1,5 @@
 #include "constants.h"
+#include "food.h"
 #include "gui.h"
 #include "player.h"
 #include <SDL2/SDL_events.h>
@@ -61,34 +62,38 @@ int main(){
   
   char *title = (char*) malloc(5*sizeof(char));
   strcpy(title, "test");
-  GUI::Game game = GUI::Game(title, WIDTH, HEIGHT);
+  GUI::Game *game = new GUI::Game(title, WIDTH, HEIGHT);
   
-  while(!game.event_close()){
-    game.listen_event();
+  while(!game->event_close()){
+    game->listen_event();
     
-    Players::Player* player = game.get_player();
+    Players::Player* player = game->get_player();
     
-    if(game.event_keydown()){
-      if(game.event_move(SDLK_UP))
+    if(game->event_keydown()){      
+      if(game->event_move(SDLK_UP))
         player->move_up();
-      else if(game.event_move(SDLK_DOWN))
+      else if(game->event_move(SDLK_DOWN))
         player->move_down();
-      else if(game.event_move(SDLK_RIGHT))
+      else if(game->event_move(SDLK_RIGHT))
         player->move_right();
-      else if(game.event_move(SDLK_LEFT))
+      else if(game->event_move(SDLK_LEFT))
         player->move_left();
     }
 
-    game.clear_screen();
-    game.render_food();
-    game.render_player();
-    game.show();
+    Foods::Food *food = game->get_food();
+    if(player->collision(food->get_x(), food->get_y())){
+      game->regenerate_food();
+      player->update_score();
+    }
+
+    game->clear_screen();
+    game->render_food();
+    game->render_player();
+    game->show();
   }
 
-
-
-  free(title);
-
+  delete title;
+  delete game;
 
   return 0;
 }

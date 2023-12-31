@@ -20,6 +20,8 @@ namespace GUI {
       Players::Player* get_player();
       bool event_move(SDL_Keycode key);
       bool event_keydown();
+      Foods::Food* get_food();
+      void regenerate_food();
 
 
     private:
