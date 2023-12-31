@@ -84,6 +84,7 @@ int main(){
     if(player->collision(food->get_x(), food->get_y())){
       game->regenerate_food();
       player->update_score();
+      std::cout << "Player score: " << player->get_score() << std::endl;
     }
 
     game->clear_screen();

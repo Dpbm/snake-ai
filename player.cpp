@@ -6,16 +6,21 @@ namespace Players {
   unsigned int x, y;
   unsigned int score;
   unsigned int score_step;
-  
+  unsigned int max_score;
+
   Player::Player(){
-    this->x = Utils::get_random_pos(WIDTH, PLAYER_W);  
-    this->y = Utils::get_random_pos(HEIGHT, PLAYER_H);  
+    this->Player::randomize_position();
   }
   
-  Player::Player(unsigned int score_step){
+  Player::Player(unsigned int score_step, unsigned int max_score){
+    this->Player::randomize_position();
+    this->score_step = score_step;
+    this->max_score = max_score;
+  }
+
+  void Player::randomize_position(){
     this->x = Utils::get_random_pos(WIDTH, PLAYER_W);  
     this->y = Utils::get_random_pos(HEIGHT, PLAYER_H);
-    this->score_step = score_step;
   }
 
   void Player::move_up(){

@@ -5,7 +5,7 @@ namespace Players {
   class Player{
     public:
       Player();
-      Player(unsigned int score_step);
+      Player(unsigned int score_step, unsigned int max_score);
       void move_up();
       void move_down();
       void move_left();
@@ -20,6 +20,8 @@ namespace Players {
       unsigned int x, y;
       unsigned int score = 0;
       unsigned int score_step = 100;
+      unsigned int max_score = 10000;
+      void randomize_position();
   };
 };
 
