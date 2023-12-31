@@ -16,8 +16,9 @@ namespace GUI {
       void render_player();
       void clear_screen();
       void show();
-      SDL_Event *get_event();
+      void listen_event();
       Players::Player* get_player();
+      bool event_move(SDL_Keycode key);
 
 
     private:
@@ -26,6 +27,11 @@ namespace GUI {
       SDL_Renderer *render;
       Foods::Food *food = new Foods::Food();
       Players::Player *player = new Players::Player();
+      SDL_Event *event = new SDL_Event;
+      int last_event_tick;
+      void update_last_tick();
+      bool passed_debounce_time();
+      bool pressed_that_key(SDL_Keycode key);
   };
 }
 
