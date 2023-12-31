@@ -19,6 +19,7 @@ namespace GUI {
       void listen_event();
       Players::Player* get_player();
       bool event_move(SDL_Keycode key);
+      bool event_keydown();
 
 
     private:

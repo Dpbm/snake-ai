@@ -83,8 +83,12 @@ namespace GUI {
     return  SDL_GetTicks() - this->last_event_tick >= DEBOUNCE_TIME;
   }
 
+  bool Game::event_keydown(){
+    return this->event->type == SDL_KEYDOWN;
+  }  
+
   bool Game::pressed_that_key(SDL_Keycode key){
-    return this->Game::passed_debounce_time() && this->event->type == SDL_KEYDOWN && this->event->key.keysym.sym == key;
+    return this->Game::passed_debounce_time() && this->event->key.keysym.sym == key;
   }
 
   bool Game::event_move(SDL_Keycode key){

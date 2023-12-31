@@ -68,17 +68,17 @@ int main(){
     
     Players::Player* player = game.get_player();
     
+    if(game.event_keydown()){
+      if(game.event_move(SDLK_UP))
+        player->move_up();
+      else if(game.event_move(SDLK_DOWN))
+        player->move_down();
+      else if(game.event_move(SDLK_RIGHT))
+        player->move_right();
+      else if(game.event_move(SDLK_LEFT))
+        player->move_left();
+    }
 
-    if(game.event_move(SDLK_UP))
-      player->move_up();
-    else if(game.event_move(SDLK_DOWN))
-      player->move_down();
-    else if(game.event_move(SDLK_RIGHT))
-      player->move_right();
-    else if(game.event_move(SDLK_LEFT))
-      player->move_left();
-
-    
     game.clear_screen();
     game.render_food();
     game.render_player();
