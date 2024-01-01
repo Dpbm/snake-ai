@@ -1,7 +1,18 @@
 #ifndef PLAYER
 #define PLAYER
 
+#include "body_part.h"
+
 namespace Players {
+  
+  struct Node{
+    BodyParts::BodyPart *value;
+    Node* next;
+  };
+
+  typedef struct Node Node;
+  typedef struct Node LinkedList;
+  
   class Player{
     public:
       Player();
@@ -19,6 +30,7 @@ namespace Players {
       int get_mov_x();
       int get_mov_y();
       void update_position();
+      Players::LinkedList* get_body();
 
     private:
       unsigned int x, y;
@@ -29,9 +41,15 @@ namespace Players {
       int mov_x = 0;
       int mov_y = 0;
       int last_tick;
+      Players::LinkedList* player = new Players::LinkedList;
+      Players::Node* head = nullptr;
+      Players::Node* tail = nullptr;
       void randomize_position();
       void update_size();
+      Players::Node* create_body_part(unsigned int x, unsigned int y);
+      void add_body_part(unsigned int x, unsigned int y);
   };
+  
 };
 
 #endif // !PLAYER

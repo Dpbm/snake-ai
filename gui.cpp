@@ -48,24 +48,19 @@ namespace GUI {
   }
 
   void Game::render_player(){
-    int old_x = this->player->get_x();
-    int old_y = this->player->get_y();
-
-    for(unsigned int i = 0; i < this->player->get_size(); i++){
+    Players::LinkedList* body = this->player->get_body();
+    
+    while(body != nullptr){
       SDL_Rect *rect = new SDL_Rect; 
-      rect->x = old_x - (i * this->player->get_mov_x() * PLAYER_W); 
-      rect->y = old_y - (i * this->player->get_mov_y() * PLAYER_H);
+      rect->x = body->value->get_x(); 
+      rect->y = body->value->get_y();
       rect->h = PLAYER_H;
       rect->w = PLAYER_W;
-      if(i == 0)
-        SDL_SetRenderDrawColor(this->render, 255, 0, 0, 255);
-      else if(i == 1)
-        SDL_SetRenderDrawColor(this->render, 0, 255, 0, 255);
-      else
-        SDL_SetRenderDrawColor(this->render, 0, 0, 255, 255);
-
+      SDL_SetRenderDrawColor(this->render, 0, 0, 255, 255);
       SDL_RenderFillRect(this->render, rect);
       SDL_SetRenderDrawColor(this->render, 0, 0, 0, 255);
+
+      body = body->next;
     }
   }
 
