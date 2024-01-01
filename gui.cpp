@@ -18,7 +18,6 @@ namespace GUI {
   Foods::Food *food;
   Players::Player *player;
   SDL_Event *event;
-  int last_event_tick;
 
   Game::Game(char* title, int width, int height){
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -49,14 +48,25 @@ namespace GUI {
   }
 
   void Game::render_player(){
-    SDL_Rect *rect = new SDL_Rect; 
-    rect->x = player->get_x(); 
-    rect->y = player->get_y();
-    rect->h = PLAYER_H;
-    rect->w = PLAYER_W;
-    SDL_SetRenderDrawColor(this->render, 255, 0, 0, 255);
-    SDL_RenderFillRect(this->render, rect);
-    SDL_SetRenderDrawColor(this->render, 0, 0, 0, 255);
+    int old_x = this->player->get_x();
+    int old_y = this->player->get_y();
+
+    for(unsigned int i = 0; i < this->player->get_size(); i++){
+      SDL_Rect *rect = new SDL_Rect; 
+      rect->x = old_x - (i * this->player->get_mov_x() * PLAYER_W); 
+      rect->y = old_y - (i * this->player->get_mov_y() * PLAYER_H);
+      rect->h = PLAYER_H;
+      rect->w = PLAYER_W;
+      if(i == 0)
+        SDL_SetRenderDrawColor(this->render, 255, 0, 0, 255);
+      else if(i == 1)
+        SDL_SetRenderDrawColor(this->render, 0, 255, 0, 255);
+      else
+        SDL_SetRenderDrawColor(this->render, 0, 0, 255, 255);
+
+      SDL_RenderFillRect(this->render, rect);
+      SDL_SetRenderDrawColor(this->render, 0, 0, 0, 255);
+    }
   }
 
   void Game::clear_screen(){
@@ -75,26 +85,12 @@ namespace GUI {
     return this->event->type == SDL_QUIT;
   }
 
-  void Game::update_last_tick(){
-    this->last_event_tick = SDL_GetTicks();
-  }
-
-  bool Game::passed_debounce_time(){
-    return  SDL_GetTicks() - this->last_event_tick >= DEBOUNCE_TIME;
-  }
-
   bool Game::event_keydown(){
     return this->event->type == SDL_KEYDOWN;
   }  
 
-  bool Game::pressed_that_key(SDL_Keycode key){
-    return this->Game::passed_debounce_time() && this->event->key.keysym.sym == key;
-  }
-
   bool Game::event_move(SDL_Keycode key){
-    bool handle = this->Game::pressed_that_key(key);
-    if(handle) this->Game::update_last_tick();
-    return handle;
+    return this->event->key.keysym.sym == key;
   }
 
   Foods::Food* Game::get_food(){

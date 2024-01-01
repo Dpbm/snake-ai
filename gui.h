@@ -31,10 +31,6 @@ namespace GUI {
       Foods::Food *food = new Foods::Food();
       Players::Player *player = new Players::Player();
       SDL_Event *event = new SDL_Event;
-      int last_event_tick;
-      void update_last_tick();
-      bool passed_debounce_time();
-      bool pressed_that_key(SDL_Keycode key);
   };
 }
 

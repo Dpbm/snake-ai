@@ -71,22 +71,21 @@ int main(){
     
     if(game->event_keydown()){      
       if(game->event_move(SDLK_UP))
-        player->move_up();
+        player->direction_up();
       else if(game->event_move(SDLK_DOWN))
-        player->move_down();
+        player->direction_down();
       else if(game->event_move(SDLK_RIGHT))
-        player->move_right();
+        player->direction_right();
       else if(game->event_move(SDLK_LEFT))
-        player->move_left();
+        player->direction_left();
     }
-
+    player->update_position();
     Foods::Food *food = game->get_food();
     if(player->collision(food->get_x(), food->get_y())){
       game->regenerate_food();
       player->update_score();
       std::cout << "Player score: " << player->get_score() << std::endl;
     }
-
     game->clear_screen();
     game->render_food();
     game->render_player();
