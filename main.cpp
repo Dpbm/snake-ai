@@ -7,6 +7,7 @@
 #include <SDL2/SDL_timer.h>
 #include <cstdlib>
 #include <cstring>
+#include <iostream>
 
 int main(){
   /**std::cout << "---Simple GA test---" << std::endl;
@@ -63,7 +64,7 @@ int main(){
   char *title = (char*) malloc(5*sizeof(char));
   strcpy(title, "test");
   GUI::Game *game = new GUI::Game(title, WIDTH, HEIGHT);
-  
+
   while(!game->event_close()){
     game->listen_event();
     
@@ -80,6 +81,12 @@ int main(){
         player->direction_left();
     }
     player->update_position();
+
+    if(player->is_game_over()){
+      std::cout << "game over" << std::endl;
+      break;
+    }
+
     Foods::Food *food = game->get_food();
     if(player->collision(food->get_x(), food->get_y())){
       game->regenerate_food();

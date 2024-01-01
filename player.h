@@ -31,6 +31,7 @@ namespace Players {
       int get_mov_y();
       void update_position();
       Players::LinkedList* get_body();
+      bool is_game_over();
 
     private:
       unsigned int x, y;
@@ -44,10 +45,12 @@ namespace Players {
       Players::LinkedList* player = new Players::LinkedList;
       Players::Node* head = nullptr;
       Players::Node* tail = nullptr;
+      bool game_over;
       void randomize_position();
       void update_size();
       Players::Node* create_body_part(unsigned int x, unsigned int y);
       void add_body_part(unsigned int x, unsigned int y);
+      void check_game_over();
   };
   
 };

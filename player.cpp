@@ -14,6 +14,7 @@ namespace Players {
   unsigned int size;
   int mov_x, mov_y;
   int last_tick;
+  bool game_over;
 
   Player::Player(){
     this->Player::randomize_position();
@@ -62,6 +63,7 @@ namespace Players {
       unsigned int new_head_x = old_pos_x + (this->mov_x * PLAYER_W);
       unsigned int new_head_y = old_pos_y + (this->mov_y * PLAYER_H);
       this->head->value->update_position(new_head_x, new_head_y);
+      this->Player::check_game_over();  
 
       Players::Node* actual_part = this->head->next;
 
@@ -86,8 +88,8 @@ namespace Players {
   
   void Player::update_score(){
     this->score += this->score_step;
-    this->update_size();
-    this->add_body_part(this->tail->value->get_x(), this->tail->value->get_y());
+    this->Player::update_size();
+    this->Player::add_body_part(this->tail->value->get_x(), this->tail->value->get_y());
   }
 
   unsigned int Player::get_x(){
@@ -144,5 +146,16 @@ namespace Players {
 
   Players::LinkedList* Player::get_body(){
     return this->player;
+  }
+
+  void Player::check_game_over(){
+    unsigned int head_x = this->head->value->get_x(); 
+    unsigned int head_y = this->head->value->get_y();
+    if(head_x < 0 || head_x > WIDTH || head_y < 0 || head_y > HEIGHT)
+      this->game_over = true;
+  }
+
+  bool Player::is_game_over(){
+    return this->game_over;
   }
 }
