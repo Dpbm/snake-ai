@@ -61,8 +61,8 @@ int main(){
   population.show();
   */
   
-  char *title = (char*) malloc(5*sizeof(char));
-  strcpy(title, "test");
+  char *title = (char*) malloc(10*sizeof(char));
+  strcpy(title, "snake game");
   GUI::Game *game = new GUI::Game(title, WIDTH, HEIGHT);
 
   while(!game->event_close()){
@@ -71,13 +71,13 @@ int main(){
     Players::Player* player = game->get_player();
     
     if(game->event_keydown()){      
-      if(game->event_move(SDLK_UP))
+      if(game->event_move(SDLK_w))
         player->direction_up();
-      else if(game->event_move(SDLK_DOWN))
+      else if(game->event_move(SDLK_s))
         player->direction_down();
-      else if(game->event_move(SDLK_RIGHT))
+      else if(game->event_move(SDLK_d))
         player->direction_right();
-      else if(game->event_move(SDLK_LEFT))
+      else if(game->event_move(SDLK_a))
         player->direction_left();
     }
     player->update_position();
