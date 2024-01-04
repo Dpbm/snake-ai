@@ -51,6 +51,8 @@ namespace Players {
       Players::Node* create_body_part(unsigned int x, unsigned int y);
       void add_body_part(unsigned int x, unsigned int y);
       void check_game_over();
+      bool border_head_collision();
+      bool head_tail_collision();
   };
   
 };

@@ -1,4 +1,4 @@
 ## TODOS
 - [ ] Add logs
 - [ ] Add tests
-- [ ] Tail collision
+- [x] Tail collision

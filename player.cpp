@@ -33,25 +33,33 @@ namespace Players {
   }
 
   void Player::direction_up(){
-    this->mov_y = -1;
-    this->mov_x = 0;
+    if(this->mov_y == 0){
+      this->mov_y = -1;
+      this->mov_x = 0;
+    }
   }
 
   void Player::direction_down(){
-    this->mov_y = 1;
-    this->mov_x = 0;
+    if(this->mov_y == 0){
+      this->mov_y = 1;
+      this->mov_x = 0;
+    }
   }
 
 
   void Player::direction_left(){
-    this->mov_x = -1;
-    this->mov_y = 0;
+    if(this->mov_x == 0){
+      this->mov_x = -1;
+      this->mov_y = 0;
+    }
   }
 
   
   void Player::direction_right(){
-    this->mov_x = 1;
-    this->mov_y = 0;
+    if(this->mov_x == 0){
+      this->mov_x = 1;
+      this->mov_y = 0;
+    }
   }
 
   void Player::update_position(){
@@ -149,10 +157,26 @@ namespace Players {
   }
 
   void Player::check_game_over(){
+    this->game_over = this->Player::border_head_collision() || this->Player::head_tail_collision();
+  }
+
+  bool Player::border_head_collision(){
     unsigned int head_x = this->head->value->get_x(); 
     unsigned int head_y = this->head->value->get_y();
-    if(head_x < 0 || head_x > WIDTH || head_y < 0 || head_y > HEIGHT)
-      this->game_over = true;
+    return head_x < 0 || head_x > WIDTH || head_y < 0 || head_y > HEIGHT;
+  }
+
+  bool Player::head_tail_collision(){
+    Players::Node* actual_bpart = this->head->next;
+    while(actual_bpart != nullptr){
+      if(
+        actual_bpart->value->get_x() == this->head->value->get_x() && 
+        actual_bpart->value->get_y() == this->head->value->get_y())
+          return true;
+
+      actual_bpart = actual_bpart->next;
+    }
+    return false;
   }
 
   bool Player::is_game_over(){
