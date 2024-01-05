@@ -3,19 +3,17 @@
 #include "gene.h"
 
 namespace Genes {
-  unsigned int value;
+  int value;
   
   Gene::Gene(){
     this->Gene::rand_gene_value();
   }
 
-  unsigned int Gene::get_gene_value(){
+  int Gene::get_gene_value(){
     return this->Gene::value;
   }
 
-  void Gene::set_gene_value(unsigned int value){
-    if(value != 0 && value != 1)
-      throw std::invalid_argument("Invalid gene value! Accepted: {0, 1}");
+  void Gene::set_gene_value(int value){
     this->value = value;
   }
 

@@ -5,11 +5,11 @@ namespace Genes {
   class Gene{
     public:
       Gene();
-      unsigned int get_gene_value();
-      void set_gene_value(unsigned int value);
+      int get_gene_value();
+      void set_gene_value(int value);
       void mutate(float rate);
     private:
-      unsigned int value=0;
+      int value=0;
       void rand_gene_value();
   };
 }
