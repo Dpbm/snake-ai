@@ -7,3 +7,4 @@
 - [ ] set max score
 - [ ] add neural network
 - [ ] use quantum machine learning
+- [ ] verify heap-stack usage
