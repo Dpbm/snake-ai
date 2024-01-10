@@ -15,6 +15,7 @@ namespace Players {
   int mov_x, mov_y;
   int last_tick;
   bool game_over;
+  bool won;
 
   Player::Player(){
     this->Player::randomize_position();
@@ -72,6 +73,7 @@ namespace Players {
       unsigned int new_head_y = old_pos_y + (this->mov_y * PLAYER_H);
       this->head->value->update_position(new_head_x, new_head_y);
       this->Player::check_game_over();  
+      this->Player::check_won();
 
       Players::Node* actual_part = this->head->next;
 
@@ -181,5 +183,13 @@ namespace Players {
 
   bool Player::is_game_over(){
     return this->game_over;
+  }
+  
+  void Player::check_won(){
+    this->won = this->score >= MAX_SCORE;  
+  }
+
+  bool Player::has_won(){
+    return this->won;
   }
 }

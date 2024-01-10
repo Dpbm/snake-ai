@@ -86,6 +86,10 @@ int main(){
       std::cout << "game over" << std::endl;
       break;
     }
+    if(player->has_won()){
+      std::cout << "WONWNWNWNWNW" << std::endl;
+      break;
+    }
 
     Foods::Food *food = game->get_food();
     if(player->collision(food->get_x(), food->get_y())){
