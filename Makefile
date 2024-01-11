@@ -1,8 +1,10 @@
 CC := clang++
 
-compile: clean
+project_output := ga.o 
+
+$(project_output): clean  
 	@echo "Compiling files...."
-	${CC} *.cpp -o ga.out -lSDL2main -lSDL2
+	$(CC) *.cpp */*.cpp -o $(project_output) -lSDL2main -lSDL2
 
 .PHONY : clean config_sdl
 clean:

@@ -1,4 +1,4 @@
-#include "constants.h"
+#include "helpers/constants.h"
 #include "food.h"
 #include "gui.h"
 #include "player.h"

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "utils.h"
+#include "helpers/utils.h"
 #include "gene.h"
 
 namespace Genes {
