@@ -3,7 +3,7 @@
 - [ ] Add tests
 - [x] Tail collision
 - [x] change gene values to int
-- [ ] move files groups to different lib folders
+- [x] move files groups to different lib folders
 - [x] set max score
 - [ ] add neural network
 - [ ] use quantum machine learning
