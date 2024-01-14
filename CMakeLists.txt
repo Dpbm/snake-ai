@@ -1,6 +1,18 @@
 cmake_minimum_required(VERSION 3.20.4)
 project(genetic_snake VERSION 0.1)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+)
+
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
 find_package(SDL2 REQUIRED)
 
 add_executable(ga.out main.cpp)
