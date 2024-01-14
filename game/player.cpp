@@ -1,7 +1,7 @@
 #include "player.h"
 #include "body_part.h"
-#include "helpers/utils.h"
-#include "helpers/constants.h"
+#include "../helpers/utils.h"
+#include "../helpers/constants.h"
 #include <SDL2/SDL_timer.h>
 
 namespace Players {

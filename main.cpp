@@ -1,7 +1,7 @@
 #include "helpers/constants.h"
-#include "food.h"
-#include "gui.h"
-#include "player.h"
+#include "game/food.h"
+#include "game/gui.h"
+#include "game/player.h"
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_timer.h>

@@ -1,6 +1,6 @@
 #include "food.h"
-#include "helpers/constants.h"
-#include "helpers/utils.h"
+#include "../helpers/constants.h"
+#include "../helpers/utils.h"
 
 namespace Foods {
   unsigned int x, y;

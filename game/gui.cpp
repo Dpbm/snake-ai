@@ -1,5 +1,5 @@
 #include "gui.h"
-#include "helpers/constants.h"
+#include "../helpers/constants.h"
 #include "food.h"
 #include "player.h"
 #include <SDL2/SDL.h>
