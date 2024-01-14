@@ -22,6 +22,7 @@ target_include_directories(ga.out PRIVATE ${SDL2_INCLUDE_DIRS})
 add_subdirectory(helpers)
 add_subdirectory(game)
 add_subdirectory(genetic)
+add_subdirectory(matrix)
 
 file(GLOB HELPERS_FILES "helpers/*.cpp")
 add_library(helpers ${HELPERS_FILES})
@@ -34,5 +35,10 @@ file(GLOB GENETIC_FILES "genetic/*.cpp")
 add_library(genetic ${GENETIC_FILES})
 target_link_libraries(genetic helpers)
 
-target_link_libraries(ga.out PRIVATE helpers game genetic ${SDL2_LIBRARIES})
+
+file(GLOB MATRIX_FILES "matrix/*.cpp")
+add_library(matrix ${MATRIX_FILES})
+target_link_libraries(matrix helpers)
+
+target_link_libraries(ga.out PRIVATE helpers game genetic matrix ${SDL2_LIBRARIES})
 
