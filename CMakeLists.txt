@@ -42,3 +42,11 @@ target_link_libraries(matrix helpers)
 
 target_link_libraries(ga.out PRIVATE helpers game genetic matrix ${SDL2_LIBRARIES})
 
+enable_testing()
+
+file(GLOB MATRIX_TEST "./tests/matrix_test.cc")
+add_executable(matrix_test ${MATRIX_TEST})
+target_link_libraries(matrix_test matrix GTest::gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(matrix_test)
