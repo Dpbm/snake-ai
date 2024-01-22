@@ -17,4 +17,4 @@
     - [x] scalar multiplication
     - [ ] dot product
     - [ ] destructor
-    - [ ] overload the `=` operator 
+    - [x] overload the `=` operator 

@@ -41,7 +41,7 @@ namespace Matrices{
     this->matrix[i][j] = value;
   }
   
-  double Matrix::get_position_value(unsigned int i, unsigned int j){
+  double Matrix::get_position_value(unsigned int i, unsigned int j) const {
     return this->matrix[i][j];
   }
 
@@ -51,17 +51,25 @@ namespace Matrices{
   // So cleaning the memory from old_matrix*5, could be a little trickier 
   Matrices::Matrix Matrix::copy(){
     Matrices::Matrix clone_matrix(this->width, this->height);
-    for(int i = 0; i < this->height; i++)
-      for(int j = 0; j < this->width; j++)
+    for(unsigned int i = 0; i < this->height; i++)
+      for(unsigned int j = 0; j < this->width; j++)
         clone_matrix.update_value(i, j, this->get_position_value(i, j));
     return clone_matrix;
   }
 
   Matrices::Matrix Matrix::operator *(int scalar){
     Matrices::Matrix clone_matrix = this->copy();
-    for(int i = 0; i < this->height; i++)
-      for(int j = 0; j < this->width; j++)
+    for(unsigned int i = 0; i < this->height; i++)
+      for(unsigned int j = 0; j < this->width; j++)
         clone_matrix.update_value(i, j, scalar * clone_matrix.get_position_value(i, j));      
     return clone_matrix;
+  }
+
+  void Matrix::operator=(const Matrices::Matrix& another_matrix){
+    for(unsigned int i = 0; i < this->height; i++)
+      for(unsigned int j = 0; j < this->width; j++)
+        this->update_value(i, j, another_matrix.get_position_value(i,j));
+    
+    // could add a delete for a matrix pointer here
   }
 }

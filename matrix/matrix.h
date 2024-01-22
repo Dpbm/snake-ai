@@ -10,9 +10,10 @@ namespace Matrices {
       void zeros();
       double** get_matrix();
       void update_value(unsigned int i, unsigned int j, double value);
-      double get_position_value(unsigned int i, unsigned int j);
+      double get_position_value(unsigned int i, unsigned int j)const;
       Matrices::Matrix operator *(int scalar);
       Matrices::Matrix copy();
+      void operator=(const Matrices::Matrix& another_matrix);
     private:
       unsigned int width, height;
       double** matrix;

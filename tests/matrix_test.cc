@@ -98,7 +98,6 @@ namespace {
   TEST(ValuesTest, MultiplyMatrixByScalarTest){
     unsigned int size = 2;
     Matrices::Matrix* matrix_obj = new Matrices::Matrix(size);
-    matrix_obj->zeros();
     matrix_obj->update_value(0, 0, 1);
     matrix_obj->update_value(0, 1, 2);
     matrix_obj->update_value(1, 0, 3);
@@ -112,7 +111,24 @@ namespace {
     ASSERT_EQ(multiplication_result.get_position_value(1, 1), 20);
     delete matrix_obj;
   }
-
   
+  TEST(ValuesTest, OverWriteMatrixTest){
+    unsigned int size = 2;
+    Matrices::Matrix* matrix_1 = new Matrices::Matrix(size);
+    Matrices::Matrix* matrix_2 = new Matrices::Matrix(size);
+    matrix_1->zeros();
+    matrix_2->update_value(0, 0, 1);
+    matrix_2->update_value(0, 1, 2);
+    matrix_2->update_value(1, 0, 3);
+    matrix_2->update_value(1, 1, 4);
+    *matrix_1 = *matrix_2;
+    
+    ASSERT_EQ(matrix_1->get_position_value(0, 0), 1);
+    ASSERT_EQ(matrix_1->get_position_value(0, 1), 2);
+    ASSERT_EQ(matrix_1->get_position_value(1, 0), 3);
+    ASSERT_EQ(matrix_1->get_position_value(1, 1), 4);
+    delete matrix_1;
+    delete matrix_2;
+  } 
 }
   
