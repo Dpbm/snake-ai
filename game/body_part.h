@@ -1,6 +1,4 @@
-#ifndef PARTS
-#define PARTS
-
+#pragma once
 namespace BodyParts{
   class BodyPart{
     public:
@@ -13,5 +11,3 @@ namespace BodyParts{
       unsigned int x,y;
   };
 };
-
-#endif // !PARTS

@@ -1,5 +1,4 @@
-#ifndef PLAYER
-#define PLAYER
+#pragma  once
 
 #include "body_part.h"
 
@@ -61,4 +60,3 @@ namespace Players {
   
 };
 
-#endif // !PLAYER

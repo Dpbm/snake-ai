@@ -8,7 +8,7 @@
 - [ ] add neural network
 - [ ] use quantum machine learning
 - [ ] verify heap-stack usage
-- [ ] add `#pragma once`
+- [x] add `#pragma once`
 - [x] check destructors
 - [ ] check the use of constants
 - [ ] check the use of references

@@ -1,5 +1,4 @@
-#ifndef CHROMOSOME
-#define CHROMOSOME
+#pragma once
 
 #include <vector>
 #include "gene.h"
@@ -27,5 +26,3 @@ namespace Chromosomes {
       void add_genes(unsigned int size);
   };
 }
-
-#endif // !CHROMOSOME

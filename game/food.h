@@ -1,5 +1,4 @@
-#ifndef FOOD
-#define FOOD
+#pragma once
 
 namespace Foods {
   class Food{
@@ -12,6 +11,3 @@ namespace Foods {
       unsigned int x, y;
   };
 };
-
-
-#endif // !FOOD

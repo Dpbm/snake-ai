@@ -1,5 +1,4 @@
-#ifndef GUI_
-#define GUI_
+#pragma  once
 
 #include <SDL2/SDL.h>
 #include <iostream>
@@ -33,5 +32,3 @@ namespace GUI {
       SDL_Event *event = new SDL_Event;
   };
 }
-
-#endif // !GUI_

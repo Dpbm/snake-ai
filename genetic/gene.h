@@ -1,5 +1,4 @@
-#ifndef GENE
-#define GENE
+#pragma once
 
 namespace Genes {
   class Gene{
@@ -14,5 +13,3 @@ namespace Genes {
   };
 }
 
-#endif // !GENE
-#define GENEGENE 

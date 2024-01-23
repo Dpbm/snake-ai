@@ -1,5 +1,4 @@
-#ifndef POPULATION
-#define POPULATION
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -27,5 +26,3 @@ namespace Populations {
       void add_chromosomes(unsigned int total);
   };
 };
-
-#endif // !POPULATIONPOPULATION
