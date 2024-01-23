@@ -251,4 +251,14 @@ namespace {
     delete matrix_1;
     delete matrix_2;
   }
+  
+  TEST(ValuesTest, DotProductErrorTest){
+    Matrices::Matrix* matrix_1 = new Matrices::Matrix(3, 1);
+    Matrices::Matrix* matrix_2 = new Matrices::Matrix(2, 5);
+    EXPECT_THROW({ 
+      (*matrix_1) * (*matrix_2); 
+    }, std::invalid_argument);
+    delete matrix_1;
+    delete matrix_2;
+  }
 }

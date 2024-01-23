@@ -19,3 +19,4 @@
     - [x] dot product
     - [ ] destructor
     - [x] overload the `=` operator 
+    - [x] add test to `dot product` error
