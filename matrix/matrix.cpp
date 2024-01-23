@@ -1,6 +1,7 @@
 #include "matrix.h"
 #include <iostream>
 #include <sched.h>
+#include <stdexcept>
 
 namespace Matrices{
   unsigned int width, height;
@@ -71,5 +72,61 @@ namespace Matrices{
         this->update_value(i, j, another_matrix.get_position_value(i,j));
     
     // could add a delete for a matrix pointer here
+  }
+
+  unsigned int Matrix::get_height() const{
+    return this->height;
+  }
+  
+  unsigned int Matrix::get_width() const{
+    return this->width;
+  }
+  
+  double* Matrix::get_row(unsigned int i) const{
+    double* row = new double[this->width];
+    for(unsigned int j = 0; j < this->width; j++)
+      row[j] = this->get_position_value(i, j);
+    return row;
+  }
+  
+  double* Matrix::get_column(unsigned int j) const{
+    double* column = new double[this->height];
+    for(unsigned int i = 0; i < this->height; i++)
+      column[i] = this->get_position_value(i, j);
+    return column;
+  }
+
+  Matrices::Matrix Matrix::operator *(const Matrices::Matrix& another_matrix){
+    if(this->width != another_matrix.get_height())
+      throw std::invalid_argument("The first matrix's width must be equal to the second's height!");
+   
+    unsigned int second_matrix_width = another_matrix.get_width();
+    Matrices::Matrix resulting_matrix(second_matrix_width, this->height);
+
+    for(unsigned int i = 0; i < this->height; i++){
+      double *row = this->get_row(i);
+      
+      for(unsigned int j = 0; j < second_matrix_width; j++){
+        double *column = another_matrix.get_column(j);
+      
+        double value = 0;
+        for(unsigned int n_index = 0; n_index < this->width; n_index++)
+          value += row[n_index]*column[n_index];
+
+        resulting_matrix.update_value(i, j, value);
+        delete column;
+      }  
+      delete row;
+    }
+    
+    return resulting_matrix;
+  }
+
+  void Matrix::show(){
+    for(int i = 0; i < this->height; i++){
+      for(int j = 0; j < this->width; j++)
+        std::cout << this->get_position_value(i, j) << " "; 
+      std::cout << "" << std::endl;
+    }
   }
 }

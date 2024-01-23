@@ -14,6 +14,12 @@ namespace Matrices {
       Matrices::Matrix operator *(int scalar);
       Matrices::Matrix copy();
       void operator=(const Matrices::Matrix& another_matrix);
+      Matrices::Matrix operator *(const Matrices::Matrix& another_matrix);
+      unsigned int get_height() const;
+      unsigned int get_width() const;
+      double* get_row(unsigned int i) const;
+      double* get_column(unsigned int j) const;
+      void show();
     private:
       unsigned int width, height;
       double** matrix;

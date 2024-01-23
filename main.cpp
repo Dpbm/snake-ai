@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include "matrix/matrix.h"
 
 int main(){
   /**std::cout << "---Simple GA test---" << std::endl;
@@ -61,6 +62,7 @@ int main(){
   population.show();
   */
   
+  /*
   char *title = (char*) malloc(10*sizeof(char));
   strcpy(title, "snake game");
   GUI::Game *game = new GUI::Game(title, WIDTH, HEIGHT);
@@ -105,6 +107,31 @@ int main(){
 
   delete title;
   delete game;
+  */
 
+  Matrices::Matrix* matrix_1 = new Matrices::Matrix(3, 1);
+  Matrices::Matrix* matrix_2 = new Matrices::Matrix(2, 3);
+  
+  matrix_1->update_value(0, 0, 1);
+  matrix_1->update_value(0, 1, 2);
+  matrix_1->update_value(0, 2, 3);
+   
+  matrix_1->show();
+  matrix_2->update_value(0, 0, 1);
+  matrix_2->update_value(0, 1, 2);
+  matrix_2->update_value(1, 0, 1);
+  matrix_2->update_value(1, 1, 2);
+  matrix_2->update_value(2, 0, 1);
+  matrix_2->update_value(2, 1, 2);
+  matrix_2->show();
+  std::cout << std::endl;
+  
+  Matrices::Matrix result = (*matrix_1) * (*matrix_2);
+  result.show();
+
+
+  delete matrix_1;
+  delete matrix_2;
+  
   return 0;
 }

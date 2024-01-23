@@ -1,8 +1,52 @@
 #include <gtest/gtest.h>
-#include <stdexcept>
 #include "../matrix/matrix.h"
 
 namespace {
+
+  TEST(CreationTest, SquareMatrix){
+    Matrices::Matrix* matrix = new Matrices::Matrix(3);
+    
+    matrix->update_value(0, 0, 1);
+    matrix->update_value(0, 1, 1);
+    matrix->update_value(0, 2, 1);
+    matrix->update_value(1, 0, 2);
+    matrix->update_value(1, 1, 2);
+    matrix->update_value(1, 2, 2);
+    matrix->update_value(2, 0, 3);
+    matrix->update_value(2, 1, 3);
+    matrix->update_value(2, 2, 3);
+
+    ASSERT_EQ(matrix->get_position_value(0, 0), 1); 
+    ASSERT_EQ(matrix->get_position_value(0, 1), 1); 
+    ASSERT_EQ(matrix->get_position_value(0, 2), 1); 
+    ASSERT_EQ(matrix->get_position_value(1, 0), 2); 
+    ASSERT_EQ(matrix->get_position_value(1, 1), 2); 
+    ASSERT_EQ(matrix->get_position_value(1, 2), 2); 
+    ASSERT_EQ(matrix->get_position_value(2, 0), 3); 
+    ASSERT_EQ(matrix->get_position_value(2, 1), 3); 
+    ASSERT_EQ(matrix->get_position_value(2, 2), 3); 
+    delete matrix;
+  }
+
+  TEST(CreationTest, DifferentSizeMatrix){
+    Matrices::Matrix* matrix = new Matrices::Matrix(2, 3);
+    
+    matrix->update_value(0, 0, 1);
+    matrix->update_value(0, 1, 1);
+    matrix->update_value(1, 0, 2);
+    matrix->update_value(1, 1, 2);
+    matrix->update_value(2, 0, 3);
+    matrix->update_value(2, 1, 3);
+
+    ASSERT_EQ(matrix->get_position_value(0, 0), 1);
+    ASSERT_EQ(matrix->get_position_value(0, 1), 1);
+    ASSERT_EQ(matrix->get_position_value(1, 0), 2);
+    ASSERT_EQ(matrix->get_position_value(1, 1), 2);
+    ASSERT_EQ(matrix->get_position_value(2, 0), 3);
+    ASSERT_EQ(matrix->get_position_value(2, 1), 3);
+
+    delete matrix;
+  }
 
   TEST(CreationTest, ZerosMatrix){
     unsigned int size = 2;
@@ -129,6 +173,82 @@ namespace {
     ASSERT_EQ(matrix_1->get_position_value(1, 1), 4);
     delete matrix_1;
     delete matrix_2;
-  } 
-}
+  }
+
+  TEST(ValuesTest, GetHeightTest){
+    unsigned int size = 3;
+    Matrices::Matrix* matrix = new Matrices::Matrix(size);
   
+    ASSERT_EQ(matrix->get_height(), size);
+    delete matrix;
+  }
+  
+  TEST(ValuesTest, GetWidthTest){
+    unsigned int size = 3;
+    Matrices::Matrix* matrix = new Matrices::Matrix(size);
+  
+    ASSERT_EQ(matrix->get_width(), size);
+    delete matrix;
+  }
+
+  
+  TEST(ValuesTest, GetRowTest){
+    Matrices::Matrix* matrix = new Matrices::Matrix(3, 2);
+    
+    matrix->zeros();
+    matrix->update_value(0, 0, 1);
+    matrix->update_value(0, 1, 2);
+    matrix->update_value(0, 2, 3);
+
+    double* row = matrix->get_row(0);
+
+    ASSERT_EQ(row[0], 1);
+    ASSERT_EQ(row[1], 2);
+    ASSERT_EQ(row[2], 3);
+    delete row;
+    delete matrix;
+  }
+  
+  TEST(ValuesTest, GetColumnTest){
+    Matrices::Matrix* matrix = new Matrices::Matrix(2, 3);
+    
+    matrix->zeros();
+    matrix->update_value(0, 1, 1);
+    matrix->update_value(1, 1, 2);
+    matrix->update_value(2, 1, 3);
+
+    double* column = matrix->get_column(1);
+
+    ASSERT_EQ(column[0], 1);
+    ASSERT_EQ(column[1], 2);
+    ASSERT_EQ(column[2], 3);
+    delete column;
+    delete matrix;
+  }
+
+  TEST(ValuesTest, DotProductTest){
+    Matrices::Matrix* matrix_1 = new Matrices::Matrix(3, 1);
+    Matrices::Matrix* matrix_2 = new Matrices::Matrix(2, 3);
+  
+    matrix_1->update_value(0, 0, 1);
+    matrix_1->update_value(0, 1, 2);
+    matrix_1->update_value(0, 2, 3);
+    
+    matrix_2->update_value(0, 0, 1);
+    matrix_2->update_value(0, 1, 2);
+    matrix_2->update_value(1, 0, 1);
+    matrix_2->update_value(1, 1, 2);
+    matrix_2->update_value(2, 0, 1);
+    matrix_2->update_value(2, 1, 2);
+
+    Matrices::Matrix result = (*matrix_1) * (*matrix_2);
+    
+    ASSERT_EQ(result.get_width(), 2);
+    ASSERT_EQ(result.get_height(), 1);
+    ASSERT_EQ(result.get_position_value(0, 0), 6);
+    ASSERT_EQ(result.get_position_value(0, 1), 12);
+
+    delete matrix_1;
+    delete matrix_2;
+  }
+}
