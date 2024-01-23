@@ -9,10 +9,19 @@
 - [ ] use quantum machine learning
 - [ ] verify heap-stack usage
 - [ ] add `#pragma once`
-- [ ] check destructors
+- [x] check destructors
 - [ ] check the use of constants
 - [ ] check the use of references
 - [ ] gh workflows
+
+
+- Chromossome
+    - [ ] set genes as pointers
+    - [ ] add deconstructor
+
+- Population
+    - [ ] set individuals as pointers
+    - [ ] add deconstructor
 
 - Matrix 
     - [x] scalar multiplication
