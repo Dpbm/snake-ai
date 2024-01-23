@@ -17,6 +17,6 @@
     - [x] scalar multiplication
     - [x] add throw error in `get_position_value`
     - [x] dot product
-    - [ ] destructor
+    - [x] destructor
     - [x] overload the `=` operator 
     - [x] add test to `dot product` error

@@ -20,6 +20,7 @@ namespace Matrices {
       double* get_row(unsigned int i) const;
       double* get_column(unsigned int j) const;
       void show();
+      ~Matrix();
     private:
       unsigned int width, height;
       double** matrix;

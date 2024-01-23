@@ -132,4 +132,8 @@ namespace Matrices{
       std::cout << "" << std::endl;
     }
   }
+
+  Matrix::~Matrix(){
+    delete this->matrix;    
+  }
 }
