@@ -31,8 +31,10 @@ namespace GUI {
     SDL_DestroyWindow(this->window);
     SDL_Quit();
     delete food;
-    delete player;
     delete event;
+    // TODO: to remove in the future
+    player->free_player_mem();
+    delete player;
   }
 
   void Game::listen_event(){

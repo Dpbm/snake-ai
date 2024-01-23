@@ -3,6 +3,7 @@
 #include "../helpers/utils.h"
 #include "../helpers/constants.h"
 #include <SDL2/SDL_timer.h>
+#include <iostream>
 
 namespace Players {
   Players::LinkedList* player;
@@ -27,10 +28,15 @@ namespace Players {
     this->max_score = max_score;
   }
 
-  Player::~Player(){
-    delete player;
-    delete head;
-    delete tail;
+  void Player::free_player_mem(){
+    // for now, it's ok to do that
+    // TODO: in the future, try to make a way to trigger the destructors
+    Players::Node* actual_node = this->head;
+    while(actual_node != nullptr){
+      Players::Node* tmp = actual_node;
+      delete actual_node;
+      actual_node = tmp->next;
+    }
   }
 
   void Player::randomize_position(){

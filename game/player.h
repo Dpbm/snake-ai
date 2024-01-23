@@ -32,7 +32,7 @@ namespace Players {
       Players::LinkedList* get_body();
       bool is_game_over();
       bool has_won();
-      ~Player();
+      void free_player_mem();
 
     private:
       unsigned int x, y;

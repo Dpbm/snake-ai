@@ -23,6 +23,9 @@
     - [ ] set individuals as pointers
     - [ ] add deconstructor
 
+- Player
+    - [x] try to free the memory
+
 - Matrix 
     - [x] scalar multiplication
     - [x] add throw error in `get_position_value`
