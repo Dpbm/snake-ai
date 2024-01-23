@@ -27,6 +27,12 @@ namespace Players {
     this->max_score = max_score;
   }
 
+  Player::~Player(){
+    delete player;
+    delete head;
+    delete tail;
+  }
+
   void Player::randomize_position(){
     unsigned int x = Utils::get_random_pos(WIDTH, PLAYER_W);  
     unsigned int y = Utils::get_random_pos(HEIGHT, PLAYER_H);
