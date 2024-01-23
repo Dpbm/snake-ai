@@ -11,8 +11,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-        -S ${{ github.workspace }}
-
     - name: Build
       run: |
         chmod +x ./compile.sh
