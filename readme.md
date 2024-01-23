@@ -12,7 +12,7 @@
 - [x] check destructors
 - [ ] check the use of constants
 - [ ] check the use of references
-- [ ] gh workflows
+- [x] gh workflows
 
 
 - Chromossome

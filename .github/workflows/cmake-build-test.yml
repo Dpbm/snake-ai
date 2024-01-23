@@ -1,0 +1,23 @@
+name: CMake Build and test
+
+on:
+  push:
+    branches: [ "*" ]
+
+jobs:
+  build-ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+        -S ${{ github.workspace }}
+
+    - name: Build
+      run: |
+        chmod +x ./compile.sh
+        ./compile.sh
+
+    - name: Test
+      working-directory: ./build
+      run: ctest
