@@ -15,7 +15,7 @@
 
 - Matrix 
     - [x] scalar multiplication
-    - [ ] add throw error in `get_position_value`
+    - [x] add throw error in `get_position_value`
     - [x] dot product
     - [ ] destructor
     - [x] overload the `=` operator 

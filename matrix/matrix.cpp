@@ -36,13 +36,16 @@ namespace Matrices{
   }
 
   void Matrix::update_value(unsigned int i, unsigned int j, double value){
-    if(i > this->height || j > this->width)
+    if(i >= this->height || j >= this->width)
       throw std::invalid_argument("i and j must be a value within the bounds of the matrix"); 
 
     this->matrix[i][j] = value;
   }
   
   double Matrix::get_position_value(unsigned int i, unsigned int j) const {
+    if(i >= this->height || j >= this->width) 
+      throw std::invalid_argument("i and j must be a value within the bounds of the matrix");
+
     return this->matrix[i][j];
   }
 

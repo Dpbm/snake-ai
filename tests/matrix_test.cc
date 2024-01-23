@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <stdexcept>
 #include "../matrix/matrix.h"
 
 namespace {
@@ -78,33 +79,23 @@ namespace {
   }
 
   TEST(UpdateTest, UpdateMatrixGreaterThanHeight){
-    unsigned int size = 2;
-    unsigned int i = 10;
-    unsigned int j = 0;
-    double update_value = 10;  
-
-    Matrices::Matrix* matrix_obj = new Matrices::Matrix(size);
-    matrix_obj->zeros();
+    Matrices::Matrix* matrix = new Matrices::Matrix(2);
+    matrix->zeros();
     
     EXPECT_THROW({ 
-      matrix_obj->update_value(i, j, update_value);
+      matrix->update_value(2, 0, 10);
     }, std::invalid_argument);
-    delete matrix_obj;
+    delete matrix;
   }
   
   TEST(UpdateTest, UpdateMatrixGreaterThanWidth){
-    unsigned int size = 2;
-    unsigned int i = 0;
-    unsigned int j = 10;
-    double update_value = 10;  
-
-    Matrices::Matrix* matrix_obj = new Matrices::Matrix(size);
-    matrix_obj->zeros();
+    Matrices::Matrix* matrix = new Matrices::Matrix(2);
+    matrix->zeros();
     
     EXPECT_THROW({ 
-      matrix_obj->update_value(i, j, update_value);
+      matrix->update_value(2, 0, 10);
     }, std::invalid_argument);
-    delete matrix_obj;
+    delete matrix;
   }
 
   TEST(ValuesTest, GetPositionValueTest){
@@ -120,6 +111,25 @@ namespace {
 
     delete matrix_obj;
   }
+  
+  TEST(ValuesTest, GetPositionValuePositionGreaterThanHeight){
+    Matrices::Matrix* matrix = new Matrices::Matrix(2);
+    matrix->zeros();
+    EXPECT_THROW({
+      matrix->get_position_value(0, 2);
+    }, std::invalid_argument);
+    delete matrix;
+  }
+
+  TEST(ValuesTest, GetPositionValuePositionGreaterThanWidth){
+    Matrices::Matrix* matrix = new Matrices::Matrix(2);
+    matrix->zeros();
+    EXPECT_THROW({
+      matrix->get_position_value(2, 0);
+    }, std::invalid_argument);
+    delete matrix;
+  }
+
 
   TEST(ValuesTest, CopyMatrixTest){
     unsigned int size = 2;
