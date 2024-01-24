@@ -26,6 +26,7 @@ namespace {
     ASSERT_EQ(matrix->get_position_value(2, 0), 3); 
     ASSERT_EQ(matrix->get_position_value(2, 1), 3); 
     ASSERT_EQ(matrix->get_position_value(2, 2), 3); 
+    delete matrix;
   }
 
   TEST(CreationTest, DifferentSizeMatrix){
@@ -44,6 +45,7 @@ namespace {
     ASSERT_EQ(matrix->get_position_value(1, 1), 2);
     ASSERT_EQ(matrix->get_position_value(2, 0), 3);
     ASSERT_EQ(matrix->get_position_value(2, 1), 3);
+    delete matrix;
   }
 
   TEST(CreationTest, ZerosMatrix){
@@ -54,6 +56,7 @@ namespace {
     ASSERT_EQ(matrix->get_position_value(0, 1), 0);
     ASSERT_EQ(matrix->get_position_value(1, 0), 0);
     ASSERT_EQ(matrix->get_position_value(1, 1), 0);
+    delete matrix;
   }
 
   TEST(UpdateTest, UpdateMatrixValue){
@@ -63,6 +66,7 @@ namespace {
     matrix->update_value(1, 1, 10);
     
     ASSERT_EQ(matrix->get_position_value(1, 1), 10);
+    delete matrix;
   }
 
   TEST(UpdateTest, UpdateMatrixGreaterThanHeight){
@@ -72,6 +76,7 @@ namespace {
     EXPECT_THROW({ 
       matrix->update_value(2, 0, 10);
     }, std::invalid_argument);
+    delete matrix;
   }
   
   TEST(UpdateTest, UpdateMatrixGreaterThanWidth){
@@ -81,6 +86,7 @@ namespace {
     EXPECT_THROW({ 
       matrix->update_value(2, 0, 10);
     }, std::invalid_argument);
+    delete matrix;
   }
 
   TEST(ValuesTest, GetPositionValueTest){
@@ -89,6 +95,7 @@ namespace {
 
     matrix->update_value(1, 1, 5);
     ASSERT_EQ(matrix->get_position_value(1, 1), 5);
+    delete matrix;
   }
   
   TEST(ValuesTest, GetPositionValuePositionGreaterThanHeight){
@@ -99,6 +106,7 @@ namespace {
     EXPECT_THROW({
       matrix->get_position_value(0, 2);
     }, std::invalid_argument);
+    delete matrix;
   }
 
   TEST(ValuesTest, GetPositionValuePositionGreaterThanWidth){
@@ -108,6 +116,7 @@ namespace {
     EXPECT_THROW({
       matrix->get_position_value(2, 0);
     }, std::invalid_argument);
+    delete matrix;
   }
 
 
@@ -124,6 +133,7 @@ namespace {
     ASSERT_EQ(clone_matrix.get_position_value(0, 1), 2);
     ASSERT_EQ(clone_matrix.get_position_value(1, 0), 3);
     ASSERT_EQ(clone_matrix.get_position_value(1, 1), 4);
+    delete matrix;
   }
 
   TEST(ValuesTest, MultiplyMatrixByScalarTest){
@@ -139,6 +149,7 @@ namespace {
     ASSERT_EQ(multiplication_result.get_position_value(0, 1), 10);
     ASSERT_EQ(multiplication_result.get_position_value(1, 0), 15);
     ASSERT_EQ(multiplication_result.get_position_value(1, 1), 20);
+    delete matrix;
   }
   
   TEST(ValuesTest, OverWriteMatrixTest){
@@ -155,16 +166,20 @@ namespace {
     ASSERT_EQ(matrix_1->get_position_value(0, 1), 2);
     ASSERT_EQ(matrix_1->get_position_value(1, 0), 3);
     ASSERT_EQ(matrix_1->get_position_value(1, 1), 4);
+    delete matrix_1;
+    delete matrix_2;
   }
 
   TEST(ValuesTest, GetHeightTest){
     Matrices::Matrix* matrix = new Matrices::Matrix(3);
     ASSERT_EQ(matrix->get_height(), 3);
+    delete matrix;
   }
   
   TEST(ValuesTest, GetWidthTest){
     Matrices::Matrix* matrix = new Matrices::Matrix(3);
     ASSERT_EQ(matrix->get_width(), 3);
+    delete matrix;
   }
 
   
@@ -182,6 +197,7 @@ namespace {
     ASSERT_EQ(row[1], 2);
     ASSERT_EQ(row[2], 3);
     delete row;
+    delete matrix;
   }
   
   TEST(ValuesTest, GetColumnTest){
@@ -198,6 +214,7 @@ namespace {
     ASSERT_EQ(column[1], 2);
     ASSERT_EQ(column[2], 3);
     delete column;
+    delete matrix;
   }
 
   TEST(ValuesTest, DotProductTest){
@@ -221,6 +238,8 @@ namespace {
     ASSERT_EQ(result.get_height(), 1);
     ASSERT_EQ(result.get_position_value(0, 0), 6);
     ASSERT_EQ(result.get_position_value(0, 1), 12);
+    delete matrix_1;
+    delete matrix_2;
   }
   
   TEST(ValuesTest, DotProductErrorTest){
@@ -229,5 +248,7 @@ namespace {
     EXPECT_THROW({ 
       (*matrix_1) * (*matrix_2); 
     }, std::invalid_argument);
+    delete matrix_1;
+    delete matrix_2;
   }
 }
