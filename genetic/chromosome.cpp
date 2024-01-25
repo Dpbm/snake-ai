@@ -42,9 +42,16 @@ namespace Chromosomes {
     if(start < 0 || this->total_genes == 0 || end > this->total_genes-1 || start > end)  
       throw std::invalid_argument("Invalid slice arguments!");
     
-    unsigned int size = end-start+1;
-    std::vector<Genes::Gene*> *chromosome_slice = new std::vector<Genes::Gene*>(size);
-    copy(this->genes->begin()+start, this->genes->begin()+end+1, chromosome_slice->begin());
+    std::vector<Genes::Gene*> *chromosome_slice = new std::vector<Genes::Gene*>;
+    
+    for(unsigned int i = start; i <= end; i++){
+      // TODO: extract to a function (deep copy)
+      Genes::Gene* actual_gene = this->genes->at(i);
+      Genes::Gene* new_gene = new Genes::Gene();
+      new_gene->set_gene_value(actual_gene->get_gene_value());
+        
+      chromosome_slice->push_back(new_gene);    
+    }
     return chromosome_slice;
   }
 
@@ -59,7 +66,11 @@ namespace Chromosomes {
       final->insert(final->end(), first->begin(), first->end());
       delete first;
     }
-
+    
+    // clean the old genes in the start->end positions 
+    for(unsigned int i = start; i <= end; i++)
+      delete this->genes->at(i);
+    
     final->insert(final->end(), genes_slice->begin(), genes_slice->end());
 
     if(end < this->total_genes-1){
@@ -68,7 +79,6 @@ namespace Chromosomes {
       delete last;
     }
 
-    delete this->genes;
     this->set_genes(final);
   }
 
@@ -88,6 +98,16 @@ namespace Chromosomes {
   
   int Chromosome::get_points(){
     return this->points;
+  }
+  
+  Chromosome::~Chromosome(){
+    std::cout << "chhdhd" << std::endl;
+    this->Chromosome::show();
+    for(Genes::Gene* gene : (*this->genes)){
+      delete gene;
+    }
+    
+    delete this->genes;
   }
 
 }

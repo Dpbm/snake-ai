@@ -18,6 +18,7 @@ namespace Chromosomes {
       void update_points(int factor);
       unsigned int get_size();
       int get_points();
+      ~Chromosome();
     
     private:
       std::vector<Genes::Gene*> *genes = new std::vector<Genes::Gene*>;

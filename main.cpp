@@ -47,21 +47,19 @@ int main(){
   }
   std::cout << std::endl;
 
-
   ch2->crossover(3, 6, slice);
   std::cout << "CH1" <<std::endl;
   ch1->show();
 
   std::cout << "CH2" <<std::endl;
   ch2->show();
-
-  
-  Populations::Population *population = new Populations::Population(10, 5, 100);
-  population->show();
-  delete slice;
-  delete genes;
+ 
+  delete chromosome;
   delete ch1;
   delete ch2;
+  /*
+  Populations::Population *population = new Populations::Population(1, 5, 100);
+  population->show();*/
   /*
   char *title = (char*) malloc(10*sizeof(char));
   strcpy(title, "snake game");

@@ -9,7 +9,6 @@ namespace Populations {
   class Population{
     public:
       Population(unsigned int total_individuals, unsigned int chromosome_size, unsigned int points);
-      Population();
       void set_individuals(std::vector<Chromosomes::Chromosome> chromosomes);
       void reward_individual(Chromosomes::Chromosome chromosome, int reward);
       void reward_all(std::vector<int> rewards);

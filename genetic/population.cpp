@@ -18,8 +18,6 @@ namespace Populations {
     this->Population::add_chromosomes();
   }
 
-  Population::Population(){}
-  
   void Population::set_individuals(std::vector<Chromosomes::Chromosome> chromosomes){
     if(chromosomes.size())
       throw std::invalid_argument("You need to add at least 1 individual!");
