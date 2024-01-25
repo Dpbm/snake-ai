@@ -9,59 +9,60 @@
 #include <cstring>
 #include <iostream>
 #include "matrix/matrix.h"
+#include "genetic/gene.h"
+#include "genetic/chromosome.h"
+#include "genetic/population.h"
 
 int main(){
-  /**std::cout << "---Simple GA test---" << std::endl;
+  std::cout << "---Simple GA test---" << std::endl;
   
   unsigned int size = 10;
-  Chromosomes::Chromosome chromosome = Chromosomes::Chromosome(size);
-  chromosome.show();  
+  int points = 100;
+  Chromosomes::Chromosome *chromosome = new Chromosomes::Chromosome(size, points);
 
   std::cout << "---first---" << std::endl;
-  chromosome.show();
-
-  chromosome.mutate(0.5);
+  chromosome->show();
+  
   std::cout << "---second---" << std::endl;
-  chromosome.show();
+  chromosome->mutate(0.5);
+  chromosome->show();
 
-  std::vector<Genes::Gene> genes = chromosome.slice(3, 8);
-  for(Genes::Gene gene : genes){
-    std::cout << "sliced : " << gene.get_gene_value() << std::endl;
-  } 
-*/
-
- /** unsigned int size = 10;
-  Chromosomes::Chromosome ch1 = Chromosomes::Chromosome(size);
-  Chromosomes::Chromosome ch2 = Chromosomes::Chromosome(size);
+  std::vector<Genes::Gene*> *genes = chromosome->slice(3,7);
+  for(Genes::Gene *gene : *genes){
+    std::cout << "sliced : " << gene->get_gene_value() << std::endl;
+  }
+  
+  Chromosomes::Chromosome *ch1 = new Chromosomes::Chromosome(size, points);
+  Chromosomes::Chromosome *ch2 = new Chromosomes::Chromosome(size, points);
 
   std::cout << "---Chromossome 1---" << std::endl;
-  ch1.show();
+  ch1->show();
   std::cout << "---Chromossome 2---" << std::endl;
-  ch2.show();
+  ch2->show();
   std::cout << "crossover"<<std::endl;
   
-  unsigned int start = 3;
-  unsigned int end = 6;
-  std::vector<Genes::Gene> slice = ch1.slice(start,end);
-  for(Genes::Gene gene :slice){
-    std::cout <<gene.get_gene_value() << " ";
+  std::vector<Genes::Gene*>* slice = ch1->slice(3,6);
+  for(Genes::Gene *gene : *slice){
+    std::cout <<gene->get_gene_value() << " ";
   }
   std::cout << std::endl;
 
 
-  ch2.crossover(start, end, slice);
+  ch2->crossover(3, 6, slice);
   std::cout << "CH1" <<std::endl;
-  ch1.show();
+  ch1->show();
 
   std::cout << "CH2" <<std::endl;
-  ch2.show();
-**/
+  ch2->show();
 
-  /**
-  Populations::Population population = Populations::Population(10, 5, 100);
-  population.show();
-  */
   
+  Populations::Population *population = new Populations::Population(10, 5, 100);
+  population->show();
+  delete slice;
+  delete genes;
+  delete ch1;
+  delete ch2;
+  /*
   char *title = (char*) malloc(10*sizeof(char));
   strcpy(title, "snake game");
   GUI::Game *game = new GUI::Game(title, WIDTH, HEIGHT);
@@ -106,7 +107,7 @@ int main(){
 
   delete title;
   delete game;
-  /*
+  *//*
   Matrices::Matrix* matrix_1 = new Matrices::Matrix(3, 1);
   Matrices::Matrix* matrix_2 = new Matrices::Matrix(2, 3);
   

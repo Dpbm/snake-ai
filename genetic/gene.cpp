@@ -10,7 +10,7 @@ namespace Genes {
   }
 
   int Gene::get_gene_value(){
-    return this->Gene::value;
+    return this->value;
   }
 
   void Gene::set_gene_value(int value){
@@ -23,9 +23,8 @@ namespace Genes {
 
     unsigned int rand = Utils::random(1, 100);
     bool mutate = rand <= rate*100;
-    std::cout << "mutate: " << mutate << " rand_val: " << rand; 
+    std::cout << "mutate: " << mutate << " rand_val: " << rand << std::endl; 
     if(mutate) this->Gene::rand_gene_value();
-    else std::cout << std::endl;
   }
           
 
