@@ -7,6 +7,7 @@ namespace Genes {
       int get_gene_value();
       void set_gene_value(int value);
       void mutate(float rate);
+      Genes::Gene* copy();
     private:
       int value=0;
       void rand_gene_value();

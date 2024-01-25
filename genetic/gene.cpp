@@ -33,4 +33,10 @@ namespace Genes {
     this->value = Utils::random(0, 1);
     //std::cout << " after: " << this->value << std::endl;
   }
+
+  Genes::Gene* Gene::copy(){
+    Genes::Gene* new_gene = new Genes::Gene;
+    new_gene->set_gene_value(this->value);
+    return new_gene;
+  }
 }

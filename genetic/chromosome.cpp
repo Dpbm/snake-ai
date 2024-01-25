@@ -44,14 +44,9 @@ namespace Chromosomes {
     
     std::vector<Genes::Gene*> *chromosome_slice = new std::vector<Genes::Gene*>;
     
-    for(unsigned int i = start; i <= end; i++){
-      // TODO: extract to a function (deep copy)
-      Genes::Gene* actual_gene = this->genes->at(i);
-      Genes::Gene* new_gene = new Genes::Gene();
-      new_gene->set_gene_value(actual_gene->get_gene_value());
-        
-      chromosome_slice->push_back(new_gene);    
-    }
+    for(unsigned int i = start; i <= end; i++)
+      chromosome_slice->push_back(this->genes->at(i)->copy());    
+    
     return chromosome_slice;
   }
 
@@ -67,7 +62,7 @@ namespace Chromosomes {
       delete first;
     }
     
-    // clean the old genes in the start->end positions 
+    // clear the old genes in the start->end positions 
     for(unsigned int i = start; i <= end; i++)
       delete this->genes->at(i);
     
@@ -78,7 +73,8 @@ namespace Chromosomes {
       final->insert(final->end(), last->begin(), last->end());
       delete last;
     }
-
+    
+    delete this->genes;
     this->set_genes(final);
   }
 
@@ -101,12 +97,9 @@ namespace Chromosomes {
   }
   
   Chromosome::~Chromosome(){
-    std::cout << "chhdhd" << std::endl;
-    this->Chromosome::show();
-    for(Genes::Gene* gene : (*this->genes)){
+    for(Genes::Gene* gene : (*this->genes))
       delete gene;
-    }
-    
+  
     delete this->genes;
   }
 
