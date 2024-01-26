@@ -134,7 +134,6 @@ namespace Matrices{
   }
 
   Matrix::~Matrix(){
-    std::cout << "helloo" << std::endl;
     for(int i = 0; i < this->height; i++)
       delete this->matrix[i];
     delete this->matrix;  
