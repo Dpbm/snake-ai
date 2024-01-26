@@ -57,9 +57,10 @@ int main(){
   delete chromosome;
   delete ch1;
   delete ch2;
-  /*
-  Populations::Population *population = new Populations::Population(1, 5, 100);
-  population->show();*/
+  
+  Populations::Population *population = new Populations::Population(10, 5, 100);
+  population->show();
+  delete population;
   /*
   char *title = (char*) malloc(10*sizeof(char));
   strcpy(title, "snake game");

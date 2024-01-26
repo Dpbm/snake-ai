@@ -32,8 +32,6 @@ namespace GUI {
     SDL_Quit();
     delete food;
     delete event;
-    // TODO: to remove in the future
-    player->free_player_mem();
     delete player;
   }
 

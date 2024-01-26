@@ -28,9 +28,7 @@ namespace Players {
     this->max_score = max_score;
   }
 
-  void Player::free_player_mem(){
-    // for now, it's ok to do that
-    // TODO: in the future, try to make a way to trigger the destructors
+  Player::~Player(){
     Players::Node* actual_node = this->head;
     while(actual_node != nullptr){
       Players::Node* tmp = actual_node;
