@@ -48,5 +48,10 @@ file(GLOB MATRIX_TEST "./tests/matrix_test.cc")
 add_executable(matrix_test ${MATRIX_TEST})
 target_link_libraries(matrix_test matrix GTest::gtest_main)
 
+file(GLOB CHROMOSOME_TEST "./tests/chromosome_test.cc")
+add_executable(chromosome_test ${CHROMOSOME_TEST})
+target_link_libraries(chromosome_test helpers genetic ${SDL2_LIBRARIES} GTest::gtest_main)
+
 include(GoogleTest)
 gtest_discover_tests(matrix_test)
+gtest_discover_tests(chromosome_test)

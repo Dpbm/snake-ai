@@ -39,7 +39,7 @@ namespace Chromosomes {
   }
  
   std::vector<Genes::Gene*> *Chromosome::slice(unsigned int start, unsigned int end){
-    if(start < 0 || this->total_genes == 0 || end > this->total_genes-1 || start > end)  
+    if(this->total_genes == 0 || end > this->total_genes-1 || start > end)  
       throw std::invalid_argument("Invalid slice arguments!");
     
     std::vector<Genes::Gene*> *chromosome_slice = new std::vector<Genes::Gene*>;
@@ -51,7 +51,7 @@ namespace Chromosomes {
   }
 
   void Chromosome::crossover(unsigned int start, unsigned int end, std::vector<Genes::Gene*> *genes_slice){
-    if(start < 0 || end > this->total_genes || start > end || end-start+1 != genes_slice->size())
+    if(end-start+1 != genes_slice->size())
       throw std::invalid_argument("Invalid crossover arguments!");
 
     std::vector<Genes::Gene*>* final = new std::vector<Genes::Gene*>;

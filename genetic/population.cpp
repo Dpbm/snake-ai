@@ -52,6 +52,7 @@ namespace Populations {
   }
 
   void Population::new_generation(unsigned int top){
+    // TODO: update to erase based on points
     this->individuals.erase(this->individuals.begin()+top, this->individuals.end());
     this->add_chromosomes(this->total_individuals - top);
   }
