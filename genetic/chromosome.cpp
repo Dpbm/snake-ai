@@ -99,7 +99,6 @@ namespace Chromosomes {
   Chromosome::~Chromosome(){
     for(Genes::Gene* gene : (*this->genes))
       delete gene;
-  
     delete this->genes;
   }
 
