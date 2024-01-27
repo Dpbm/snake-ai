@@ -50,11 +50,11 @@ target_link_libraries(matrix_test matrix GTest::gtest_main)
 
 file(GLOB CHROMOSOME_TEST "./tests/chromosome_test.cc")
 add_executable(chromosome_test ${CHROMOSOME_TEST})
-target_link_libraries(chromosome_test helpers genetic GTest::gtest_main)
+target_link_libraries(chromosome_test helpers genetic ${SDL2_LIBRARIES} GTest::gtest_main)
 
 file(GLOB POPUALTION_TEST "./tests/population_test.cc")
 add_executable(population_test ${POPUALTION_TEST})
-target_link_libraries(population_test genetic GTest::gtest_main)
+target_link_libraries(population_test genetic helpers ${SDL2_LIBRARIES} GTest::gtest_main)
 
 include(GoogleTest)
 gtest_discover_tests(matrix_test)

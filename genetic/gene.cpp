@@ -3,17 +3,17 @@
 #include "gene.h"
 
 namespace Genes {
-  int value;
+  double value;
   
   Gene::Gene(){
     this->Gene::rand_gene_value();
   }
 
-  int Gene::get_gene_value(){
+  double Gene::get_gene_value(){
     return this->value;
   }
 
-  void Gene::set_gene_value(int value){
+  void Gene::set_gene_value(double value){
     this->value = value;
   }
 
@@ -23,15 +23,11 @@ namespace Genes {
 
     unsigned int rand = Utils::random(1, 100);
     bool mutate = rand <= rate*100;
-    std::cout << "mutate: " << mutate << " rand_val: " << rand << std::endl; 
     if(mutate) this->Gene::rand_gene_value();
   }
           
-
   void Gene::rand_gene_value(){
-    //std::cout << " before: " << this->value;
-    this->value = Utils::random(0, 1);
-    //std::cout << " after: " << this->value << std::endl;
+    this->value = Utils::random(-1, 1);
   }
 
   Genes::Gene* Gene::copy(){

@@ -4,12 +4,12 @@ namespace Genes {
   class Gene{
     public:
       Gene();
-      int get_gene_value();
-      void set_gene_value(int value);
+      double get_gene_value();
+      void set_gene_value(double value);
       void mutate(float rate);
       Genes::Gene* copy();
     private:
-      int value=0;
+      double value = 0;
       void rand_gene_value();
   };
 }

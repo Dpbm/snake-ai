@@ -2,10 +2,10 @@
 #include "utils.h"
 
 namespace Utils {
-  unsigned int random(unsigned int start,  unsigned int end){
+  double random(int start, int end){
     std::random_device device;
     std::mt19937 eng(device());
-    std::uniform_int_distribution<> distr(start, end);
+    std::uniform_real_distribution<> distr(start, end);
     
     return distr(eng);
   }
