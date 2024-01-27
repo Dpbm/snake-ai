@@ -79,7 +79,7 @@ SDL abstractions, etc.
 
 3. [matrix](./matrix): The sub-library to handle matrices in a simple way.
 
-4. [utils](./utils): Some uility functions, like random.
+4. [helpers](./helpers): Some uility functions, like random.
 
 Then all this is embedded into the [main.cpp](./main.cpp) file, to build the project altogether.
 
