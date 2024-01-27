@@ -9,6 +9,7 @@ namespace {
 
   TEST(CreationTest, CreateDefaultChromosomeTest){
     Chromosomes::Chromosome *chromosome = new Chromosomes::Chromosome(2, 100);
+    ASSERT_EQ(chromosome->get_size(), 2);
     std::vector<Genes::Gene*> *genes = chromosome->get_genes();
     ASSERT_EQ(genes->size(), 2);
     ASSERT_EQ(chromosome->get_points(), 100);

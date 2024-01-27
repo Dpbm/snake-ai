@@ -15,11 +15,22 @@ namespace Populations {
     this->Population::add_chromosomes();
   }
 
+  Population::Population(){}
+
+  unsigned int Population::get_total_individuals(){
+    return this->total_individuals;
+  }
+  
+  unsigned int Population::get_chromosomes_size(){
+    return this->chromosome_size;
+  }
+
   void Population::set_individuals(std::vector<Chromosomes::Chromosome*> *chromosomes){
     if(chromosomes->size() == 0)
       throw std::invalid_argument("You need to add at least 1 individual!");
 
     this->individuals = chromosomes;
+    this->total_individuals = chromosomes->size();
     this->chromosome_size = chromosomes->at(0)->get_size();
     this->total_points = chromosomes->at(0)->get_points();
   }
@@ -44,26 +55,16 @@ namespace Populations {
   }
 
   void Population::new_generation(int cutoff){
-    for(unsigned int i = 0; i < this->total_individuals; i++){
-      Chromosomes::Chromosome *chromosome = this->individuals->at(i);
-      if(chromosome->get_points() <= cutoff){
+    for(int i = this->total_individuals-1; i >= 0; i--){
+      Chromosomes::Chromosome* chromosome = this->individuals->at(i);
+      if(chromosome->get_points() < cutoff){
         this->individuals->erase(this->individuals->begin()+i);
+        this->individuals->insert(this->individuals->begin()+i, new Chromosomes::Chromosome(this->chromosome_size, this->total_points));
         delete chromosome;
       }
-    }  
-    
-    this->Population::add_missing_individuals();
+    } 
   }
   
-  void Population::add_missing_individuals(){
-    unsigned int total_missing_individuals = this->total_individuals - this->individuals->size();
-    if(total_missing_individuals == 0)
-      return;
-  
-    for(unsigned int i = 0; i < total_missing_individuals; i++)
-      this->individuals->push_back(new Chromosomes::Chromosome(this->chromosome_size, this->total_points));
-  }
-
   std::vector<Chromosomes::Chromosome*>* Population::get_individuals(){
     return this->individuals;
   }

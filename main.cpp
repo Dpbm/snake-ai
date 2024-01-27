@@ -60,7 +60,11 @@ int main(){
   
   Populations::Population *population = new Populations::Population(10, 5, 100);
   population->show();
+  std::cout << "new" << std::endl;
+  population->new_generation(1000);
+  population->show();
   delete population;
+
   /*
   char *title = (char*) malloc(10*sizeof(char));
   strcpy(title, "snake game");
