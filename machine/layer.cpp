@@ -4,16 +4,15 @@
 using Matrices::Matrix;
 
 namespace Layers {
-  unsigned int width, height;
+  unsigned int size;
   Matrix *values;
 
-  InputLayer::InputLayer(unsigned int width, unsigned int height){
-    this->width = width;
-    this->height = height;
+  InputLayer::InputLayer(unsigned int size){
+    this->size = size;
   }
 
   void InputLayer::set_node_values(Matrix *values){
-    if(values->get_width() != this->width || values->get_height() != this->height)
+    if(values->get_width() != 1 || values->get_height() != this->size)
       throw std::invalid_argument("Invalid values dimensions!");
 
     this->values = values;

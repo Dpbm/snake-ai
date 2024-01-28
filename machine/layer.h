@@ -12,11 +12,11 @@ namespace Layers{
 
   class InputLayer: Layer{
     public:
-      InputLayer(unsigned int width, unsigned int height);
+      InputLayer(unsigned int size);
       void set_node_values(Matrix *values);
       ~InputLayer();
     private:
-      unsigned int width, height;
+      unsigned int size;
       Matrix *values;
   };
   
