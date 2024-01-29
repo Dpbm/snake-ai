@@ -1,16 +1,18 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include <stdexcept>
+#include "../genetic/gene.h"
 
 using ::testing::AllOf;
 using ::testing::Ge;
 using ::testing::Le;
 using Genes::Gene;
+using std::invalid_argument;
 
 namespace {
   TEST(CreationTest, CreateGeneTest){
     Gene *gene = new Gene();
-    ASSERT_THAT(gene->get_gene_value(), AllOf(Ge(-1), Le(1));
+    ASSERT_THAT(gene->get_gene_value(), AllOf(Ge(-1), Le(1)));
     delete gene;
   }
 
@@ -23,13 +25,13 @@ namespace {
 
   TEST(UpdateTest, MutationLesserThanZeroRateTest){
     Gene *gene = new Gene();
-    EXPECT_THROW({ gene->mutate(-1); }, std::invalid_argument);
+    EXPECT_THROW({ gene->mutate(-1); }, invalid_argument);
     delete gene;
   } 
   
   TEST(UpdateTest, MutationGreaterThanOneRateTest){
     Gene *gene = new Gene();
-    EXPECT_THROW({ gene->mutate(2); }, std::invalid_argument);
+    EXPECT_THROW({ gene->mutate(2); }, invalid_argument);
     delete gene;
   }
 
@@ -61,7 +63,6 @@ namespace {
 
     delete gene;
     delete copy_gene;
-
   }
 }
 

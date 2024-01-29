@@ -48,19 +48,9 @@ target_link_libraries(ga.out PRIVATE helpers game genetic matrix machine ${SDL2_
 
 enable_testing()
 
-file(GLOB MATRIX_TEST "./tests/matrix_test.cc")
-add_executable(matrix_test ${MATRIX_TEST})
-target_link_libraries(matrix_test matrix GTest::gtest_main)
-
-file(GLOB CHROMOSOME_TEST "./tests/chromosome_test.cc")
-add_executable(chromosome_test ${CHROMOSOME_TEST})
-target_link_libraries(chromosome_test helpers genetic ${SDL2_LIBRARIES} GTest::gtest_main)
-
-file(GLOB POPUALTION_TEST "./tests/population_test.cc")
-add_executable(population_test ${POPUALTION_TEST})
-target_link_libraries(population_test genetic helpers ${SDL2_LIBRARIES} GTest::gtest_main)
+file(GLOB TESTS "tests/*_test.cc")
+add_executable(tests ${TESTS})
+target_link_libraries(tests matrix helpers genetic machine ${SDL2_LIBRARIES} GTest::gtest_main GTest::gmock)
 
 include(GoogleTest)
-gtest_discover_tests(matrix_test)
-gtest_discover_tests(chromosome_test)
-gtest_discover_tests(population_test)
+gtest_discover_tests(tests)

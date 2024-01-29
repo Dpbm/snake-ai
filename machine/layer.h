@@ -5,16 +5,13 @@
 using Matrices::Matrix;
 
 namespace Layers{
-
-  struct Layer{
-    virtual void set_node_values(Matrix *values);
-  };
-
-  class InputLayer: Layer{
+  class Layer{
     public:
-      InputLayer(unsigned int size);
-      void set_node_values(Matrix *values);
-      ~InputLayer();
+      Layer(unsigned int size);
+      Layer(Matrix *values);
+      Matrix* get_values();
+      unsigned int get_size() const;
+      ~Layer();
     private:
       unsigned int size;
       Matrix *values;
