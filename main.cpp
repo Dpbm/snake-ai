@@ -12,6 +12,7 @@
 #include "genetic/gene.h"
 #include "genetic/chromosome.h"
 #include "genetic/population.h"
+#include "machine/weights.h"
 
 int main(){
   std::cout << "---Simple GA test---" << std::endl;
@@ -64,6 +65,19 @@ int main(){
   population->new_generation(1000);
   population->show();
   delete population;
+
+  Matrices::Matrix *matrix = new Matrices::Matrix(2, 1);
+  std::cout << "first" << std::endl;
+  matrix->zeros();
+  matrix->show();
+  std::cout << "second" << std::endl;
+  matrix->transpose();
+  matrix->show();
+  delete matrix;
+
+  NNWeights::Weights *weights = new NNWeights::Weights(2, 3);
+  weights->save_weights("test.wg");
+  delete weights;
 
   /*
   char *title = (char*) malloc(10*sizeof(char));

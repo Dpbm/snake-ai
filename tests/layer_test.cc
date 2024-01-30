@@ -16,19 +16,19 @@ namespace {
   TEST(CreationTest, CreateLayerBySizeTest){
     Layer* layer = new Layer(3);
     ASSERT_EQ(layer->get_size(), 3);
-    ASSERT_EQ(layer->get_values()->get_width(), 1);
-    ASSERT_EQ(layer->get_values()->get_height(), 3);
+    ASSERT_EQ(layer->get_values()->get_height(), 1);
+    ASSERT_EQ(layer->get_values()->get_width(), 3);
     delete layer;
   }
 
   TEST(CreationTest, CreateLayerByMatrixTest){
-    Matrix* values = new Matrix(1, 3);
+    Matrix* values = new Matrix(3, 1);
     Layer* layer = new Layer(values);
     
     ASSERT_EQ(layer->get_size(), 3);
     ASSERT_EQ(layer->get_values(), values);
-    ASSERT_EQ(layer->get_values()->get_width(), 1);
-    ASSERT_EQ(layer->get_values()->get_height(), 3);
+    ASSERT_EQ(layer->get_values()->get_width(), 3);
+    ASSERT_EQ(layer->get_values()->get_height(), 1);
 
     delete layer;
   }

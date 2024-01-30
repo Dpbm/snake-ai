@@ -1,6 +1,12 @@
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <stdexcept>
 #include "../matrix/matrix.h"
+
+using ::testing::AllOf;
+using ::testing::Ge;
+using ::testing::Le;
+
 
 namespace {
 
@@ -250,5 +256,28 @@ namespace {
     }, std::invalid_argument);
     delete matrix_1;
     delete matrix_2;
+  }
+
+  TEST(UpdateTest, RandomMatrix){
+    Matrices::Matrix* matrix = new Matrices::Matrix(2);
+    matrix->random(0, 1);    
+    EXPECT_THAT(matrix->get_position_value(0, 0), AllOf(Ge(0), Le(1)));
+    EXPECT_THAT(matrix->get_position_value(0, 1), AllOf(Ge(0), Le(1)));
+    EXPECT_THAT(matrix->get_position_value(1, 0), AllOf(Ge(0), Le(1)));
+    EXPECT_THAT(matrix->get_position_value(1, 1), AllOf(Ge(0), Le(1)));
+    delete matrix;
+  }
+
+  TEST(UpdateTest, TransposeTest){
+    Matrices::Matrix* matrix = new Matrices::Matrix(2, 1);
+    matrix->zeros();
+    matrix->transpose();
+    
+    ASSERT_EQ(matrix->get_width(), 1);
+    ASSERT_EQ(matrix->get_height(), 2);
+    ASSERT_EQ(matrix->get_position_value(0, 0), 0);
+    ASSERT_EQ(matrix->get_position_value(1, 0), 0);
+    EXPECT_THROW({ matrix->get_position_value(0, 1); }, std::invalid_argument);
+    delete matrix;
   }
 }

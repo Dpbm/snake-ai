@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sched.h>
 #include <stdexcept>
+#include "../helpers/utils.h"
 
 namespace Matrices{
   unsigned int width, height;
@@ -10,19 +11,13 @@ namespace Matrices{
   Matrix::Matrix(unsigned int length){
     this->width = length;
     this->height = length;
-
-    this->matrix = new double*[length];
-    for(unsigned int i = 0; i<length; i++)
-      this->matrix[i] = new double[length];
+    this->matrix = this->Matrix::generate_matrix_body(length, length);
   }
   
   Matrix::Matrix(unsigned int width, unsigned int height){
     this->height = height;
     this->width = width;
-
-    this->matrix = new double*[height];
-    for(unsigned int i = 0; i < height; i++)
-      this->matrix[i] = new double[width];
+    this->matrix = this->Matrix::generate_matrix_body(width, height);
   }
 
   double** Matrix::get_matrix(){
@@ -33,6 +28,12 @@ namespace Matrices{
     for(unsigned int i = 0; i < this->height; i++)
       for(unsigned int j = 0; j < this->width; j++)
         this->update_value(i, j, 0);
+  }
+  
+  void Matrix::random(int start, int end){
+    for(unsigned int i = 0; i < this->height; i++)
+      for(unsigned int j = 0; j < this->width; j++)
+        this->update_value(i, j, Utils::random(start, end));
   }
 
   void Matrix::update_value(unsigned int i, unsigned int j, double value){
@@ -126,16 +127,43 @@ namespace Matrices{
   }
 
   void Matrix::show(){
-    for(int i = 0; i < this->height; i++){
-      for(int j = 0; j < this->width; j++)
+    for(unsigned int i = 0; i < this->height; i++){
+      for(unsigned int j = 0; j < this->width; j++)
         std::cout << this->get_position_value(i, j) << " "; 
       std::cout << "" << std::endl;
     }
   }
 
   Matrix::~Matrix(){
-    for(int i = 0; i < this->height; i++)
+    this->Matrix::clear_pointers();
+  }
+  
+  void Matrix::transpose(){
+    double** transposed_matrix = this->Matrix::generate_matrix_body(this->height, this->width);  
+
+    for(unsigned int i = 0; i < this->height; i++)
+      for(unsigned int j = 0; j < this->width; j++)
+        transposed_matrix[j][i] = this->Matrix::get_position_value(i, j);
+    
+    unsigned int tmp = this->height;
+    this->height = this->width;
+    this->width = tmp;
+
+    this->Matrix::clear_pointers();
+    this->matrix = transposed_matrix;
+  }
+
+  void Matrix::clear_pointers(){
+    for(unsigned int i = 0; i < this->height; i++)
       delete this->matrix[i];
     delete this->matrix;  
+  }
+
+  double **Matrix::generate_matrix_body(unsigned int width, unsigned int height){
+    double** new_matrix = new double*[height];
+    for(unsigned int i = 0; i<height; i++)
+      new_matrix[i] = new double[width];
+
+    return new_matrix;
   }
 }

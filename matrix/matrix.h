@@ -8,6 +8,7 @@ namespace Matrices {
       Matrix(unsigned int length);
       Matrix(unsigned int width, unsigned int height);
       void zeros();
+      void random(int start, int end);
       double** get_matrix();
       void update_value(unsigned int i, unsigned int j, double value);
       double get_position_value(unsigned int i, unsigned int j)const;
@@ -21,9 +22,12 @@ namespace Matrices {
       double* get_column(unsigned int j) const;
       void show();
       ~Matrix();
+      void transpose();
     private:
       unsigned int width, height;
       double** matrix;
+      void clear_pointers();
+      double **generate_matrix_body(unsigned int width, unsigned int height);
   };
 
 };
