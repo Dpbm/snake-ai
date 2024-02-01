@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include "machine/machine.h"
 #include "matrix/matrix.h"
 #include "genetic/gene.h"
 #include "genetic/chromosome.h"
@@ -78,6 +79,15 @@ int main(){
   NNWeights::Weights *weights = new NNWeights::Weights(2, 3);
   weights->save_weights("test.wg");
   delete weights;
+
+  Machine::NN *nn = new Machine::NN;
+  nn->add_layer(6);
+  nn->add_layer(10);
+  nn->add_layer(5);
+  nn->add_layer(3);
+  nn->save_weights("hello.wg");
+  delete nn;
+  
 
   /*
   char *title = (char*) malloc(10*sizeof(char));

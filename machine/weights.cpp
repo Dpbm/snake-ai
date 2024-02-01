@@ -1,11 +1,13 @@
 #include "weights.h"
 #include "../matrix/matrix.h"
 #include <iostream>
-#include <fstream>
+#include <sstream>
+#include "../helpers/utils.h"
 
 using Matrices::Matrix;
-using std::ofstream;
 using std::string;
+using std::stringstream;
+using Utils::append_to_file;
 
 namespace NNWeights {
   unsigned int width, height;
@@ -26,18 +28,19 @@ namespace NNWeights {
   }
 
   void Weights::save_weights(string filename){
-    ofstream file(filename);
+    stringstream header;
+    header << "w:" << this->width << ";h:" << this->height  << "\n"; 
+    
+    append_to_file(filename, header.str());
 
-    if(file.is_open()){
-      file << "w:" << this->width << ";h:" << this->height  << "\n";
-
-      for(unsigned int i = 0; i < this->height; i++){
-        for(unsigned int j = 0; j < this->width; j++)
-          file << this->weights->get_position_value(i, j) << (j < this->width-1 ? "," : "");
-        file << "\n";
+    for(unsigned int i = 0; i < this->height; i++){
+      for(unsigned int j = 0; j < this->width; j++){
+        stringstream data;
+        data << this->weights->get_position_value(i, j) << (j < this->width-1 ? "," : "");
+        append_to_file(filename, data.str());
       }
 
-      file.close();
+      append_to_file(filename, "\n");
     }
   }
 
