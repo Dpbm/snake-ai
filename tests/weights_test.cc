@@ -37,6 +37,7 @@ namespace {
     weights->save_weights("test_save.wg");
     ifstream file("test_save.wg");
     ASSERT_EQ(file.good(), true);
+    file.close();
     delete weights;
   }
 }

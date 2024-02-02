@@ -1,11 +1,13 @@
 #include <stdexcept>
 #include <gtest/gtest.h>
+#include <fstream>
 #include "../machine/machine.h"
 #include "../machine/layer.h"
 
 using Machine::NN;
 using Layers::Layer;
 using std::invalid_argument;
+using std::ifstream;
 
 namespace {
   TEST(CreationTest, CreateEmptyNNTest){
@@ -78,4 +80,83 @@ namespace {
     delete nn;
   }
 
+  TEST(ValuesTest, NoWeightsAddedTest){
+    NN *nn = new NN;
+    ASSERT_EQ(nn->get_total_weights(), 0);
+    ASSERT_EQ(nn->get_weights()->size(), 0);
+    delete nn;
+  }
+  
+  TEST(ValuesTest, NoWeightsAddedForASingleLayerTest){
+    NN *nn = new NN;
+    nn->add_layer(3);
+    ASSERT_EQ(nn->get_total_weights(), 0);
+    ASSERT_EQ(nn->get_weights()->size(), 0);
+    delete nn;
+  }
+
+  TEST(ValuesTest, AddWeightsTest){
+    NN *nn = new NN;
+    nn->add_layer(3);
+    nn->add_layer(3);
+    nn->add_layer(3);
+    ASSERT_EQ(nn->get_total_weights(), 2);
+    ASSERT_EQ(nn->get_weights()->size(), 2);
+    delete nn;
+  }
+
+  TEST(ValuesTest, SaveWeightsTest){
+    NN *nn = new NN;
+    nn->add_layer(1);
+    nn->add_layer(3);
+    nn->save_weights("test_save_from_nn.wg");
+    ifstream file("test_save_from_nn.wg");
+    ASSERT_EQ(file.good(), true);
+    file.close();
+    delete nn;
+  }
+  
+  TEST(ValuesTest, SaveNoWeightsTest){
+    NN *nn = new NN;
+    nn->save_weights("test_save_from_nn_2.wg");
+    ifstream file("test_save_from_nn_2.wg");
+    ASSERT_EQ(file.good(), false);
+    file.close();
+    delete nn;
+  }
+    
+  TEST(ValuesTest, SaveNoWeightsForOneLayerTest){
+    NN *nn = new NN;
+    nn->add_layer(1);
+    nn->save_weights("test_save_from_nn_3.wg");
+    ifstream file("test_save_from_nn_3.wg");
+    ASSERT_EQ(file.good(), false);
+    file.close();
+    delete nn;
+  }
+   
+  TEST(ValuesTest, GetWeightTest){
+    NN *nn = new NN;
+    nn->add_layer(1);
+    nn->add_layer(2);
+    ASSERT_EQ(nn->get_weight(0)->get_width(), 1);
+    ASSERT_EQ(nn->get_weight(0)->get_height(), 2);
+    delete nn;
+  }
+
+  TEST(ValuesTest, GetWeightOutOfBoundsTest){
+    NN *nn = new NN;
+    nn->add_layer(1);
+    nn->add_layer(2);
+    EXPECT_THROW({ nn->get_weight(1); }, invalid_argument);
+    delete nn;
+  }
+
+
+  TEST(ValuesTest, GetWeightWithoutWeightsBeingDefinedTest){
+    NN *nn = new NN;
+    EXPECT_THROW({ nn->get_weight(0); }, invalid_argument);
+    delete nn;
+  }
+  
 }
