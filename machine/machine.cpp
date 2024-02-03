@@ -78,4 +78,5 @@ namespace Machine {
     for(Weights *weight: (*this->weights))
       delete weight;
   }
+
 }
