@@ -41,23 +41,23 @@ namespace Layers {
 
   void Layer::set_activation_function(double (*activation)(double)){
     if(this->input)
-      invalid_argument("Input layer must not have a activation function!");
+      throw invalid_argument("Input layer must not have a activation function!");
 
     this->activation = activation; 
   }
 
   void Layer::activate_neurons(){
-    double *neurons = this->values->get_row(0);
-    
     for(unsigned int i = 0; i < this->size; i++){
-      double neuron_value = neurons[i];
-      this->values->update_value(i, 0, this->activation(neuron_value));
+      double neuron_value = this->values->get_position_value(0, i);
+      this->values->update_value(0, i, this->activation(neuron_value));
     }
-
-    delete neurons;
   }
 
   bool Layer::is_input(){
     return this->input;
   }
+
+  double (*Layer::get_activation_function())(double){
+    return this->activation;
+  } 
 }

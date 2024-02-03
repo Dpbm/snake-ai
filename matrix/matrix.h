@@ -8,6 +8,7 @@ namespace Matrices {
       Matrix(unsigned int length);
       Matrix(unsigned int width, unsigned int height);
       void zeros();
+      void ones();
       void random(int start, int end);
       double** get_matrix();
       void update_value(unsigned int i, unsigned int j, double value);
@@ -23,6 +24,7 @@ namespace Matrices {
       void show();
       ~Matrix();
       void transpose();
+      void map_to_a_single_value(double value);
     private:
       unsigned int width, height;
       double** matrix;

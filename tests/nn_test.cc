@@ -159,4 +159,13 @@ namespace {
     delete nn;
   }
   
+  TEST(CreationTest, CheckInputAndHiddenLayersTest){
+    NN *nn = new NN;
+    nn->add_layer(1);
+    nn->add_layer(2);
+    ASSERT_EQ(nn->get_layer(0)->is_input(), true);
+    ASSERT_EQ(nn->get_layer(1)->is_input(), false);
+    delete nn;
+  }
+  
 }

@@ -23,17 +23,25 @@ namespace Matrices{
   double** Matrix::get_matrix(){
     return this->matrix;
   }
-
-  void Matrix::zeros(){
+  
+  void Matrix::map_to_a_single_value(double value){
     for(unsigned int i = 0; i < this->height; i++)
       for(unsigned int j = 0; j < this->width; j++)
-        this->update_value(i, j, 0);
+        this->update_value(i, j, value);
+  }
+  
+  void Matrix::zeros(){
+    this->Matrix::map_to_a_single_value(0);
+  }
+  
+  void Matrix::ones(){
+    this->Matrix::map_to_a_single_value(1);
   }
   
   void Matrix::random(int start, int end){
     for(unsigned int i = 0; i < this->height; i++)
       for(unsigned int j = 0; j < this->width; j++)
-        this->update_value(i, j, Utils::random(start, end));
+        this->update_value(i, j, Utils::random(start, end)); 
   }
 
   void Matrix::update_value(unsigned int i, unsigned int j, double value){

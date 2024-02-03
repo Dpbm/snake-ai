@@ -15,6 +15,7 @@ namespace Layers{
       void set_activation_function(double (*activation)(double));
       void activate_neurons();
       bool is_input();
+      double (*get_activation_function())(double);
     private:
       unsigned int size;
       bool input = false;
