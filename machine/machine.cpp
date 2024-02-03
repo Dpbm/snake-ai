@@ -16,7 +16,7 @@ namespace Machine {
   unsigned int total_layers;
 
   void NN::add_layer(unsigned int size){
-    layers->push_back(new Layer(size));
+    layers->push_back(new Layer(size, this->total_layers==0));
     this->total_layers++;
     this->NN::add_weight();
   }

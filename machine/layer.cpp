@@ -56,4 +56,8 @@ namespace Layers {
 
     delete neurons;
   }
+
+  bool Layer::is_input(){
+    return this->input;
+  }
 }

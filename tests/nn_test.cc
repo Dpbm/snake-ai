@@ -32,7 +32,7 @@ namespace {
 
   TEST(UpdateTest, AddLayerTest){
     NN *nn = new NN;
-    Layer* layer = new Layer(3);
+    Layer* layer = new Layer(3, true);
     nn->add_layer(layer);
 
     ASSERT_EQ(nn->get_total_layers(), 1);
@@ -54,7 +54,7 @@ namespace {
 
   TEST(ValuesTest, GetLayerTest){
     NN *nn = new NN;
-    Layer *layer = new Layer(2);
+    Layer *layer = new Layer(2, true);
     nn->add_layer(1);
     nn->add_layer(layer);
     nn->add_layer(3);
