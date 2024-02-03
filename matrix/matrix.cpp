@@ -111,7 +111,8 @@ namespace Matrices{
   Matrices::Matrix Matrix::operator *(const Matrices::Matrix& another_matrix){
     if(this->width != another_matrix.get_height())
       throw std::invalid_argument("The first matrix's width must be equal to the second's height!");
-   
+    
+    // here's also a better idea to instanciate in the heap
     unsigned int second_matrix_width = another_matrix.get_width();
     Matrices::Matrix resulting_matrix(second_matrix_width, this->height);
 

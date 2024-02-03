@@ -23,6 +23,7 @@ namespace Machine {
       unsigned int get_total_weights();
       void save_weights(string filename);
       ~NN();
+      void feedforward();
 
     private:
       vector<Layer*>* layers = new vector<Layer*>;

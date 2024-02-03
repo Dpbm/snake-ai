@@ -16,6 +16,7 @@ namespace Layers{
       void activate_neurons();
       bool is_input();
       double (*get_activation_function())(double);
+      void set_values(Matrix* values);
     private:
       unsigned int size;
       bool input = false;

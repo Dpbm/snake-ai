@@ -59,5 +59,13 @@ namespace Layers {
 
   double (*Layer::get_activation_function())(double){
     return this->activation;
-  } 
+  }
+
+  void Layer::set_values(Matrix* values){
+    if(values->get_width() != this->size || values->get_height() != 1)
+      throw invalid_argument("The new values matrix must have the size dimensions as defined!");
+    
+    delete this->values;
+    this->values = values;
+  }
 }
