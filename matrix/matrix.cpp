@@ -1,57 +1,57 @@
-#include "matrix.h"
 #include <iostream>
 #include <sched.h>
 #include <stdexcept>
+#include <type_traits>
+#include "matrix.h"
+#include "../genetic/gene.h"
 #include "../helpers/utils.h"
+
+using std::enable_if_t;
+using std::is_integral_v;
+using std::is_floating_point_v;
+using std::is_same_v;
+using Genes::Gene;
 
 namespace Matrices{
   unsigned int width, height;
-  double** matrix;
+  template <typename T> T** matrix;
 
-  Matrix::Matrix(unsigned int length){
+  template <typename T> Matrix<T>::Matrix(unsigned int length){
     this->width = length;
     this->height = length;
     this->matrix = this->Matrix::generate_matrix_body(length, length);
   }
   
-  Matrix::Matrix(unsigned int width, unsigned int height){
+  template <typename T> Matrix<T>::Matrix(unsigned int width, unsigned int height){
     this->height = height;
     this->width = width;
     this->matrix = this->Matrix::generate_matrix_body(width, height);
   }
 
-  double** Matrix::get_matrix(){
+  template <typename T> T** Matrix<T>::get_matrix(){
     return this->matrix;
   }
   
-  void Matrix::map_to_a_single_value(double value){
+  template <typename T> void Matrix<T>::map_to_a_single_value(T value){
     for(unsigned int i = 0; i < this->height; i++)
       for(unsigned int j = 0; j < this->width; j++)
         this->update_value(i, j, value);
   }
   
-  void Matrix::zeros(){
-    this->Matrix::map_to_a_single_value(0);
-  }
-  
-  void Matrix::ones(){
-    this->Matrix::map_to_a_single_value(1);
-  }
-  
-  void Matrix::random(int start, int end){
+  template<> void Matrix<double>::random(int start, int end){
     for(unsigned int i = 0; i < this->height; i++)
       for(unsigned int j = 0; j < this->width; j++)
         this->update_value(i, j, Utils::random(start, end)); 
   }
 
-  void Matrix::update_value(unsigned int i, unsigned int j, double value){
+  template<typename T> void Matrix<T>::update_value(unsigned int i, unsigned int j, T value){
     if(i >= this->height || j >= this->width)
       throw std::invalid_argument("i and j must be a value within the bounds of the matrix"); 
 
     this->matrix[i][j] = value;
   }
   
-  double Matrix::get_position_value(unsigned int i, unsigned int j) const {
+  template <typename T> T Matrix<T>::get_position_value(unsigned int i, unsigned int j) const {
     if(i >= this->height || j >= this->width) 
       throw std::invalid_argument("i and j must be a value within the bounds of the matrix");
 
@@ -62,23 +62,24 @@ namespace Matrices{
   // however, when I do a copy, my Idea is:
   // Matrices::Matrix old_matrix = old_matrix*5;
   // So cleaning the memory from old_matrix*5, could be a little trickier 
-  Matrices::Matrix Matrix::copy(){
-    Matrices::Matrix clone_matrix(this->width, this->height);
+  template<typename T> Matrix<T> Matrix<T>::copy(){
+    Matrix<T> clone_matrix(this->width, this->height);
     for(unsigned int i = 0; i < this->height; i++)
       for(unsigned int j = 0; j < this->width; j++)
         clone_matrix.update_value(i, j, this->get_position_value(i, j));
     return clone_matrix;
   }
 
-  Matrices::Matrix Matrix::operator *(int scalar){
-    Matrices::Matrix clone_matrix = this->copy();
+  template <typename T, typename enable_if_t<is_floating_point_v<T> || is_integral_v<T> || is_same_v<T, Gene>::value> 
+  Matrix<T> Matrix<T>::operator *(double scalar){
+    Matrix<T> clone_matrix = this->copy();
     for(unsigned int i = 0; i < this->height; i++)
       for(unsigned int j = 0; j < this->width; j++)
         clone_matrix.update_value(i, j, scalar * clone_matrix.get_position_value(i, j));      
     return clone_matrix;
   }
 
-  void Matrix::operator=(const Matrices::Matrix& another_matrix){
+  template <typename T> void Matrix<T>::operator=(const Matrix<T>& another_matrix){
     for(unsigned int i = 0; i < this->height; i++)
       for(unsigned int j = 0; j < this->width; j++)
         this->update_value(i, j, another_matrix.get_position_value(i,j));
@@ -86,43 +87,43 @@ namespace Matrices{
     // could add a delete for a matrix pointer here
   }
 
-  unsigned int Matrix::get_height() const{
+  template <typename T> unsigned int Matrix<T>::get_height() const{
     return this->height;
   }
   
-  unsigned int Matrix::get_width() const{
+  template <typename T> unsigned int Matrix<T>::get_width() const{
     return this->width;
   }
   
-  double* Matrix::get_row(unsigned int i) const{
-    double* row = new double[this->width];
+  template <typename T> T* Matrix<T>::get_row(unsigned int i) const{
+    T* row = new T[this->width];
     for(unsigned int j = 0; j < this->width; j++)
       row[j] = this->get_position_value(i, j);
     return row;
   }
   
-  double* Matrix::get_column(unsigned int j) const{
-    double* column = new double[this->height];
+  template <typename T> T* Matrix<T>::get_column(unsigned int j) const{
+    T* column = new T[this->height];
     for(unsigned int i = 0; i < this->height; i++)
       column[i] = this->get_position_value(i, j);
     return column;
   }
 
-  Matrices::Matrix Matrix::operator *(const Matrices::Matrix& another_matrix){
+  template <typename T> Matrix<T> Matrix<T>::operator *(const Matrix<T>& another_matrix){
     if(this->width != another_matrix.get_height())
       throw std::invalid_argument("The first matrix's width must be equal to the second's height!");
     
     // here's also a better idea to instanciate in the heap
     unsigned int second_matrix_width = another_matrix.get_width();
-    Matrices::Matrix resulting_matrix(second_matrix_width, this->height);
+    Matrix<T> resulting_matrix(second_matrix_width, this->height);
 
     for(unsigned int i = 0; i < this->height; i++){
-      double *row = this->get_row(i);
+      T* row = this->get_row(i);
       
       for(unsigned int j = 0; j < second_matrix_width; j++){
-        double *column = another_matrix.get_column(j);
+        T* column = another_matrix.get_column(j);
       
-        double value = 0;
+        T value = 0;
         for(unsigned int n_index = 0; n_index < this->width; n_index++)
           value += row[n_index]*column[n_index];
 
@@ -135,7 +136,7 @@ namespace Matrices{
     return resulting_matrix;
   }
 
-  void Matrix::show(){
+  template <typename T> void Matrix<T>::show(){
     for(unsigned int i = 0; i < this->height; i++){
       for(unsigned int j = 0; j < this->width; j++)
         std::cout << this->get_position_value(i, j) << " "; 
@@ -143,12 +144,12 @@ namespace Matrices{
     }
   }
 
-  Matrix::~Matrix(){
+  template <typename T> Matrix<T>::~Matrix(){
     this->Matrix::clear_pointers();
   }
   
-  void Matrix::transpose(){
-    double** transposed_matrix = this->Matrix::generate_matrix_body(this->height, this->width);  
+  template <typename T> void Matrix<T>::transpose(){
+    T** transposed_matrix = this->Matrix::generate_matrix_body(this->height, this->width);  
 
     for(unsigned int i = 0; i < this->height; i++)
       for(unsigned int j = 0; j < this->width; j++)
@@ -162,16 +163,16 @@ namespace Matrices{
     this->matrix = transposed_matrix;
   }
 
-  void Matrix::clear_pointers(){
+  template <typename T> void Matrix<T>::clear_pointers(){
     for(unsigned int i = 0; i < this->height; i++)
       delete this->matrix[i];
     delete this->matrix;  
   }
 
-  double **Matrix::generate_matrix_body(unsigned int width, unsigned int height){
-    double** new_matrix = new double*[height];
+  template <typename T> T **Matrix<T>::generate_matrix_body(unsigned int width, unsigned int height){
+    T** new_matrix = new T*[height];
     for(unsigned int i = 0; i<height; i++)
-      new_matrix[i] = new double[width];
+      new_matrix[i] = new T[width];
 
     return new_matrix;
   }
