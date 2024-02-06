@@ -3,8 +3,8 @@
 #include "gene.h"
 
 namespace Genes {
-  double value;
-  
+  double value; 
+
   Gene::Gene(){
     this->Gene::rand_gene_value();
   }
@@ -35,4 +35,19 @@ namespace Genes {
     new_gene->set_gene_value(this->value);
     return new_gene;
   }
+
+  void Gene::operator= (double value){
+    this->value = value;
+  }
+
+
+  double Gene::operator+ (double value){
+    return this->value + value;
+  }
+
+  double Gene::operator* (double value){
+    return this->value*value;
+  }
+
+  
 }

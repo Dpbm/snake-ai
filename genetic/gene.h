@@ -8,6 +8,9 @@ namespace Genes {
       void set_gene_value(double value);
       void mutate(float rate);
       Genes::Gene* copy();
+      void operator= (double value);
+      double operator+ (double value);
+      double operator* (double value);
     private:
       double value = 0;
       void rand_gene_value();
