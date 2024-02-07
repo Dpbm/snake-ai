@@ -4,7 +4,6 @@
 #include "../helpers/utils.h"
 
 using Matrices::Matrix;
-using Matrices::MatrixTemplate;
 using Matrices::MatrixRandomTemplate;
 using std::string;
 using std::stringstream;
@@ -12,7 +11,7 @@ using Utils::append_to_file;
 
 namespace NNWeights {
   unsigned int width, height;
-  template <typename T> Matrix<MatrixTemplate<T>> *weights;
+  template <typename T> Matrix<MatrixWeightsTemplate<T>> *weights;
 
   template <typename T> Weights<T>::Weights(unsigned int first_layer_size, unsigned int second_layer_size){
     this->width = first_layer_size;
@@ -21,7 +20,7 @@ namespace NNWeights {
     this->weights->random(-1, 1);
   }
 
-  template <typename T> void Weights<T>::load_weights(Matrix<MatrixTemplate<T>> * weights){
+  template <typename T> void Weights<T>::load_weights(Matrix<MatrixWeightsTemplate<T>> * weights){
     this->Weights::clear_pointers();
     this->width = weights->get_width();
     this->height = weights->get_height();
@@ -45,7 +44,7 @@ namespace NNWeights {
     }
   }
 
-  template <typename T> Matrix<MatrixTemplate<T>> *Weights<T>::get_weights(){
+  template <typename T> Matrix<MatrixWeightsTemplate<T>> *Weights<T>::get_weights(){
     return this->weights;
   }
 
