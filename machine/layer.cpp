@@ -2,23 +2,25 @@
 #include <stdexcept>
 
 using Matrices::Matrix;
+using Matrices::MatrixTemplate;
+using Matrices::MatrixRandomTemplate;
 using std::invalid_argument;
 using std::invalid_argument;
 
 namespace Layers {
   bool input;
   unsigned int size;
-  Matrix *values;
+  template <typename T> Matrix<MatrixTemplate<T>> *values;
   double (*activation)(double);
 
-  Layer::Layer(unsigned int size, bool input){
+  template <typename T> Layer<T>::Layer(unsigned int size, bool input){
     this->size = size;
-    this->values = new Matrix(size, 1);
+    this->values = new Matrix<MatrixRandomTemplate<T>>(size, 1);
     this->values->random(-1, 1);
     this->input = input;
   }
 
-  Layer::Layer(Matrix *values, bool input){
+  template <typename T> Layer<T>::Layer(Matrix<MatrixTemplate<T>> *values, bool input){
     if(values->get_height() != 1)
       throw invalid_argument("Invalid values dimensions!");
 
@@ -27,41 +29,41 @@ namespace Layers {
     this->input = input;
   }
 
-  Matrix* Layer::get_values(){
+  template <typename T> Matrix<MatrixTemplate<T>>* Layer<T>::get_values(){
     return this->values;
   }
 
-  Layer::~Layer(){
+  template <typename T> Layer<T>::~Layer(){
     delete this->values;
   }
 
-  unsigned int Layer::get_size() const {
+  template <typename T> unsigned int Layer<T>::get_size() const {
     return this->size;
   }
 
-  void Layer::set_activation_function(double (*activation)(double)){
+  template <typename T> void Layer<T>::set_activation_function(double (*activation)(double)){
     if(this->input)
       throw invalid_argument("Input layer must not have a activation function!");
 
     this->activation = activation; 
   }
 
-  void Layer::activate_neurons(){
+  template <typename T> void Layer<T>::activate_neurons(){
     for(unsigned int i = 0; i < this->size; i++){
       double neuron_value = this->values->get_position_value(0, i);
       this->values->update_value(0, i, this->activation(neuron_value));
     }
   }
 
-  bool Layer::is_input(){
+  template <typename T> bool Layer<T>::is_input(){
     return this->input;
   }
 
-  double (*Layer::get_activation_function())(double){
+  template <typename T> double (*Layer<T>::get_activation_function())(double){
     return this->activation;
   }
 
-  void Layer::set_values(Matrix* values){
+  template <typename T> void Layer<T>::set_values(Matrix<MatrixTemplate<T>>* values){
     if(values->get_width() != this->size || values->get_height() != 1)
       throw invalid_argument("The new values matrix must have the size dimensions as defined!");
     
