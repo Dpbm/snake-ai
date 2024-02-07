@@ -2,7 +2,6 @@
 #include <stdexcept>
 
 using Matrices::Matrix;
-using Matrices::MatrixTemplate;
 using Matrices::MatrixRandomTemplate;
 using std::invalid_argument;
 using std::invalid_argument;
@@ -10,7 +9,7 @@ using std::invalid_argument;
 namespace Layers {
   bool input;
   unsigned int size;
-  template <typename T> Matrix<MatrixTemplate<T>> *values;
+  template <typename T> Matrix<MatrixLayerTemplate<T>> *values;
   double (*activation)(double);
 
   template <typename T> Layer<T>::Layer(unsigned int size, bool input){
@@ -20,7 +19,7 @@ namespace Layers {
     this->input = input;
   }
 
-  template <typename T> Layer<T>::Layer(Matrix<MatrixTemplate<T>> *values, bool input){
+  template <typename T> Layer<T>::Layer(Matrix<MatrixLayerTemplate<T>> *values, bool input){
     if(values->get_height() != 1)
       throw invalid_argument("Invalid values dimensions!");
 
@@ -29,7 +28,7 @@ namespace Layers {
     this->input = input;
   }
 
-  template <typename T> Matrix<MatrixTemplate<T>>* Layer<T>::get_values(){
+  template <typename T> Matrix<MatrixLayerTemplate<T>>* Layer<T>::get_values(){
     return this->values;
   }
 
@@ -63,7 +62,7 @@ namespace Layers {
     return this->activation;
   }
 
-  template <typename T> void Layer<T>::set_values(Matrix<MatrixTemplate<T>>* values){
+  template <typename T> void Layer<T>::set_values(Matrix<MatrixLayerTemplate<T>>* values){
     if(values->get_width() != this->size || values->get_height() != 1)
       throw invalid_argument("The new values matrix must have the size dimensions as defined!");
     
