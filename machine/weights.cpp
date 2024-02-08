@@ -1,10 +1,10 @@
+#include <sstream>
 #include "weights.h"
 #include "../matrix/matrix.h"
-#include <sstream>
 #include "../helpers/utils.h"
 
 using Matrices::Matrix;
-using Matrices::MatrixRandomTemplate;
+using Matrices::MatrixOfNumbersTemplate;
 using std::string;
 using std::stringstream;
 using Utils::append_to_file;
@@ -13,21 +13,21 @@ namespace NNWeights {
   unsigned int width, height;
   template <typename T> Matrix<MatrixWeightsTemplate<T>> *weights;
 
-  template <typename T> Weights<T>::Weights(unsigned int first_layer_size, unsigned int second_layer_size){
+  template <typename T> Weights<MatrixWeightsTemplate<T>>::Weights(unsigned int first_layer_size, unsigned int second_layer_size){
     this->width = first_layer_size;
     this->height = second_layer_size;
-    this->weights = new Matrix<MatrixRandomTemplate<T>>(first_layer_size, second_layer_size);
+    this->weights = new Matrix<MatrixOfNumbersTemplate<T>>(first_layer_size, second_layer_size);
     this->weights->random(-1, 1);
   }
 
-  template <typename T> void Weights<T>::load_weights(Matrix<MatrixWeightsTemplate<T>> * weights){
+  template <typename T> void Weights<MatrixWeightsTemplate<T>>::load_weights(Matrix<MatrixWeightsTemplate<T>> * weights){
     this->Weights::clear_pointers();
     this->width = weights->get_width();
     this->height = weights->get_height();
     this->weights = weights;
   }
 
-  template <typename T> void Weights<T>::save_weights(string filename){
+  template <typename T> void Weights<MatrixWeightsTemplate<T>>::save_weights(string filename){
     stringstream header;
     header << "w:" << this->width << ";h:" << this->height  << "\n"; 
     
@@ -44,23 +44,23 @@ namespace NNWeights {
     }
   }
 
-  template <typename T> Matrix<MatrixWeightsTemplate<T>> *Weights<T>::get_weights(){
+  template <typename T> Matrix<MatrixWeightsTemplate<T>> *Weights<MatrixWeightsTemplate<T>>::get_weights(){
     return this->weights;
   }
 
-  template <typename T> void Weights<T>::clear_pointers(){
+  template <typename T> void Weights<MatrixWeightsTemplate<T>>::clear_pointers(){
     delete this->weights;
   }
 
-  template <typename T> Weights<T>::~Weights(){ 
+  template <typename T> Weights<MatrixWeightsTemplate<T>>::~Weights(){ 
     this->Weights::clear_pointers();
   }
 
-  template <typename T> unsigned int Weights<T>::get_height(){
+  template <typename T> unsigned int Weights<MatrixWeightsTemplate<T>>::get_height(){
     return this->height;
   }
   
-  template <typename T> unsigned int Weights<T>::get_width(){
+  template <typename T> unsigned int Weights<MatrixWeightsTemplate<T>>::get_width(){
     return this->width;
   }
 }

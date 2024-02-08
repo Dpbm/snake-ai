@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <type_traits>
+#include "../genetic/gene.h"
 #include "../matrix/matrix.h"
 
 using std::is_floating_point;
@@ -9,6 +10,7 @@ using std::is_integral;
 using std::enable_if;
 using std::string;
 using Matrices::Matrix;
+using Genes::Gene;
 
 namespace NNWeights {
   
