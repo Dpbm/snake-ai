@@ -8,13 +8,11 @@ using std::is_floating_point;
 using std::is_integral;
 using std::enable_if;
 using Matrices::Matrix;
+using Matrices::MatrixOfNumbersTemplate;
 
 namespace Layers{
-
-  template <typename T, 
-            typename enable_if<is_floating_point<T>::value || 
-                               is_integral<T>::value>::type* = nullptr> 
-    using MatrixLayerTemplate = T;
+    
+  template <typename T> using MatrixLayerTemplate = MatrixOfNumbersTemplate<T>;
 
   template <typename T>
   class Layer{
