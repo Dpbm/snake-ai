@@ -7,21 +7,22 @@
 #include "../matrix/matrix.h"
 
 using Layers::Layer;
+using Layers::MatrixLayerTemplate;
 using NNWeights::Weights;
-using Matrices::MatrixTemplate;
+using NNWeights::MatrixWeightsTemplate;
 using std::vector;
 using std::string;
 
 namespace Machine {
-  template <typename T>
+  template <typename L, typename W>
   class NN{  
     public:
       void add_layer(unsigned int size);
-      void add_layer(Layer<MatrixTemplate<T>>* layer);
-      vector<Layer<MatrixTemplate<T>>*>* get_layers();
-      vector<Weights<MatrixTemplate<T>>*>* get_weights();
-      Layer<MatrixTemplate<T>>* get_layer(unsigned int i);
-      Weights<MatrixTemplate<T>>* get_weight(unsigned int i);
+      void add_layer(Layer<MatrixLayerTemplate<L>>* layer);
+      vector<Layer<MatrixLayerTemplate<L>>*>* get_layers();
+      vector<Weights<MatrixWeightsTemplate<W>>*>* get_weights();
+      Layer<MatrixLayerTemplate<L>>* get_layer(unsigned int i);
+      Weights<MatrixWeightsTemplate<W>>* get_weight(unsigned int i);
       unsigned int get_total_layers();
       unsigned int get_total_weights();
       void save_weights(string filename);
@@ -29,8 +30,8 @@ namespace Machine {
       void feedforward();
 
     private:
-      vector<Layer<MatrixTemplate<T>>*>* layers = new vector<Layer<MatrixTemplate<T>>*>;
-      vector<Weights<MatrixTemplate<T>>*>* weights = new vector<Weights<MatrixTemplate<T>>*>;
+      vector<Layer<MatrixLayerTemplate<L>>*>* layers = new vector<Layer<MatrixLayerTemplate<L>>*>;
+      vector<Weights<MatrixWeightsTemplate<W>>*>* weights = new vector<Weights<MatrixWeightsTemplate<W>>*>;
       unsigned int total_layers = 0;
       unsigned int total_weights = 0;
       void add_weight();
