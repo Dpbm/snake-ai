@@ -9,12 +9,19 @@ using std::enable_if;
 using std::is_integral;
 using std::is_floating_point;
 using std::is_same;
+using Genes::Gene;
 
 namespace Matrices {
  
   template <typename T,
             typename enable_if<is_floating_point<T>::value || is_integral<T>::value>::type* = nullptr> 
     using MatrixOfNumbersTemplate = T;
+
+  template <typename T,
+            typename enable_if<is_floating_point<T>::value || 
+                               is_integral<T>::value ||
+                               is_same<Gene, T>::value>::type* = nullptr> 
+    using MatrixProductTemplate = T;
 
   template <typename T>
   class Matrix{
@@ -25,10 +32,10 @@ namespace Matrices {
       T** get_matrix();
       void update_value(unsigned int i, unsigned int j, T value);
       T get_position_value(unsigned int i, unsigned int j) const;
-      Matrix<MatrixOfNumbersTemplate<T>> operator *(MatrixOfNumbersTemplate<T> scalar);
+      Matrix<MatrixProductTemplate<T>> operator *(MatrixProductTemplate<T> scalar);
       Matrix<T> copy();
       void operator=(const Matrix<T>& another_matrix);
-      Matrix<MatrixOfNumbersTemplate<T>> operator *(const Matrix<MatrixOfNumbersTemplate<T>>& another_matrix);
+      Matrix<MatrixProductTemplate<T>> operator *(const Matrix<MatrixProductTemplate<T>>& another_matrix);
       unsigned int get_height() const;
       unsigned int get_width() const;
       T* get_row(unsigned int i) const;

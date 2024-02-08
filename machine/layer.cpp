@@ -11,7 +11,7 @@ namespace Layers {
   template <typename T> Matrix<MatrixLayerTemplate<T>> *values;
   double (*activation)(double);
 
-  template <typename T> Layer<MatrixLayerTemplate<T>>::Layer(unsigned int size, bool input){
+  template <typename T> Layer<MatrixOfNumbersTemplate<T>>::Layer(unsigned int size, bool input){
     this->size = size;
     this->values = new Matrix<MatrixOfNumbersTemplate<T>>(size, 1);
     this->values->random(-1, 1);
