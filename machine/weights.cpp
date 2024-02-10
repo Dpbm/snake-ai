@@ -12,15 +12,15 @@ using Genes::Gene;
 
 namespace NNWeights {
   unsigned int width, height;
-  Matrix<Gene*> *weights;
+  Matrix<Gene> *weights;
 
   Weights::Weights(unsigned int first_layer_size, unsigned int second_layer_size){
     this->width = first_layer_size;
     this->height = second_layer_size;
-    this->weights = new Matrix<Gene*>(first_layer_size, second_layer_size);
+    this->weights = new Matrix<Gene>(first_layer_size, second_layer_size);
   }
 
-  void Weights::load_weights(Matrix<Gene*>* weights){
+  void Weights::load_weights(Matrix<Gene>* weights){
     this->Weights::clear_pointers();
     this->width = weights->get_width();
     this->height = weights->get_height();
@@ -44,7 +44,7 @@ namespace NNWeights {
     }
   }
 
-  Matrix<Gene*> *Weights::get_weights(){
+  Matrix<Gene> *Weights::get_weights(){
     return this->weights;
   }
 

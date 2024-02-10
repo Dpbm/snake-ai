@@ -5,7 +5,6 @@ using Activations::relu;
 using Activations::sigmoid;
 
 namespace {
-
   TEST(ValuesTest, ReluZeroTest){
     ASSERT_EQ(relu(0), 0);
   }
@@ -25,10 +24,8 @@ namespace {
   TEST(ValuesTest, SigmoidPositiveTest){
     EXPECT_NEAR(sigmoid(20), 1, 0.2);
   }
-
   
   TEST(ValuesTest, SigmoidNegativeTest){
     EXPECT_NEAR(sigmoid(-20), 0, 0.2);
   }
-
 }

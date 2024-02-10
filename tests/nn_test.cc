@@ -4,10 +4,10 @@
 #include "../machine/machine.h"
 #include "../machine/layer.h"
 
-using Machine::NN;
-using Layers::Layer;
 using std::invalid_argument;
 using std::ifstream;
+using Machine::NN;
+using Layers::Layer;
 
 namespace {
   TEST(CreationTest, CreateEmptyNNTest){
@@ -38,6 +38,19 @@ namespace {
     ASSERT_EQ(nn->get_total_layers(), 1);
     ASSERT_EQ(nn->get_layers()->size(), 1);
     ASSERT_EQ(nn->get_layer(0)->get_size(), 3); 
+    delete nn;
+  }
+  
+  TEST(UpdateTest, AddLayerMixTest){
+    NN* nn = new NN;
+    Layer* layer = new Layer(3, true);
+    nn->add_layer(layer);
+    nn->add_layer(10);
+
+    ASSERT_EQ(nn->get_total_layers(), 2);
+    ASSERT_EQ(nn->get_layers()->size(), 2);
+    ASSERT_EQ(nn->get_layer(0)->get_size(), 3); 
+    ASSERT_EQ(nn->get_layer(1)->get_size(), 10); 
     delete nn;
   }
 
@@ -76,7 +89,6 @@ namespace {
     nn->add_layer(3);
     EXPECT_NO_THROW({ nn->get_layer(0); });
     EXPECT_THROW({ nn->get_layer(1); }, invalid_argument);
-
     delete nn;
   }
 
@@ -167,5 +179,4 @@ namespace {
     ASSERT_EQ(nn->get_layer(1)->is_input(), false);
     delete nn;
   }
-  
 }

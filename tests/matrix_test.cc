@@ -7,12 +7,11 @@ using ::testing::AllOf;
 using ::testing::Ge;
 using ::testing::Le;
 using Genes::Gene;
+using Matrices::Matrix;
 
 namespace {
-
-  TEST(CreationTest, SquareMatrix){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(3);
-    
+  TEST(CreationTest, SquareMatrixTest){
+    Matrix<double>* matrix = new Matrix<double>(3);
     matrix->update_value(0, 0, 1);
     matrix->update_value(0, 1, 1);
     matrix->update_value(0, 2, 1);
@@ -35,9 +34,8 @@ namespace {
     delete matrix;
   }
 
-  TEST(CreationTest, DifferentSizeMatrix){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(2, 3);
-    
+  TEST(CreationTest, DifferentSizeMatrixTest){
+    Matrix<double>* matrix = new Matrix<double>(2, 3);
     matrix->update_value(0, 0, 1);
     matrix->update_value(0, 1, 1);
     matrix->update_value(1, 0, 2);
@@ -54,41 +52,40 @@ namespace {
     delete matrix;
   }
 
-  TEST(CreationTest, ZerosMatrix){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(2);
-    matrix->map_to_a_single_value(0);
-  
-    ASSERT_EQ(matrix->get_position_value(0, 0), 0);
-    ASSERT_EQ(matrix->get_position_value(0, 1), 0);
-    ASSERT_EQ(matrix->get_position_value(1, 0), 0);
-    ASSERT_EQ(matrix->get_position_value(1, 1), 0);
+  TEST(CreationTest, MapToASingleValueTest){
+    Matrix<double>* matrix = new Matrix<double>(2);
+    matrix->map_to_a_single_value(3);
+    ASSERT_EQ(matrix->get_position_value(0, 0), 3);
+    ASSERT_EQ(matrix->get_position_value(0, 1), 3);
+    ASSERT_EQ(matrix->get_position_value(1, 0), 3);
+    ASSERT_EQ(matrix->get_position_value(1, 1), 3);
     delete matrix;
   }
 
-  TEST(UpdateTest, UpdateMatrixValue){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(2);
-    
+  TEST(UpdateTest, UpdateMatrixValueTest){
+    Matrix<double>* matrix = new Matrix<double>(2);
     matrix->map_to_a_single_value(0);
     matrix->update_value(1, 1, 10);
     
+    ASSERT_EQ(matrix->get_position_value(0, 0), 0);
+    ASSERT_EQ(matrix->get_position_value(0, 1), 0);
+    ASSERT_EQ(matrix->get_position_value(1, 0), 0);
     ASSERT_EQ(matrix->get_position_value(1, 1), 10);
     delete matrix;
   }
 
-  TEST(UpdateTest, UpdateMatrixGreaterThanHeight){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(2);
+  TEST(UpdateTest, UpdateMatrixGreaterThanHeightTest){
+    Matrix<double>* matrix = new Matrix<double>(2);
     matrix->map_to_a_single_value(0);
-    
     EXPECT_THROW({ 
       matrix->update_value(2, 0, 10);
     }, std::invalid_argument);
     delete matrix;
   }
   
-  TEST(UpdateTest, UpdateMatrixGreaterThanWidth){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(2);
+  TEST(UpdateTest, UpdateMatrixGreaterThanWidthTest){
+    Matrix<double>* matrix = new Matrix<double>(2);
     matrix->map_to_a_single_value(0);
-    
     EXPECT_THROW({ 
       matrix->update_value(2, 0, 10);
     }, std::invalid_argument);
@@ -96,7 +93,7 @@ namespace {
   }
 
   TEST(ValuesTest, GetPositionValueTest){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(2);
+    Matrix<double>* matrix = new Matrix<double>(2);
     matrix->map_to_a_single_value(0);
 
     matrix->update_value(1, 1, 5);
@@ -104,21 +101,18 @@ namespace {
     delete matrix;
   }
   
-  TEST(ValuesTest, GetPositionValuePositionGreaterThanHeight){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(2);
-
+  TEST(ValuesTest, GetPositionValuePositionGreaterThanHeightTest){
+    Matrix<double>* matrix = new Matrix<double>(2);
     matrix->map_to_a_single_value(0);
-  
     EXPECT_THROW({
       matrix->get_position_value(0, 2);
     }, std::invalid_argument);
     delete matrix;
   }
 
-  TEST(ValuesTest, GetPositionValuePositionGreaterThanWidth){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(2);
+  TEST(ValuesTest, GetPositionValuePositionGreaterThanWidthTest){
+    Matrix<double>* matrix = new Matrix<double>(2);
     matrix->map_to_a_single_value(0);
-
     EXPECT_THROW({
       matrix->get_position_value(2, 0);
     }, std::invalid_argument);
@@ -126,8 +120,8 @@ namespace {
   }
 
   TEST(ValuesTest, OverWriteMatrixTest){
-    Matrices::Matrix<double>* matrix_1 = new Matrices::Matrix<double>(2);
-    Matrices::Matrix<double>* matrix_2 = new Matrices::Matrix<double>(2);
+    Matrix<double>* matrix_1 = new Matrix<double>(2);
+    Matrix<double>* matrix_2 = new Matrix<double>(2);
     matrix_1->map_to_a_single_value(0);
     matrix_2->update_value(0, 0, 1);
     matrix_2->update_value(0, 1, 2);
@@ -144,28 +138,26 @@ namespace {
   }
 
   TEST(ValuesTest, GetHeightTest){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(3);
+    Matrix<double>* matrix = new Matrix<double>(3);
     ASSERT_EQ(matrix->get_height(), 3);
     delete matrix;
   }
   
   TEST(ValuesTest, GetWidthTest){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(3);
+    Matrix<double>* matrix = new Matrix<double>(3);
     ASSERT_EQ(matrix->get_width(), 3);
     delete matrix;
   }
 
   
   TEST(ValuesTest, GetRowTest){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(3, 2);
-    
+    Matrix<double>* matrix = new Matrix<double>(3, 2);
     matrix->map_to_a_single_value(0);
     matrix->update_value(0, 0, 1);
     matrix->update_value(0, 1, 2);
     matrix->update_value(0, 2, 3);
 
     double* row = matrix->get_row(0);
-
     ASSERT_EQ(row[0], 1);
     ASSERT_EQ(row[1], 2);
     ASSERT_EQ(row[2], 3);
@@ -174,15 +166,13 @@ namespace {
   }
   
   TEST(ValuesTest, GetColumnTest){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(2, 3);
-    
+    Matrix<double>* matrix = new Matrix<double>(2, 3);
     matrix->map_to_a_single_value(0);
     matrix->update_value(0, 1, 1);
     matrix->update_value(1, 1, 2);
     matrix->update_value(2, 1, 3);
 
     double* column = matrix->get_column(1);
-
     ASSERT_EQ(column[0], 1);
     ASSERT_EQ(column[1], 2);
     ASSERT_EQ(column[2], 3);
@@ -191,8 +181,8 @@ namespace {
   }
 
   TEST(ValuesTest, DotProductTest){
-    Matrices::Matrix<double>* matrix_1 = new Matrices::Matrix<double>(3, 1);
-    Matrices::Matrix<Gene*>* matrix_2 = new Matrices::Matrix<Gene*>(2, 3);
+    Matrix<double>* matrix_1 = new Matrix<double>(3, 1);
+    Matrix<Gene>* matrix_2 = new Matrix<Gene>(2, 3);
   
     matrix_1->update_value(0, 0, 1);
     matrix_1->update_value(0, 1, 2);
@@ -205,7 +195,7 @@ namespace {
     matrix_2->update_value(2, 0, 1);
     matrix_2->update_value(2, 1, 2);
 
-    Matrices::Matrix<double> result = (*matrix_1) * (*matrix_2);
+    Matrix<double> result = (*matrix_1) * (*matrix_2);
     
     ASSERT_EQ(result.get_width(), 2);
     ASSERT_EQ(result.get_height(), 1);
@@ -216,8 +206,8 @@ namespace {
   }
   
   TEST(ValuesTest, DotProductErrorTest){
-    Matrices::Matrix<double>* matrix_1 = new Matrices::Matrix<double>(3, 1);
-    Matrices::Matrix<Gene*>* matrix_2 = new Matrices::Matrix<Gene*>(2, 5);
+    Matrix<double>* matrix_1 = new Matrix<double>(3, 1);
+    Matrix<Gene>* matrix_2 = new Matrix<Gene>(2, 5);
     EXPECT_THROW({ 
       (*matrix_1) * (*matrix_2); 
     }, std::invalid_argument);
@@ -226,7 +216,7 @@ namespace {
   }
 
   TEST(UpdateTest, TransposeTest){
-    Matrices::Matrix<double>* matrix = new Matrices::Matrix<double>(2, 1);
+    Matrix<double>* matrix = new Matrix<double>(2, 1);
     matrix->map_to_a_single_value(0);
     matrix->transpose();
     

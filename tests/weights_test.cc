@@ -5,14 +5,12 @@
 #include "../matrix/matrix.h"
 #include "../genetic/gene.h"
 
+using std::ifstream;
 using NNWeights::Weights;
 using Matrices::Matrix;
 using Genes::Gene;
-using std::ifstream;
-
 
 namespace {
-
   TEST(CreationTest, CreateWeightsTest){
     Weights* weights = new Weights(2, 3);
     ASSERT_EQ(weights->get_width(), 2);
@@ -24,7 +22,7 @@ namespace {
 
   TEST(UpdateTest, LoadWeightsTest){
     Weights* weights = new Weights(2, 3);
-    Matrix<Gene*>* matrix = new Matrix<Gene*>(2, 3);
+    Matrix<Gene>* matrix = new Matrix<Gene>(2, 3);
     matrix->map_to_a_single_value(0);
     weights->load_weights(matrix);
     ASSERT_EQ(weights->get_weights(), matrix);

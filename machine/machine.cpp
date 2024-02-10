@@ -99,7 +99,7 @@ namespace Machine {
       Layer* next_layer = this->get_layer(layer+1);
 
       Matrix<double>* layer_values = actual_layer->get_values();
-      Matrix<Gene*>* layer_weights = this->get_weight(layer)->get_weights();
+      Matrix<Gene>* layer_weights = this->get_weight(layer)->get_weights();
 
       //TODO: remove the & and .transpose() when (dot product returns Matrix*)
       Matrix<double> dot_product_result = (*layer_values) * (*layer_weights);

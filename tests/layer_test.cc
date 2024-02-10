@@ -1,16 +1,12 @@
 #include <stdexcept>
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include "../matrix/matrix.h"
 #include "../machine/layer.h"
 #include "../machine/activation.h"
 
+using std::invalid_argument;
 using Matrices::Matrix;
 using Layers::Layer;
-using std::invalid_argument;
-using ::testing::AllOf;
-using ::testing::Ge;
-using ::testing::Le;
 using Activations::relu;
 
 namespace {
@@ -26,7 +22,6 @@ namespace {
   TEST(CreationTest, CreateLayerByMatrixTest){
     Matrix<double>* values = new Matrix<double>(3, 1);
     Layer* layer = new Layer(values, true);
-    
     ASSERT_EQ(layer->get_size(), 3);
     ASSERT_EQ(layer->get_values(), values);
     ASSERT_EQ(layer->get_values()->get_width(), 3);
@@ -43,7 +38,8 @@ namespace {
 
   TEST(ValuesTest, GetValuesTest){
     Layer*layer = new Layer(1, true);
-    ASSERT_THAT(layer->get_values()->get_position_value(0, 0), AllOf(Ge(-1), Le(1)));
+    layer->get_values()->map_to_a_single_value(3); 
+    ASSERT_EQ(layer->get_values()->get_position_value(0, 0), 3);
     delete layer;
   }
 

@@ -14,7 +14,7 @@ namespace Matrices {
       void update_value(unsigned int i, unsigned int j, double value);
       double get_position_value(unsigned int i, unsigned int j) const;
       void operator=(const Matrix<T>& another_matrix);
-      Matrix<double> operator *(const Matrix<Gene*>& another_matrix);
+      Matrix<double> operator *(const Matrix<Gene>& another_matrix);
       unsigned int get_height() const;
       unsigned int get_width() const;
       double* get_row(unsigned int i) const;

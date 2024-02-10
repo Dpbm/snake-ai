@@ -6,8 +6,8 @@
 using ::testing::AllOf;
 using ::testing::Ge;
 using ::testing::Le;
-using Genes::Gene;
 using std::invalid_argument;
+using Genes::Gene;
 
 namespace {
   TEST(CreationTest, CreateGeneTest){

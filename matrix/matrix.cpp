@@ -38,11 +38,11 @@ namespace Matrices{
     this->matrix[i][j] = value;
   }
   
-  template<> void Matrix<Gene*>::update_value(unsigned int i, unsigned int j, double value){
+  template<> void Matrix<Gene>::update_value(unsigned int i, unsigned int j, double value){
     if(i >= this->height || j >= this->width)
       throw std::invalid_argument("i and j must be a value within the bounds of the matrix"); 
 
-    this->matrix[i][j]->set_gene_value(value);
+    this->matrix[i][j].set_gene_value(value);
   }
 
 
@@ -52,10 +52,10 @@ namespace Matrices{
     return this->matrix[i][j];
   }
   
-  template <> double Matrix<Gene*>::get_position_value(unsigned int i, unsigned int j) const {
+  template <> double Matrix<Gene>::get_position_value(unsigned int i, unsigned int j) const {
     if(i >= this->height || j >= this->width) 
       throw std::invalid_argument("i and j must be a value within the bounds of the matrix");
-    return this->matrix[i][j]->get_gene_value();
+    return this->matrix[i][j].get_gene_value();
   }
 
   template <typename T> void Matrix<T>::operator=(const Matrix<T>& another_matrix){
@@ -88,7 +88,7 @@ namespace Matrices{
     return column;
   }
 
-  template<> Matrix<double> Matrix<double>::operator *(const Matrix<Gene*>& another_matrix){
+  template<> Matrix<double> Matrix<double>::operator *(const Matrix<Gene>& another_matrix){
     if(this->width != another_matrix.get_height())
       throw std::invalid_argument("The first matrix's width must be equal to the second's height!");
     
@@ -141,14 +141,12 @@ namespace Matrices{
     this->matrix = transposed_matrix;
   }
   
-  template <> void Matrix<Gene*>::transpose(){
-    Gene*** transposed_matrix = this->generate_matrix_body(this->height, this->width);
+  template <> void Matrix<Gene>::transpose(){
+    Gene** transposed_matrix = this->generate_matrix_body(this->height, this->width);
     for(unsigned int i = 0; i < this->height; i++)
-      for(unsigned int j = 0; j < this->width; j++){
-        Gene* gene = new Gene();
-        gene->set_gene_value(this->get_position_value(i, j));
-        transposed_matrix[j][i] = gene;
-      }
+      for(unsigned int j = 0; j < this->width; j++)
+        transposed_matrix[j][i].set_gene_value(this->get_position_value(i, j)); //TODO: check it later (maybe it's not in the heap)
+      
     unsigned int tmp = this->height;
     this->height = this->width;
     this->width = tmp;
@@ -167,10 +165,9 @@ namespace Matrices{
     T** new_matrix = new T*[height];
     for(unsigned int i = 0; i<height; i++)
       new_matrix[i] = new T[width];
-
     return new_matrix;
-  }
+  } 
 
   template class Matrix<double>;
-  template class Matrix<Gene*>;
+  template class Matrix<Gene>;
 }

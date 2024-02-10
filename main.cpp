@@ -69,7 +69,12 @@ int main(){
   population->show();
   delete population;
 
-  Matrix<double> *matrix = new Matrix<double>(2, 1);
+
+  Matrix<double>* matrix_1 = new Matrix<double>(3, 1);
+  Matrix<Gene>* matrix_2 = new Matrix<Gene>(2, 3);
+  matrix_1->map_to_a_single_value(1);
+  std::cout << "chahahha" << std::endl;
+  matrix_2->show();
   //std::cout << "first" << std::endl;
   //matrix->show();
   /*std::cout << "second" << std::endl;
