@@ -1,12 +1,15 @@
 #include <stdexcept>
 #include <gtest/gtest.h>
+#include <fstream>
 #include "../machine/weights.h"
 #include "../matrix/matrix.h"
-#include <fstream>
+#include "../genetic/gene.h"
 
 using NNWeights::Weights;
 using Matrices::Matrix;
+using Genes::Gene;
 using std::ifstream;
+
 
 namespace {
 
@@ -21,8 +24,8 @@ namespace {
 
   TEST(UpdateTest, LoadWeightsTest){
     Weights* weights = new Weights(2, 3);
-    Matrix* matrix = new Matrix(2, 3);
-    matrix->zeros();
+    Matrix<Gene*>* matrix = new Matrix<Gene*>(2, 3);
+    matrix->map_to_a_single_value(0);
     weights->load_weights(matrix);
     ASSERT_EQ(weights->get_weights(), matrix);
     ASSERT_EQ(weights->get_width(), 2);

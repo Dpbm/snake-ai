@@ -1,49 +1,28 @@
 #pragma once
 
-#include <iostream>
-#include <type_traits>
-#include <sched.h>
 #include "../genetic/gene.h"
 
-using std::enable_if;
-using std::is_integral;
-using std::is_floating_point;
-using std::is_same;
 using Genes::Gene;
 
 namespace Matrices {
- 
-  template <typename T,
-            typename enable_if<is_floating_point<T>::value || is_integral<T>::value>::type* = nullptr> 
-    using MatrixOfNumbersTemplate = T;
-
-  template <typename T,
-            typename enable_if<is_floating_point<T>::value || 
-                               is_integral<T>::value ||
-                               is_same<Gene, T>::value>::type* = nullptr> 
-    using MatrixProductTemplate = T;
-
   template <typename T>
   class Matrix{
     public:
       Matrix(unsigned int length);
       Matrix(unsigned int width, unsigned int height);
-      void random(int start, int end);
       T** get_matrix();
-      void update_value(unsigned int i, unsigned int j, T value);
-      T get_position_value(unsigned int i, unsigned int j) const;
-      Matrix<MatrixProductTemplate<T>> operator *(MatrixProductTemplate<T> scalar);
-      Matrix<T> copy();
+      void update_value(unsigned int i, unsigned int j, double value);
+      double get_position_value(unsigned int i, unsigned int j) const;
       void operator=(const Matrix<T>& another_matrix);
-      Matrix<MatrixProductTemplate<T>> operator *(const Matrix<MatrixProductTemplate<T>>& another_matrix);
+      Matrix<double> operator *(const Matrix<Gene*>& another_matrix);
       unsigned int get_height() const;
       unsigned int get_width() const;
-      T* get_row(unsigned int i) const;
-      T* get_column(unsigned int j) const;
+      double* get_row(unsigned int i) const;
+      double* get_column(unsigned int j) const;
       void show();
       ~Matrix();
       void transpose();
-      void map_to_a_single_value(T value);
+      void map_to_a_single_value(double value);
     
     private:
       unsigned int width, height;

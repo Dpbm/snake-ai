@@ -1,8 +1,9 @@
 #include <iostream>
 #include <random>
 #include <fstream>
+#include <SDL2/SDL_timer.h>
 #include "utils.h"
-
+#include "constants.h"
 
 using std::ofstream;
 using std::string;
@@ -51,4 +52,8 @@ namespace Utils {
       file.close();
     }
   }
+
+  bool passed_debounce_time(int last_tick){
+    return  SDL_GetTicks() - last_tick >= DEBOUNCE_TIME;
+  } 
 }

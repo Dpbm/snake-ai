@@ -8,12 +8,14 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include "machine/machine.h"
 #include "matrix/matrix.h"
 #include "genetic/gene.h"
 #include "genetic/chromosome.h"
 #include "genetic/population.h"
-#include "machine/weights.h"
+//#include "machine/machine.h"
+//#include "machine/weights.h"
+
+using Matrices::Matrix;
 
 int main(){
   std::cout << "---Simple GA test---" << std::endl;
@@ -67,27 +69,26 @@ int main(){
   population->show();
   delete population;
 
-  Matrices::Matrix *matrix = new Matrices::Matrix(2, 1);
-  std::cout << "first" << std::endl;
-  matrix->zeros();
-  matrix->show();
-  std::cout << "second" << std::endl;
+  Matrix<double> *matrix = new Matrix<double>(2, 1);
+  //std::cout << "first" << std::endl;
+  //matrix->show();
+  /*std::cout << "second" << std::endl;
   matrix->transpose();
   matrix->show();
   delete matrix;
 
-  NNWeights::Weights *weights = new NNWeights::Weights(2, 3);
+  NNWeights::Weights<double> *weights = new NNWeights::Weights<double>(2, 3);
   weights->save_weights("test.wg");
   delete weights;
 
-  Machine::NN *nn = new Machine::NN;
+  Machine::NN<double,double> *nn = new Machine::NN<double, double>;
   nn->add_layer(6);
   nn->add_layer(10);
   nn->add_layer(5);
   nn->add_layer(3);
   nn->save_weights("hello.wg");
   delete nn;
-  
+  */
 
   /*
   char *title = (char*) malloc(10*sizeof(char));
