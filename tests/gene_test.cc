@@ -67,6 +67,7 @@ namespace {
 
   TEST(UpdateTest, AssignOperatorTest){
     Gene* gene = new Genes::Gene();
+    ASSERT_NE(gene->get_gene_value(), 10);
     (*gene) = 10.0;
     ASSERT_EQ(gene->get_gene_value(), 10);
     delete gene;
@@ -84,6 +85,6 @@ namespace {
     (*gene) = 2.0;
     ASSERT_EQ((*gene)*3.0, 6);
     delete gene;
-  }
+  } 
 }
 
