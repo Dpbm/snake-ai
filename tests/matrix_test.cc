@@ -1,9 +1,15 @@
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
+#include <stdexcept>
 #include "../matrix/matrix.h"
 #include "../genetic/gene.h"
 
+using ::testing::AllOf;
+using ::testing::Ge;
+using ::testing::Le;
 using Genes::Gene;
 using Matrices::Matrix;
+using std::invalid_argument;
 
 namespace {
   TEST(CreationTest, SquareMatrixTest){
@@ -75,7 +81,7 @@ namespace {
     matrix->map_to_a_single_value(0);
     EXPECT_THROW({ 
       matrix->update_value(2, 0, 10);
-    }, std::invalid_argument);
+    }, invalid_argument);
     delete matrix;
   }
   
@@ -84,7 +90,7 @@ namespace {
     matrix->map_to_a_single_value(0);
     EXPECT_THROW({ 
       matrix->update_value(2, 0, 10);
-    }, std::invalid_argument);
+    }, invalid_argument);
     delete matrix;
   }
 
@@ -102,7 +108,7 @@ namespace {
     matrix->map_to_a_single_value(0);
     EXPECT_THROW({
       matrix->get_position_value(0, 2);
-    }, std::invalid_argument);
+    }, invalid_argument);
     delete matrix;
   }
 
@@ -111,7 +117,7 @@ namespace {
     matrix->map_to_a_single_value(0);
     EXPECT_THROW({
       matrix->get_position_value(2, 0);
-    }, std::invalid_argument);
+    }, invalid_argument);
     delete matrix;
   }
 
@@ -190,7 +196,7 @@ namespace {
     Matrix<Gene>* matrix_2 = new Matrix<Gene>(2, 5);
     EXPECT_THROW({ 
       (*matrix_1) * (*matrix_2); 
-    }, std::invalid_argument);
+    }, invalid_argument);
     delete matrix_1;
     delete matrix_2;
   }
@@ -204,7 +210,7 @@ namespace {
     ASSERT_EQ(matrix->get_height(), 2);
     ASSERT_EQ(matrix->get_position_value(0, 0), 0);
     ASSERT_EQ(matrix->get_position_value(1, 0), 0);
-    EXPECT_THROW({ matrix->get_position_value(0, 1); }, std::invalid_argument);
+    EXPECT_THROW({ matrix->get_position_value(0, 1); }, invalid_argument);
     delete matrix;
   }
 
@@ -214,4 +220,40 @@ namespace {
     ASSERT_EQ(matrix->get_position_value(0, 0), 10);
     delete matrix; 
   }
-}
+
+  TEST(ValuesTest, GetPositionValueForGenesTest){
+    Matrix<Gene>* matrix = new Matrix<Gene>(2, 1);
+    matrix->update_value(0, 0, 10);
+    ASSERT_EQ(matrix->get_position_value(0, 0), 10);
+    EXPECT_THAT(matrix->get_position_value(0, 1), AllOf(Ge(-1), Le(1)));
+    delete matrix;    
+  }
+  
+  TEST(ValuesTest, GetPositionValuePositionGreaterThanHeightForGenesTest){
+    Matrix<Gene>* matrix = new Matrix<Gene>(2);
+    EXPECT_THROW({
+      matrix->get_position_value(0, 2);
+    }, invalid_argument);
+    delete matrix;
+  }
+
+  TEST(ValuesTest, GetPositionValuePositionGreaterThanWidthForGenesTest){
+    Matrix<Gene>* matrix = new Matrix<Gene>(2);
+    EXPECT_THROW({
+      matrix->get_position_value(2, 0);
+    }, invalid_argument);
+    delete matrix;
+  }
+  
+  TEST(UpdateTest, TransposeForGenesTest){
+    Matrix<Gene>* matrix = new Matrix<Gene>(2, 1);
+    matrix->map_to_a_single_value(0);
+    matrix->transpose();
+    
+    ASSERT_EQ(matrix->get_width(), 1);
+    ASSERT_EQ(matrix->get_height(), 2);
+    ASSERT_EQ(matrix->get_position_value(0, 0), 0);
+    ASSERT_EQ(matrix->get_position_value(1, 0), 0);
+    EXPECT_THROW({ matrix->get_position_value(0, 1); }, invalid_argument);
+  }
+}  
