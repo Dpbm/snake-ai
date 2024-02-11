@@ -1,11 +1,7 @@
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
 #include "../matrix/matrix.h"
 #include "../genetic/gene.h"
 
-using ::testing::AllOf;
-using ::testing::Ge;
-using ::testing::Le;
 using Genes::Gene;
 using Matrices::Matrix;
 
@@ -119,24 +115,6 @@ namespace {
     delete matrix;
   }
 
-  TEST(ValuesTest, OverWriteMatrixTest){
-    Matrix<double>* matrix_1 = new Matrix<double>(2);
-    Matrix<double>* matrix_2 = new Matrix<double>(2);
-    matrix_1->map_to_a_single_value(0);
-    matrix_2->update_value(0, 0, 1);
-    matrix_2->update_value(0, 1, 2);
-    matrix_2->update_value(1, 0, 3);
-    matrix_2->update_value(1, 1, 4);
-    *matrix_1 = *matrix_2;
-    
-    ASSERT_EQ(matrix_1->get_position_value(0, 0), 1);
-    ASSERT_EQ(matrix_1->get_position_value(0, 1), 2);
-    ASSERT_EQ(matrix_1->get_position_value(1, 0), 3);
-    ASSERT_EQ(matrix_1->get_position_value(1, 1), 4);
-    delete matrix_1;
-    delete matrix_2;
-  }
-
   TEST(ValuesTest, GetHeightTest){
     Matrix<double>* matrix = new Matrix<double>(3);
     ASSERT_EQ(matrix->get_height(), 3);
@@ -195,14 +173,16 @@ namespace {
     matrix_2->update_value(2, 0, 1);
     matrix_2->update_value(2, 1, 2);
 
-    Matrix<double> result = (*matrix_1) * (*matrix_2);
+    Matrix<double>* result = (*matrix_1) * (*matrix_2);
     
-    ASSERT_EQ(result.get_width(), 2);
-    ASSERT_EQ(result.get_height(), 1);
-    ASSERT_EQ(result.get_position_value(0, 0), 6);
-    ASSERT_EQ(result.get_position_value(0, 1), 12);
+    ASSERT_EQ(result->get_width(), 2);
+    ASSERT_EQ(result->get_height(), 1);
+    ASSERT_EQ(result->get_position_value(0, 0), 6);
+    ASSERT_EQ(result->get_position_value(0, 1), 12);
+    ASSERT_NE(result, matrix_1);
     delete matrix_1;
     delete matrix_2;
+    delete result;
   }
   
   TEST(ValuesTest, DotProductErrorTest){
@@ -226,5 +206,12 @@ namespace {
     ASSERT_EQ(matrix->get_position_value(1, 0), 0);
     EXPECT_THROW({ matrix->get_position_value(0, 1); }, std::invalid_argument);
     delete matrix;
+  }
+
+  TEST(UpdateTest, UpdateGeneMatrixValuesTest){
+    Matrix<Gene>* matrix = new Matrix<Gene>(1);
+    matrix->update_value(0, 0, 10);
+    ASSERT_EQ(matrix->get_position_value(0, 0), 10);
+    delete matrix; 
   }
 }

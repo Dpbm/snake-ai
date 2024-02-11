@@ -58,14 +58,6 @@ namespace Matrices{
     return this->matrix[i][j].get_gene_value();
   }
 
-  template <typename T> void Matrix<T>::operator=(const Matrix<T>& another_matrix){
-    for(unsigned int i = 0; i < this->height; i++)
-      for(unsigned int j = 0; j < this->width; j++)
-        this->update_value(i, j, another_matrix.get_position_value(i,j));
-    
-    // could add a delete for a matrix pointer here
-  }
-
   template <typename T> unsigned int Matrix<T>::get_height() const{
     return this->height;
   }
@@ -88,13 +80,13 @@ namespace Matrices{
     return column;
   }
 
-  template<> Matrix<double> Matrix<double>::operator *(const Matrix<Gene>& another_matrix){
+  template<> Matrix<double>* Matrix<double>::operator *(const Matrix<Gene>& another_matrix){
     if(this->width != another_matrix.get_height())
       throw std::invalid_argument("The first matrix's width must be equal to the second's height!");
     
     // here's also a better idea to instanciate in the heap
     unsigned int second_matrix_width = another_matrix.get_width();
-    Matrix<double> resulting_matrix(second_matrix_width, this->height);
+    Matrix<double>* resulting_matrix = new Matrix<double>(second_matrix_width, this->height);
 
     for(unsigned int i = 0; i < this->height; i++){
       double* row = this->get_row(i);
@@ -106,7 +98,7 @@ namespace Matrices{
         for(unsigned int n_index = 0; n_index < this->width; n_index++)
           value += row[n_index]*column[n_index];
 
-        resulting_matrix.update_value(i, j, value);
+        resulting_matrix->update_value(i, j, value);
         delete column;
       }  
       delete row;
@@ -124,7 +116,7 @@ namespace Matrices{
   }
 
   template <typename T> Matrix<T>::~Matrix(){
-    this->Matrix::clear_pointers();
+    this->clear_pointers();
   }
   
   template <> void Matrix<double>::transpose(){
@@ -156,9 +148,7 @@ namespace Matrices{
   }
 
   template <typename T> void Matrix<T>::clear_pointers(){
-    for(unsigned int i = 0; i < this->height; i++)
-      delete this->matrix[i];
-    delete this->matrix;  
+    delete[] this->matrix;
   }
 
   template <typename T> T** Matrix<T>::generate_matrix_body(unsigned int width, unsigned int height){

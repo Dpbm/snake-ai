@@ -101,10 +101,9 @@ namespace Machine {
       Matrix<double>* layer_values = actual_layer->get_values();
       Matrix<Gene>* layer_weights = this->get_weight(layer)->get_weights();
 
-      //TODO: remove the & and .transpose() when (dot product returns Matrix*)
-      Matrix<double> dot_product_result = (*layer_values) * (*layer_weights);
-      dot_product_result.transpose();
-      next_layer->set_values(&dot_product_result);
+      Matrix<double>* dot_product_result = (*layer_values) * (*layer_weights);
+      dot_product_result->transpose();
+      next_layer->set_values(dot_product_result);
       
       next_layer->activate_neurons();
     }
