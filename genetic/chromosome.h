@@ -3,16 +3,18 @@
 #include <vector>
 #include "gene.h"
 
+using std::vector;
+using Genes::Gene;
+
 namespace Chromosomes {
 
   class Chromosome{
     public:
       Chromosome(unsigned int size, int points); 
-      Chromosome(int points); 
-      void set_genes(std::vector<Genes::Gene*>* genes);
-      std::vector<Genes::Gene*>* get_genes();
-      std::vector<Genes::Gene*>* slice(unsigned int start, unsigned int end);
-      void crossover(unsigned int start, unsigned int end, std::vector<Genes::Gene*> *genes_slice);
+      Chromosome(vector<Gene*>* genes, int points);
+      vector<Gene*>* get_genes();
+      vector<Gene*>* slice(unsigned int start, unsigned int end);
+      void crossover(unsigned int start, unsigned int end, vector<Gene*> *genes_slice);
       void mutate(float rate);
       void show();
       void update_points(int factor);
@@ -21,9 +23,10 @@ namespace Chromosomes {
       ~Chromosome();
     
     private:
-      std::vector<Genes::Gene*> *genes = new std::vector<Genes::Gene*>;
+      vector<Gene*> *genes = new vector<Gene*>;
       unsigned int total_genes = 0;
       int points = 0;
       void add_genes(unsigned int size);
+      void set_genes(vector<Gene*>* genes);
   };
 }

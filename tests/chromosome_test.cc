@@ -19,28 +19,13 @@ namespace {
     delete chromosome;
   }
 
-  
-  TEST(CreationTest, CreateChromosomeWithoutGenesTest){
-    Chromosome *chromosome = new Chromosome(100);
-    vector<Gene*> *genes = chromosome->get_genes();
-    ASSERT_EQ(genes->size(), 0);
-    ASSERT_EQ(chromosome->get_points(), 100);
-    delete chromosome;
-  }
-
-
-  TEST(CreationTest, SetGenesTest){
-    Chromosome *chromosome = new Chromosome(100);
-    vector<Gene*> *chromosome_genes = chromosome->get_genes();  
-    ASSERT_EQ(chromosome_genes->size(), 0);
-    
+  TEST(CreationTest, CreateChromosomeByGenesVectorTest){
     vector<Gene*> *genes = new vector<Gene*>;  
     for(unsigned int i = 0; i < 5; i++)
       genes->push_back(new Gene);
    
-    chromosome->set_genes(genes);
-    chromosome_genes = chromosome->get_genes();  
-    ASSERT_EQ(chromosome_genes->size(), genes->size());   
+    Chromosome* chromosome = new Chromosome(genes, 100);
+    ASSERT_EQ(chromosome->get_genes()->size(), genes->size());   
 
     delete chromosome;
   }
@@ -65,14 +50,6 @@ namespace {
     delete slice;
   }  
 
-  TEST(ValuesTest, SliceWithNoGenesTest){
-    Chromosome *chromosome = new Chromosome(100);
-    EXPECT_THROW({
-      chromosome->slice(1, 3);
-    }, std::invalid_argument);
-    delete chromosome;
-  }
-  
   TEST(ValuesTest, SliceOutOfSuperiorBoundTest){
     Chromosome *chromosome = new Chromosome(2, 100);
     EXPECT_THROW({
@@ -100,16 +77,13 @@ namespace {
   }
   
   TEST(ValuesTest, CrossoverDisplacedFromStartTest){
-    Chromosome* chromosome = new Chromosome(100);
-
     vector<Gene*> *genes1 = new vector<Gene*>;
     for(unsigned int i = 0; i < 4; i++){
       Gene* gene = new Gene;
       gene->set_gene_value(1);
       genes1->push_back(gene);
     }  
-    chromosome->set_genes(genes1);
-    
+    Chromosome* chromosome = new Chromosome(genes1, 100);
   
     vector<Gene*> *genes2 = new vector<Gene*>;
     for(unsigned int i = 0; i < 3; i++){
@@ -129,15 +103,13 @@ namespace {
   }
 
   TEST(ValuesTest, CrossoverDisplacedFromEndTest){
-    Chromosome* chromosome = new Chromosome(100);
-
     vector<Gene*> *genes1 = new vector<Gene*>;
     for(unsigned int i = 0; i < 4; i++){
       Gene* gene = new Gene;
       gene->set_gene_value(1);
       genes1->push_back(gene);
     }  
-    chromosome->set_genes(genes1);
+    Chromosome* chromosome = new Chromosome(genes1, 100);
     
   
     vector<Gene*> *genes2 = new vector<Gene*>;
@@ -158,15 +130,14 @@ namespace {
   }  
   
   TEST(ValuesTest, CrossoverInTheMiddleTest){
-    Chromosome* chromosome = new Chromosome(100);
-
     vector<Gene*> *genes1 = new vector<Gene*>;
     for(unsigned int i = 0; i < 4; i++){
       Gene* gene = new Gene;
       gene->set_gene_value(1);
       genes1->push_back(gene);
     }  
-    chromosome->set_genes(genes1);
+
+    Chromosome* chromosome = new Chromosome(genes1, 100);
     
   
     vector<Gene*> *genes2 = new vector<Gene*>;
@@ -188,16 +159,14 @@ namespace {
 
   
   TEST(ValuesTest, CrossoverWithTheWholeChromosomeTest){
-    Chromosome* chromosome = new Chromosome(100);
-
     vector<Gene*> *genes1 = new vector<Gene*>;
     for(unsigned int i = 0; i < 4; i++){
       Gene* gene = new Gene;
       gene->set_gene_value(1);
       genes1->push_back(gene);
     }  
-    chromosome->set_genes(genes1);
     
+    Chromosome* chromosome = new Chromosome(genes1, 100);
   
     vector<Gene*> *genes2 = new vector<Gene*>;
     for(unsigned int i = 0; i < 4; i++){
@@ -217,7 +186,7 @@ namespace {
   }
   
   TEST(UpdateTest, UpdatePointsTest){
-    Chromosome *chromosome = new Chromosome(1);
+    Chromosome *chromosome = new Chromosome(1, 1);
     chromosome->update_points(-1);
     ASSERT_EQ(chromosome->get_points(), 0);
     delete chromosome;

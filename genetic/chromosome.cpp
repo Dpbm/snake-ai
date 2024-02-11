@@ -4,45 +4,45 @@
 #include "gene.h"
 #include "chromosome.h"
 
+using std::vector;
+using Genes::Gene;
+
 namespace Chromosomes {
-  std::vector<Genes::Gene*> *genes;
+  vector<Gene*> *genes;
   unsigned int total_genes;
   int points;
 
   Chromosome::Chromosome(unsigned int size, int points){
-    this->Chromosome::add_genes(size);
+    this->add_genes(size);
     this->total_genes = size;
     this->points = points;
   }
-
-  Chromosome::Chromosome(int points){
-    this->points = points;
-  }
-  
-  void Chromosome::set_genes(std::vector<Genes::Gene*>* genes){
+ 
+  Chromosome::Chromosome(vector<Gene*>* genes, int points){
     this->genes = genes;
     this->total_genes = genes->size();
+    this->points = points;
   }
 
-  std::vector<Genes::Gene*>* Chromosome::get_genes(){
+  vector<Gene*>* Chromosome::get_genes(){
     return this->genes;
   }
 
   void Chromosome::add_genes(unsigned int size){
     for(unsigned int i = 0; i < size; i++)
-      this->genes->push_back(new Genes::Gene);
+      this->genes->push_back(new Gene);
   }
   
   void Chromosome::mutate(float rate){
-    for(Genes::Gene *gene: (*this->genes))
+    for(Gene *gene: (*this->genes))
       gene->mutate(rate);
   }
  
-  std::vector<Genes::Gene*> *Chromosome::slice(unsigned int start, unsigned int end){
+  vector<Gene*> *Chromosome::slice(unsigned int start, unsigned int end){
     if(this->total_genes == 0 || end > this->total_genes-1 || start > end)  
       throw std::invalid_argument("Invalid slice arguments!");
     
-    std::vector<Genes::Gene*> *chromosome_slice = new std::vector<Genes::Gene*>;
+    vector<Gene*> *chromosome_slice = new vector<Gene*>;
     
     for(unsigned int i = start; i <= end; i++)
       chromosome_slice->push_back(this->genes->at(i)->copy());    
@@ -50,14 +50,14 @@ namespace Chromosomes {
     return chromosome_slice;
   }
 
-  void Chromosome::crossover(unsigned int start, unsigned int end, std::vector<Genes::Gene*> *genes_slice){
+  void Chromosome::crossover(unsigned int start, unsigned int end, vector<Gene*> *genes_slice){
     if(end-start+1 != genes_slice->size())
       throw std::invalid_argument("Invalid crossover arguments!");
 
-    std::vector<Genes::Gene*>* final = new std::vector<Genes::Gene*>;
+    vector<Gene*>* final = new vector<Gene*>;
     
     if(start > 0){
-      std::vector<Genes::Gene*> *first = this->slice(0, start-1);
+      vector<Gene*> *first = this->slice(0, start-1);
       final->insert(final->end(), first->begin(), first->end());
       delete first;
     }
@@ -69,7 +69,7 @@ namespace Chromosomes {
     final->insert(final->end(), genes_slice->begin(), genes_slice->end());
 
     if(end < this->total_genes-1){
-      std::vector<Genes::Gene*> *last = this->slice(end+1, this->total_genes-1);
+      vector<Gene*> *last = this->slice(end+1, this->total_genes-1);
       final->insert(final->end(), last->begin(), last->end());
       delete last;
     }
@@ -78,8 +78,13 @@ namespace Chromosomes {
     this->set_genes(final);
   }
 
+  void Chromosome::set_genes(vector<Gene*>* genes){
+    this->genes = genes;
+    this->total_genes = genes->size();
+  }
+
   void Chromosome::show(){
-    for(Genes::Gene* gene: (*this->genes))
+    for(Gene* gene: (*this->genes))
       std::cout << gene->get_gene_value() << " ";
     std::cout << std::endl;
   }
@@ -97,7 +102,7 @@ namespace Chromosomes {
   }
   
   Chromosome::~Chromosome(){
-    for(Genes::Gene* gene : (*this->genes))
+    for(Gene* gene : (*this->genes))
       delete gene;
     delete this->genes;
   }

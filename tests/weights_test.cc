@@ -1,10 +1,14 @@
 #include <stdexcept>
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <fstream>
 #include "../machine/weights.h"
 #include "../matrix/matrix.h"
 #include "../genetic/gene.h"
 
+using ::testing::AllOf;
+using ::testing::Ge;
+using ::testing::Le;
 using std::ifstream;
 using NNWeights::Weights;
 using Matrices::Matrix;
@@ -39,6 +43,13 @@ namespace {
     ifstream file("test_save.wg");
     ASSERT_EQ(file.good(), true);
     file.close();
+    delete weights;
+  }
+
+  TEST(ValuesTest, EnsureRandomGeneValuesTest){
+    Weights* weights = new Weights(1, 2);
+    ASSERT_THAT(weights->get_weights()->get_position_value(0, 0), AllOf(Ge(-1), Le(1)));
+    ASSERT_THAT(weights->get_weights()->get_position_value(1, 0), AllOf(Ge(-1), Le(1)));
     delete weights;
   }
 }
