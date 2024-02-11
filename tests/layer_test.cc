@@ -82,4 +82,42 @@ namespace {
     ASSERT_EQ(layer->is_input(), false);
     delete layer;
   }
+
+  TEST(UpdateTest, SetValuesTest){
+    Layer* layer = new Layer(3, true);
+    Matrix<double>* new_values = new Matrix<double>(3,1);
+    new_values->map_to_a_single_value(1);
+    layer->set_values(new_values);
+    ASSERT_EQ(layer->get_values()->get_position_value(0,0), 1);
+    ASSERT_EQ(layer->get_values()->get_position_value(0,1), 1);
+    ASSERT_EQ(layer->get_values()->get_position_value(0,2), 1);
+    delete layer;
+  }
+
+  TEST(UpdateTest, SetValuesCheckPointersTest){
+    Matrix<double>* values = new Matrix<double>(3,1);
+    Layer* layer = new Layer(values, true);
+    Matrix<double>* values2 = new Matrix<double>(3,1);
+    layer->set_values(values2);  
+    ASSERT_EQ(layer->get_values(), values2);
+    delete layer;
+  }
+
+  TEST(UpdateTest, SetValuesDifferentWidthTest){
+    Matrix<double>* values = new Matrix<double>(3,1);
+    Layer* layer = new Layer(values, true);
+    Matrix<double>* values2 = new Matrix<double>(7,1);
+    EXPECT_THROW({ layer->set_values(values2); }, invalid_argument);
+    delete layer;
+    delete values2;
+  } 
+
+  TEST(UpdateTest, SetValuesDifferentHeightTest){
+    Matrix<double>* values = new Matrix<double>(3,1);
+    Layer* layer = new Layer(values, true);
+    Matrix<double>* values2 = new Matrix<double>(3,2);
+    EXPECT_THROW({ layer->set_values(values2); }, invalid_argument);
+    delete layer;
+    delete values2;
+  } 
 }
