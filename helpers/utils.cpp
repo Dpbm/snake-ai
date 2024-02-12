@@ -54,6 +54,6 @@ namespace Utils {
   }
 
   bool passed_debounce_time(int last_tick){
-    return  SDL_GetTicks() - last_tick >= DEBOUNCE_TIME;
+    return SDL_GetTicks() - last_tick >= DEBOUNCE_TIME;
   } 
 }

@@ -127,4 +127,48 @@ namespace {
     ASSERT_EQ(population->get_individuals()->at(1), chromosome2);
     delete population; 
   }
+
+  TEST(ValuesTest, GetHighestScorePositiveScoresTest){
+    Population *population = new Population(4, 10, 0);
+    vector<Chromosome*>* individuals = population->get_individuals();
+    population->reward_individual(individuals->at(0), 100);
+    population->reward_individual(individuals->at(1), 200);
+    population->reward_individual(individuals->at(2), 100);
+    population->reward_individual(individuals->at(3), 3);
+    ASSERT_EQ(population->get_highest_score(), 200);
+    delete population;
+  }
+  
+  TEST(ValuesTest, GetHighestScoreNegativeScoresTest){
+    Population *population = new Population(4, 10, 0);
+    vector<Chromosome*>* individuals = population->get_individuals();
+    population->reward_individual(individuals->at(0), -100);
+    population->reward_individual(individuals->at(1), -200);
+    population->reward_individual(individuals->at(2), -100);
+    population->reward_individual(individuals->at(3), -3);
+    ASSERT_EQ(population->get_highest_score(), -3);
+    delete population;
+  }
+  
+  TEST(ValuesTest, GetHighestScoreNegativeScoresWithZeroTest){
+    Population *population = new Population(4, 10, 0);
+    vector<Chromosome*>* individuals = population->get_individuals();
+    population->reward_individual(individuals->at(0), -100);
+    population->reward_individual(individuals->at(1), -200);
+    population->reward_individual(individuals->at(2), -100);
+    population->reward_individual(individuals->at(3), 0);
+    ASSERT_EQ(population->get_highest_score(), 0);
+    delete population;
+  }
+  
+  TEST(ValuesTest, GetHighestScoreWithMixedScoresTest){
+    Population *population = new Population(5, 10, 0);
+    vector<Chromosome*>* individuals = population->get_individuals();
+    population->reward_individual(individuals->at(0), -3);
+    population->reward_individual(individuals->at(1), 0);
+    population->reward_individual(individuals->at(2), -100000);
+    population->reward_individual(individuals->at(3), 10000);
+    ASSERT_EQ(population->get_highest_score(), 10000);
+    delete population;
+  }
 }
