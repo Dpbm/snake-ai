@@ -16,10 +16,17 @@ jobs:
         sudo apt update && sudo apt upgrade -y
         sudo apt install -y build-essential make cmake clang libsdl2-dev
 
-    - name: Build
+    - name: Build and run manual tests
       run: |
         chmod +x ./compile.sh
-        ./compile.sh
+        ./compile.sh manual_tests.cpp
+        ./build/ga.out
+
+    - name: Build and run final project
+      run: |
+        chmod +x ./compile.sh
+        ./compile.sh main.cpp
+        ./build/ga.out
 
     - name: Test
       working-directory: ./build

@@ -3,6 +3,7 @@ project(genetic_snake VERSION 0.1)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(TARGET_MAIN)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -15,7 +16,7 @@ FetchContent_MakeAvailable(googletest)
 
 find_package(SDL2 REQUIRED)
 
-add_executable(ga.out main.cpp)
+add_executable(ga.out ${TARGET_MAIN})
 
 target_include_directories(ga.out PRIVATE ${SDL2_INCLUDE_DIRS})
 

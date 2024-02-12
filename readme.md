@@ -53,7 +53,7 @@ with all that seted up, clone the project, go to thedirectory and run the `compi
 git clone https://github.com/Dpbm/genetic-algorithm
 cd ./genetic-algorithm
 chmod +x ./compile.sh ./clean.sh
-./clean.sh && ./compile.sh
+./clean.sh && ./compile.sh main.cpp
 ```
 
 then, to run the project type:
@@ -80,6 +80,8 @@ SDL abstractions, etc.
 3. [matrix](./matrix): The sub-library to handle matrices in a simple way.
 
 4. [helpers](./helpers): Some uility functions, like random.
+
+5. [machine](./machine): Parts to build a Neural Network. 
 
 Then all this is embedded into the [main.cpp](./main.cpp) file, to build the project altogether.
 
