@@ -27,8 +27,8 @@ namespace GUI {
       int width, height;
       SDL_Window *window;
       SDL_Renderer *render;
-      Foods::Food *food = new Foods::Food();
-      Players::Player *player = new Players::Player();
+      Foods::Food *food = new Foods::Food;
+      Players::Player *player = new Players::Player;
       SDL_Event *event = new SDL_Event;
   };
 }

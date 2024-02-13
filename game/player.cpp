@@ -1,9 +1,8 @@
+#include <SDL2/SDL_timer.h>
 #include "player.h"
 #include "body_part.h"
 #include "../helpers/utils.h"
 #include "../helpers/constants.h"
-#include <SDL2/SDL_timer.h>
-#include <iostream>
 
 namespace Players {
   Players::LinkedList* player;

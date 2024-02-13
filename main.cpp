@@ -1,28 +1,44 @@
-#include <stdlib.h>
-#include <string.h>
-#include <iostream>
-#include "game/gui.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_video.h>
 #include "helpers/constants.h"
 #include "game/food.h"
-#include "game/player.h"
 
-using std::cout;
-using std::endl;
-using GUI::Game;
-using Players::Player;
 using Foods::Food;
 
 int main(){
-  char *title = (char*) malloc(10*sizeof(char));
-  strcpy(title, "snake game");
-  Game *game = new Game(title, WIDTH, HEIGHT);
+  //TODO: Check for SDL errors
+  SDL_Init(SDL_INIT_EVERYTHING);
+  SDL_Window* window = SDL_CreateWindow(
+    "snake game", 
+    SDL_WINDOWPOS_UNDEFINED, 
+    SDL_WINDOWPOS_UNDEFINED, 
+    WIDTH, 
+    HEIGHT, 
+    SDL_WINDOW_ALLOW_HIGHDPI);
+  SDL_Renderer* render = SDL_CreateRenderer(window, 1, 0);
+  SDL_Event *event = new SDL_Event;
+  Food *food = new Food;
 
-  while(!game->event_close()){
-    game->listen_event();
+  while(true){
+    SDL_PollEvent(event);
+
+    if(event->type == SDL_QUIT) 
+      break;
     
-    Player* player = game->get_player();
     
-    if(game->event_keydown()){      
+    SDL_RenderClear(render);
+    food->render(render);
+    SDL_RenderPresent(render);
+  }
+
+  SDL_DestroyWindow(window);
+  SDL_DestroyRenderer(render);
+  SDL_Quit();
+  delete event;
+  delete food;
+    //TODO: change to switch case
+    /*if(game->event_keydown()){      
       if(game->event_move(SDLK_w))
         player->direction_up();
       else if(game->event_move(SDLK_s))
@@ -31,10 +47,10 @@ int main(){
         player->direction_right();
       else if(game->event_move(SDLK_a))
         player->direction_left();
-    }
-    player->update_position();
+    }*/
+    //player->update_position();
 
-    if(player->is_game_over()){
+    /*if(player->is_game_over()){
       cout << "game over" << endl;
       break;
     }
@@ -43,19 +59,13 @@ int main(){
       break;
     }
 
-    Food *food = game->get_food();
     if(player->collision(food->get_x(), food->get_y())){
       game->regenerate_food();
       player->update_score();
       cout << "Player score: " << player->get_score() << endl;
-    }
-    game->clear_screen();
-    game->render_food();
-    game->render_player();
-    game->show();
-  }
+    }*/
+   // game->render_player();
 
-  delete title;
-  delete game;
+  
   return 0;
 }

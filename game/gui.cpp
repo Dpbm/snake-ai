@@ -1,7 +1,3 @@
-#include "gui.h"
-#include "../helpers/constants.h"
-#include "food.h"
-#include "player.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_keyboard.h>
@@ -10,6 +6,10 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_video.h>
+#include "gui.h"
+#include "../helpers/constants.h"
+#include "food.h"
+#include "player.h"
 
 namespace GUI {
   int width, height;
@@ -29,6 +29,7 @@ namespace GUI {
   
   Game::~Game(){
     SDL_DestroyWindow(this->window);
+    SDL_DestroyRenderer(this->render);
     SDL_Quit();
     delete food;
     delete event;
@@ -40,14 +41,7 @@ namespace GUI {
   }
 
   void Game::render_food(){
-    SDL_Rect *rect = new SDL_Rect; 
-    rect->x = this->food->get_x(); 
-    rect->y = this->food->get_y();
-    rect->h = FOOD_H;
-    rect->w = FOOD_W;
-    SDL_SetRenderDrawColor(this->render, 255, 255, 255, 255);
-    SDL_RenderFillRect(this->render, rect);
-    SDL_SetRenderDrawColor(this->render, 0, 0, 0, 255);
+    this->food->render(this->render);
   }
 
   void Game::render_player(){
