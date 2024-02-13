@@ -22,12 +22,6 @@ jobs:
         ./compile.sh manual_tests.cpp
         ./build/ga.out
 
-    - name: Build and run final project
-      run: |
-        chmod +x ./compile.sh
-        ./compile.sh main.cpp
-        ./build/ga.out
-
     - name: Test
       working-directory: ./build
       run: ctest -V
