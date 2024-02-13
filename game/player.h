@@ -1,11 +1,11 @@
-#pragma  once
+#pragma once
 
-#include "body_part.h"
+#include <SDL2/SDL_rect.h>
+#include <SDL2/SDL_render.h>
 
 namespace Players {
-  
   struct Node{
-    BodyParts::BodyPart *value;
+    SDL_Rect *value;
     Node* next;
   };
 
@@ -14,7 +14,6 @@ namespace Players {
   
   class Player{
     public:
-      Player();
       Player(unsigned int score_step, unsigned int max_score);
       void direction_up();
       void direction_down();
@@ -29,33 +28,30 @@ namespace Players {
       int get_mov_x();
       int get_mov_y();
       void update_position();
-      Players::LinkedList* get_body();
-      bool is_game_over();
-      bool has_won();
+      bool is_die();
       ~Player(); 
+      void render(SDL_Renderer* render);
 
     private:
       unsigned int x, y;
-      unsigned int score = 0;
-      unsigned int score_step = 100;
-      unsigned int max_score = 10000;
+      unsigned int score=0;
+      unsigned int score_step=100;
+      unsigned int max_score=10000;
       unsigned int size = 1;
-      int mov_x = 0;
-      int mov_y = 0;
+      int mov_x=0;
+      int mov_y=0;
       int last_tick;
-      Players::LinkedList* player = new Players::LinkedList;
-      Players::Node* head = nullptr;
-      Players::Node* tail = nullptr;
-      bool game_over = false;
-      bool won = false;
+      LinkedList* player = new LinkedList;
+      Node* head = nullptr;
+      Node* tail = nullptr;
+      bool died=false;
       void randomize_position();
       void update_size();
-      Players::Node* create_body_part(unsigned int x, unsigned int y);
+      Node* create_body_part(unsigned int x, unsigned int y);
       void add_body_part(unsigned int x, unsigned int y);
-      void check_game_over();
+      void check_died();
       bool border_head_collision();
       bool head_tail_collision();
-      void check_won();
   };
   
 };
