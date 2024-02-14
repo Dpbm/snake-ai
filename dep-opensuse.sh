@@ -1,5 +1,9 @@
 #!/usr/bin/sh
 
+sudo zypper refresh
+sudo zypper ref
+sudo zypper update
+sudo zypper patch
 sudo zypper install libSDL2-2_0-0 \
   libSDL2-devel \
   cmake \
