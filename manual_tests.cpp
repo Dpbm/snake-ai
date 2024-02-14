@@ -1,6 +1,5 @@
 #include "helpers/constants.h"
 #include "game/food.h"
-#include "game/gui.h"
 #include "game/player.h"
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_keycode.h>
