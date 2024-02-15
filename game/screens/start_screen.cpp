@@ -8,10 +8,12 @@
 #include <cstdlib>
 #include "start_screen.h"
 #include "../../helpers/constants.h"
+#include "player_screen.h"
 
 using std::exit;
 using std::cout;
 using std::endl;
+using GamePlayerScreen::PlayerScreen;
 
 namespace GameStartScreen {  
   TTF_Font* font;
@@ -71,14 +73,14 @@ namespace GameStartScreen {
       case SDLK_a:
         break; //TODO: add a pointer to functions, and here this set the pointer to the function of ai
       case SDLK_d:
-        break;
+        return new PlayerScreen;
       default:
         break;
     }
     return nullptr;
   }
 
-  void StartScreen::execute(SDL_Renderer* render){
+  void StartScreen::execute(SDL_Renderer* render, bool& game_loop){
     SDL_RenderClear(render);
     SDL_RenderCopy(render, this->title_texture, NULL, this->title_shape);
     SDL_RenderCopy(render, this->ai_texture, NULL, this->ai_shape);

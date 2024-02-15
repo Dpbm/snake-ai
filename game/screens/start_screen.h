@@ -15,7 +15,7 @@ namespace GameStartScreen {
     public:
       StartScreen(SDL_Renderer* render);
       ~StartScreen();
-      void execute(SDL_Renderer* render);
+      void execute(SDL_Renderer* render, bool& game_loop);
       Screen* key_event(const SDL_Keycode& key);
     
     private:

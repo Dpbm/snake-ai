@@ -33,14 +33,11 @@ int main(){
     SDL_WINDOW_ALLOW_HIGHDPI);
   SDL_Renderer* render = SDL_CreateRenderer(window, 1, 0);
   SDL_Event *event = new SDL_Event;
-  Food *food = new Food;
-
-  unsigned int max_score = 1000;
-  Player* player = new Player(10, max_score);
-
   Screen* screen = new StartScreen(render);
 
-  while(true){
+  bool game_loop = true;
+
+  while(game_loop){
     SDL_PollEvent(event);
     
     if(event->type == SDL_QUIT) 
@@ -57,62 +54,9 @@ int main(){
       }
     }
 
-
     SDL_RenderClear(render);
-    screen->execute(render);
+    screen->execute(render, game_loop);
     SDL_RenderPresent(render);
-
-
-
-    /*else if(event->type == SDL_KEYDOWN){
-      switch (event->key.keysym.sym) {
-        case SDLK_w:
-          player->direction_up();
-          break;
-
-        case SDLK_s:
-          player->direction_down();
-          break;
-
-        case SDLK_d:
-          player->direction_right();
-          break;
-
-        case SDLK_a:
-          player->direction_left();
-          break;
-
-        case SDLK_ESCAPE:
-          playing = false;
-          break;
-        
-        default: break;
-      }
-    }    
-
-    player->update_position();
-   
-
-    if(player->is_die()){
-      cout << "GAME OVER!" << endl;
-      break;
-    }else if(player->get_score() >= max_score){
-      cout << "WON!" << endl;
-      break;
-    }
-    
-    if(player->collision(food->get_x(), food->get_y())){
-      food->update_position();
-      player->update_score();
-      cout << "Player score: " << player->get_score() << endl;
-    }
-
-    SDL_RenderClear(render);
-    SDL_RenderCopy(render, text_texture, NULL, title_shape);
-    food->render(render);
-    player->render(render);
-    SDL_RenderPresent(render);
-  */
   }
 
   SDL_DestroyWindow(window);
@@ -121,8 +65,6 @@ int main(){
   TTF_Quit();
   delete screen;
   delete event;
-  delete food;
-  delete player;
 
   return 0;
 }
