@@ -10,11 +10,15 @@
 #include "helpers/constants.h"
 #include "game/player.h"
 #include "game/food.h"
+#include "game/screens/screens.h"
+#include "game/screens/start_screen.h"
 
 using std::cout;
 using std::endl;
 using Foods::Food;
 using Players::Player;
+using Screens::Screen;
+using GameStartScreen::StartScreen;
 
 int main(){
   //TODO: Check for SDL errors
@@ -31,36 +35,36 @@ int main(){
   SDL_Event *event = new SDL_Event;
   Food *food = new Food;
 
-  bool playing = true;
   unsigned int max_score = 1000;
   Player* player = new Player(10, max_score);
-  
-  TTF_Font* text_font = TTF_OpenFont("./assets/roboto.ttf", 16);
-  if(!text_font){
-    cout << "Failed on getting font!" << endl;
-    cout << TTF_GetError() << endl;
-    return 1;
-  }
 
-  SDL_Color Foreground = { 255, 255, 255 };
-  SDL_Color Background = { 0, 0, 0 };
-  
-  SDL_Surface* text_surface = TTF_RenderText_Solid(text_font, "Hello world!", Foreground);
-  SDL_Texture* text_texture = SDL_CreateTextureFromSurface(render, text_surface);
-  SDL_FreeSurface(text_surface);
+  Screen* screen = new StartScreen(render);
 
-  SDL_Rect* text_shape = new SDL_Rect;
-  text_shape->x = 10;
-  text_shape->y = 10;
-  text_shape->h = 200;
-  text_shape->w = 200;
-
-  while(playing){
+  while(true){
     SDL_PollEvent(event);
-
+    
     if(event->type == SDL_QUIT) 
       break;
     else if(event->type == SDL_KEYDOWN){
+      if(event->key.keysym.sym == SDLK_ESCAPE) 
+        break;
+      
+      Screen* changed_screen = screen->key_event(event->key.keysym.sym);
+      if(changed_screen != nullptr){
+        delete screen;
+        screen = changed_screen;
+        continue;
+      }
+    }
+
+
+    SDL_RenderClear(render);
+    screen->execute(render);
+    SDL_RenderPresent(render);
+
+
+
+    /*else if(event->type == SDL_KEYDOWN){
       switch (event->key.keysym.sym) {
         case SDLK_w:
           player->direction_up();
@@ -104,21 +108,21 @@ int main(){
     }
 
     SDL_RenderClear(render);
-    SDL_RenderCopy(render, text_texture, NULL, text_shape);
+    SDL_RenderCopy(render, text_texture, NULL, title_shape);
     food->render(render);
     player->render(render);
     SDL_RenderPresent(render);
+  */
   }
 
   SDL_DestroyWindow(window);
   SDL_DestroyRenderer(render);
-  SDL_DestroyTexture(text_texture);
   SDL_Quit();
   TTF_Quit();
+  delete screen;
   delete event;
   delete food;
   delete player;
-  delete text_shape;
 
   return 0;
 }

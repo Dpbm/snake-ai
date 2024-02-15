@@ -31,8 +31,11 @@ add_library(helpers ${HELPERS_FILES})
 target_link_libraries(helpers ${SDL2_LIBRARIES})
 
 file(GLOB GAME_FILES "game/*.cpp")
+file(GLOB SCREENS_FILES "game/screens/*.cpp")
 add_library(game ${GAME_FILES})
-target_link_libraries(game helpers ${SDL2_LIBRARIES} SDL2_ttf)
+add_library(screens ${SCREENS_FILES})
+target_link_libraries(screens helpers ${SDL2_LIBRARIES} SDL2_ttf)
+target_link_libraries(game helpers screens ${SDL2_LIBRARIES})
 
 file(GLOB GENETIC_FILES "genetic/*.cpp")
 add_library(genetic ${GENETIC_FILES})
