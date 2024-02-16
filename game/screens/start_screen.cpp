@@ -9,11 +9,13 @@
 #include "start_screen.h"
 #include "../../helpers/constants.h"
 #include "player_screen.h"
+#include "ai_screen.h"
 
 using std::exit;
 using std::cout;
 using std::endl;
 using GamePlayerScreen::PlayerScreen;
+using GameAIScreen::AIScreen;
 
 namespace GameStartScreen {  
   TTF_Font* font;
@@ -71,7 +73,7 @@ namespace GameStartScreen {
   Screen* StartScreen::key_event(const SDL_Keycode& key){
     switch (key) {
       case SDLK_a:
-        break; //TODO: add a pointer to functions, and here this set the pointer to the function of ai
+        return new AIScreen;
       case SDLK_d:
         return new PlayerScreen;
       default:
