@@ -201,19 +201,6 @@ namespace {
     delete matrix_2;
   }
 
-  TEST(UpdateTest, TransposeTest){
-    Matrix<double>* matrix = new Matrix<double>(2, 1);
-    matrix->map_to_a_single_value(0);
-    matrix->transpose();
-    
-    ASSERT_EQ(matrix->get_width(), 1);
-    ASSERT_EQ(matrix->get_height(), 2);
-    ASSERT_EQ(matrix->get_position_value(0, 0), 0);
-    ASSERT_EQ(matrix->get_position_value(1, 0), 0);
-    EXPECT_THROW({ matrix->get_position_value(0, 1); }, invalid_argument);
-    delete matrix;
-  }
-
   TEST(UpdateTest, UpdateGeneMatrixValuesTest){
     Matrix<Gene>* matrix = new Matrix<Gene>(1);
     matrix->update_value(0, 0, 10);
@@ -245,15 +232,4 @@ namespace {
     delete matrix;
   }
   
-  TEST(UpdateTest, TransposeForGenesTest){
-    Matrix<Gene>* matrix = new Matrix<Gene>(2, 1);
-    matrix->map_to_a_single_value(0);
-    matrix->transpose();
-    
-    ASSERT_EQ(matrix->get_width(), 1);
-    ASSERT_EQ(matrix->get_height(), 2);
-    ASSERT_EQ(matrix->get_position_value(0, 0), 0);
-    ASSERT_EQ(matrix->get_position_value(1, 0), 0);
-    EXPECT_THROW({ matrix->get_position_value(0, 1); }, invalid_argument);
-  }
 }  

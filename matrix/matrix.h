@@ -20,7 +20,6 @@ namespace Matrices {
       double* get_column(unsigned int j) const;
       void show();
       ~Matrix();
-      void transpose();
       void map_to_a_single_value(double value);
     
     private:

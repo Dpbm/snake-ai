@@ -119,34 +119,6 @@ namespace Matrices{
     this->clear_pointers();
   }
   
-  template <> void Matrix<double>::transpose(){
-    double** transposed_matrix = this->generate_matrix_body(this->height, this->width);
-    for(unsigned int i = 0; i < this->height; i++)
-      for(unsigned int j = 0; j < this->width; j++)
-        transposed_matrix[j][i] = this->get_position_value(i, j);
-    
-    unsigned int tmp = this->height;
-    this->height = this->width;
-    this->width = tmp;
-
-    this->clear_pointers();
-    this->matrix = transposed_matrix;
-  }
-  
-  template <> void Matrix<Gene>::transpose(){
-    Gene** transposed_matrix = this->generate_matrix_body(this->height, this->width);
-    for(unsigned int i = 0; i < this->height; i++)
-      for(unsigned int j = 0; j < this->width; j++)
-        transposed_matrix[j][i].set_gene_value(this->get_position_value(i, j)); //TODO: check it later (maybe it's not in the heap)
-      
-    unsigned int tmp = this->height;
-    this->height = this->width;
-    this->width = tmp;
-    
-    this->clear_pointers();
-    this->matrix = transposed_matrix;
-  }
-
   template <typename T> void Matrix<T>::clear_pointers(){
     delete[] this->matrix;
   }

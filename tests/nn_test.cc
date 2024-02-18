@@ -151,8 +151,8 @@ namespace {
     NN* nn = new NN;
     nn->add_layer(1);
     nn->add_layer(2);
-    ASSERT_EQ(nn->get_weight(0)->get_width(), 1);
-    ASSERT_EQ(nn->get_weight(0)->get_height(), 2);
+    ASSERT_EQ(nn->get_weight(0)->get_width(), 2);
+    ASSERT_EQ(nn->get_weight(0)->get_height(), 1);
     delete nn;
   }
 
