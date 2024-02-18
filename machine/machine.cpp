@@ -38,7 +38,7 @@ namespace Machine {
    
     unsigned int first_layer_size = layers->at(this->total_layers-2)->get_size(); 
     unsigned int second_layer_size = layers->at(this->total_layers-1)->get_size();
-    this->weights->push_back(new Weights(first_layer_size, second_layer_size));
+    this->weights->push_back(new Weights(second_layer_size, first_layer_size));
     this->total_weights++;
   }
 
@@ -102,9 +102,7 @@ namespace Machine {
       Matrix<Gene>* layer_weights = this->get_weight(layer)->get_weights();
 
       Matrix<double>* dot_product_result = (*layer_values) * (*layer_weights);
-      dot_product_result->transpose();
       next_layer->set_values(dot_product_result);
-      
       next_layer->activate_neurons();
     }
   }

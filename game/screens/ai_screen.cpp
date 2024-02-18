@@ -7,60 +7,143 @@
 #include "../food.h"
 #include "screens.h"
 #include "../../helpers/constants.h"
+#include "../../helpers/utils.h"
+#include "../../machine/machine.h"
+#include "../../machine/layer.h"
+#include "../../machine/activation.h"
+#include "../../matrix/matrix.h"
 
 using std::cout;
 using std::endl;
-using std::abs;
+using std::sqrt;
+using std::pow;
 using Players::Player;
 using Foods::Food;
 using Screens::Screen;
+using Utils::random_int;
+using Machine::NN;
+using Layers::Layer;
+using Activations::relu;
+using Activations::sigmoid;
+using Matrices::Matrix;
 
 namespace GameAIScreen {
   Player* player;
   Food* food;
   bool debug;
-
+  unsigned int max_score;
+  NN* nn;
+  Layer* input_layer;
+  Matrix<double>* input_data;
 
   AIScreen::AIScreen(){
-    //this->player->direction_right();
+    switch (random_int(0, 3)) {
+      case 0:
+        this->player->direction_right();
+        break;
+      
+      case 1:
+        this->player->direction_up();
+        break;
+    
+      case 2:
+        this->player->direction_left();
+        break;
+      
+      default:
+        this->player->direction_down();
+        break;    
+    }
+    
+    this->nn->add_layer(this->input_layer);
+    this->nn->add_layer(15);
+    this->nn->add_layer(15);
+    this->nn->add_layer(4);
+    this->nn->get_layer(1)->set_activation_function(sigmoid);
+    this->nn->get_layer(2)->set_activation_function(relu);
+    this->nn->get_layer(3)->set_activation_function(sigmoid);
+    this->input_layer->set_values(this->input_data);
   }
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
-    this->player->update_position();
+    nn->feedforward();
    
+    Matrix<double>* result = nn->get_layer(3)->get_values();
+   
+    result->show();
+
+    double biggest = 0;
+    unsigned int direction = 0;
+    for(unsigned int i = 0; i < 4; i++){
+      double actual_value = result->get_position_value(0, i);
+      if(actual_value > biggest){
+        biggest = actual_value;
+        direction = i;
+      }
+    }
+
+    switch (direction) {
+      case 0:
+        this->player->direction_up();
+        break;
+      
+      case 1:
+        this->player->direction_down();
+        break;
+
+      case 2:
+        this->player->direction_left();
+        break;
+
+      default:
+        this->player->direction_right();
+        break;
+    }
+
+
     int px = player->get_x();
     int py = player->get_y();
     int fx = food->get_x();
     int fy = food->get_y();
 
-    int frontal_sensor = WIDTH-px;
-    int back_sensor = px;
-    int top_sensor = py;
-    int bottom_sensor = HEIGHT-py;
-    int food_sensor = sqrt(pow(px-fx, 2) + pow(py-fy,2));
+    int px_offset = PLAYER_W/2;
+    int py_offset = PLAYER_H/2;
+    int fx_offset = FOOD_W/2;
+    int fy_offset = FOOD_H/2;
 
-
-    cout << "----SENSORS---" << endl;
-    cout << "Frontal Sensor: " << frontal_sensor << endl; 
-    cout << "Back Sensor: " << back_sensor << endl; 
-    cout << "Top Sensor: " << top_sensor << endl; 
-    cout << "Bottom Sensor: " << bottom_sensor << endl; 
-    cout << "Food Sensor: " << food_sensor << endl << endl; 
-
+    this->input_data->update_value(0, 0, (double)WIDTH-px);
+    this->input_data->update_value(0, 1, (double)px);
+    this->input_data->update_value(0, 2, (double)py);
+    this->input_data->update_value(0, 3, (double)HEIGHT-py);
+    this->input_data->update_value(0, 4, sqrt(pow(px-fx, 2) + pow(py-fy, 2)));
+    this->input_data->update_value(0, 5, (double)this->player->get_mov_x());
+    this->input_data->update_value(0, 6, (double)this->player->get_mov_y());
+    
     if(this->debug){
       SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
-      SDL_RenderDrawLine(render, px, py+(PLAYER_H/2), WIDTH, py+(PLAYER_H/2));
-      SDL_RenderDrawLine(render, 0, py+(PLAYER_H/2), px, py+(PLAYER_H/2));
-      SDL_RenderDrawLine(render, px+(PLAYER_W/2), 0, px+(PLAYER_W/2), py);
-      SDL_RenderDrawLine(render, px+(PLAYER_W/2), py, px+(PLAYER_W/2), HEIGHT);
-      SDL_RenderDrawLine(render, px+(PLAYER_H/2), py+(PLAYER_W/2), food->get_x()+(FOOD_H/2), food->get_y()+(FOOD_W/2));
+      SDL_RenderDrawLine(render, px, py+py_offset, WIDTH, py+py_offset);
+      SDL_RenderDrawLine(render, 0, py+py_offset, px, py+py_offset);
+      SDL_RenderDrawLine(render, px+px_offset, 0, px+px_offset, py);
+      SDL_RenderDrawLine(render, px+px_offset, py, px+px_offset, HEIGHT);
+      SDL_RenderDrawLine(render, px+py_offset, py+px_offset, fx+fx_offset, fy+fy_offset);
     }
+  
 
+    this->player->update_position();
     if(this->player->is_die()){
       cout << "GAME OVER!" << endl;
       game_loop = false;
+    }else if(this->player->get_score() >= this->max_score){
+      cout << "WON!" << endl;
+      game_loop = false;
     }
-
+    
+    if(this->player->collision(this->food->get_x(), this->food->get_y())){
+      this->food->update_position();
+      this->player->update_score();
+      cout << "AI score: " << this->player->get_score() << endl;
+    }
+    
     this->food->render(render);
     this->player->render(render);
   }
@@ -97,5 +180,6 @@ namespace GameAIScreen {
   AIScreen::~AIScreen(){
     delete this->player;
     delete this->food;
+    delete this->nn;
   }
 }
