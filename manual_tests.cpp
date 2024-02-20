@@ -7,6 +7,9 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include "helpers/utils.h"
+#include "machine/machine.h"
+#include "machine/weights.h"
 #include "matrix/matrix.h"
 #include "genetic/gene.h"
 #include "genetic/chromosome.h"
@@ -72,8 +75,13 @@ int main(){
   Matrix<double>* matrix_1 = new Matrix<double>(3, 1);
   Matrix<Gene>* matrix_2 = new Matrix<Gene>(2, 3);
   matrix_1->map_to_a_single_value(1);
-  std::cout << "chahahha" << std::endl;
   matrix_2->show();
+
+  std::cout << "test with chromosome and weights" << std::endl;
+  Weights* weights = new Weights(3, 3);
+  weights->get_weights()->show();
+  Chromosomes::Chromosome* weights_chromosome = new Chromosomes::Chromosome(Utils::weights_to_genes_vector(weights->get_weights()), 100);
+  weights_chromosome->show();
   //std::cout << "first" << std::endl;
   //matrix->show();
   /*std::cout << "second" << std::endl;

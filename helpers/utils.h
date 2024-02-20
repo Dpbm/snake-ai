@@ -1,8 +1,14 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
+#include "../matrix/matrix.h"
+#include "../genetic/gene.h"
 
+using std::vector;
 using std::string;
+using Matrices::Matrix;
+using Genes::Gene;
 
 namespace Utils {
   unsigned int get_random_pos(unsigned int max_range, unsigned int factor);
@@ -11,4 +17,5 @@ namespace Utils {
   bool passed_debounce_time(int last_tick);
   void append_to_file(string filename, string data);
   void create_file(string filename, string data);
+  vector<Gene*>* weights_to_genes_vector(Matrix<Gene>* weights);
 }

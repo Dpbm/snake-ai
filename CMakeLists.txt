@@ -28,7 +28,7 @@ add_subdirectory(machine)
 
 file(GLOB HELPERS_FILES "helpers/*.cpp")
 add_library(helpers ${HELPERS_FILES})
-target_link_libraries(helpers ${SDL2_LIBRARIES})
+target_link_libraries(helpers genetic matrix ${SDL2_LIBRARIES})
 
 file(GLOB GENETIC_FILES "genetic/*.cpp")
 add_library(genetic ${GENETIC_FILES})
@@ -46,7 +46,7 @@ file(GLOB GAME_FILES "game/*.cpp")
 file(GLOB SCREENS_FILES "game/screens/*.cpp")
 add_library(game ${GAME_FILES})
 add_library(screens ${SCREENS_FILES})
-target_link_libraries(screens game machine matrix helpers ${SDL2_LIBRARIES} SDL2_ttf)
+target_link_libraries(screens genetic game machine matrix helpers ${SDL2_LIBRARIES} SDL2_ttf)
 target_link_libraries(game helpers screens ${SDL2_LIBRARIES})
 
 
