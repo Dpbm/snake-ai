@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <vector>
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_render.h>
 #include "ai_screen.h"
@@ -12,7 +13,10 @@
 #include "../../machine/layer.h"
 #include "../../machine/activation.h"
 #include "../../matrix/matrix.h"
+#include "../../genetic/chromosome.h"
+#include "../../genetic/gene.h"
 
+using std::vector;
 using std::cout;
 using std::endl;
 using std::sqrt;
@@ -21,11 +25,15 @@ using Players::Player;
 using Foods::Food;
 using Screens::Screen;
 using Utils::random_int;
+using Utils::weights_to_genes_vector;
+using Utils::concat_vectors;
 using Machine::NN;
 using Layers::Layer;
 using Activations::relu;
 using Activations::sigmoid;
 using Matrices::Matrix;
+using Chromosomes::Chromosome;
+using Genes::Gene;
 
 namespace GameAIScreen {
   Player* player;
@@ -35,6 +43,7 @@ namespace GameAIScreen {
   NN* nn;
   Layer* input_layer;
   Matrix<double>* input_data;
+  Chromosome* chromosome;
 
   AIScreen::AIScreen(){
     switch (random_int(0, 3)) {
@@ -59,10 +68,16 @@ namespace GameAIScreen {
     this->nn->add_layer(15);
     this->nn->add_layer(15);
     this->nn->add_layer(4);
+    
     this->nn->get_layer(1)->set_activation_function(sigmoid);
     this->nn->get_layer(2)->set_activation_function(relu);
     this->nn->get_layer(3)->set_activation_function(sigmoid);
     this->input_layer->set_values(this->input_data);
+    
+    vector<Gene*>* genes = new vector<Gene*>;
+    for(Weights* weight : *(this->nn->get_weights()))
+      concat_vectors<Gene*>(genes, weights_to_genes_vector(weight->get_weights()), genes); 
+    this->chromosome = new Chromosome(genes, 100);
   }
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
@@ -70,8 +85,8 @@ namespace GameAIScreen {
    
     Matrix<double>* result = nn->get_layer(3)->get_values();
    
-    result->show();
-
+    //result->show();
+    this->chromosome->show();
     double biggest = 0;
     unsigned int direction = 0;
     for(unsigned int i = 0; i < 4; i++){
@@ -181,5 +196,7 @@ namespace GameAIScreen {
     delete this->player;
     delete this->food;
     delete this->nn;
+    //TODO: see another way to clean these pointers
+    this->chromosome->clear_gene_vector_pointer();
   }
 }

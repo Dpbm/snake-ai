@@ -20,6 +20,7 @@ namespace Chromosomes {
       void update_points(int factor);
       unsigned int get_size();
       int get_points();
+      void clear_gene_vector_pointer();
       ~Chromosome();
     
     private:

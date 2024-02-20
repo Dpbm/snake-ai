@@ -18,4 +18,5 @@ namespace Utils {
   void append_to_file(string filename, string data);
   void create_file(string filename, string data);
   vector<Gene*>* weights_to_genes_vector(Matrix<Gene>* weights);
+  template <typename T> void concat_vectors(vector<T>* vector_a, vector<T>* vector_b, vector<T>* target_vector);
 }

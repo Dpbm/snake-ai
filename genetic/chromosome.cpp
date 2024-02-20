@@ -103,6 +103,10 @@ namespace Chromosomes {
   Chromosome::~Chromosome(){
     for(Gene* gene : (*this->genes))
       delete gene;
+    this->clear_gene_vector_pointer();
+  }
+  
+  void Chromosome::clear_gene_vector_pointer(){
     delete this->genes;
   }
 
