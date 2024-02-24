@@ -19,6 +19,7 @@ namespace GameStartScreen {
       Screen* key_event(const SDL_Keycode& key);
     
     private:
+      SDL_Renderer* render = nullptr;
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 35);
       SDL_Color* text_color = new SDL_Color{ 255, 255, 255 };
       
