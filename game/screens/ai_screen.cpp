@@ -1,8 +1,11 @@
 #include <cmath>
 #include <iostream>
+#include <string>
 #include <vector>
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_surface.h>
 #include "ai_screen.h"
 #include "../player.h"
 #include "../food.h"
@@ -16,6 +19,7 @@
 #include "../../genetic/chromosome.h"
 #include "../../genetic/gene.h"
 
+using std::to_string;
 using std::vector;
 using std::cout;
 using std::endl;
@@ -44,8 +48,34 @@ namespace GameAIScreen {
   Layer* input_layer;
   Matrix<double>* input_data;
   Chromosome* chromosome;
+  SDL_Rect* score_text_shape;
+  SDL_Rect* score_shape;
+  SDL_Texture* score_text_texture;
+  SDL_Texture* score_texture;
 
-  AIScreen::AIScreen(){
+  AIScreen::AIScreen(SDL_Renderer* render){
+    if(!this->font){
+      cout << "Failed on getting font!" << endl;
+      cout << TTF_GetError() << endl;
+      exit(1);
+    }
+    SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "AI Score ", *this->text_color);
+    this->score_text_texture = SDL_CreateTextureFromSurface(render, score_text_surface);
+    this->score_text_shape->x = 20;
+    this->score_text_shape->y = 20;
+    this->score_text_shape->h = score_text_surface->h;
+    this->score_text_shape->w = score_text_surface->w;
+    
+    SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, "0", *this->text_color);
+    this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
+    this->score_shape->x = score_text_shape->w + 20;
+    this->score_shape->y = 20;
+    this->score_shape->h = score_surface->h;
+    this->score_shape->w = score_surface->w;
+    
+    SDL_FreeSurface(score_text_surface);
+    SDL_FreeSurface(score_surface);
+    
     switch (random_int(0, 3)) {
       case 0:
         this->player->direction_right();
@@ -148,17 +178,30 @@ namespace GameAIScreen {
     if(this->player->is_die()){
       cout << "GAME OVER!" << endl;
       game_loop = false;
+      return;
     }else if(this->player->get_score() >= this->max_score){
       cout << "WON!" << endl;
       game_loop = false;
+      return;
     }
     
     if(this->player->collision(this->food->get_x(), this->food->get_y())){
       this->food->update_position();
       this->player->update_score();
-      cout << "AI score: " << this->player->get_score() << endl;
+
+      unsigned int ai_score = this->player->get_score();
+      SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(ai_score).c_str(), *this->text_color);
+      SDL_DestroyTexture(this->score_texture);
+      this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
+      this->score_shape->h = score_surface->h;
+      this->score_shape->w = score_surface->w;
+      SDL_FreeSurface(score_surface);
+    
+      cout << "AI score: " << ai_score << endl;
     }
     
+    SDL_RenderCopy(render, this->score_text_texture, NULL, this->score_text_shape);
+    SDL_RenderCopy(render, this->score_texture, NULL, this->score_shape);
     this->food->render(render);
     this->player->render(render);
   }
@@ -193,10 +236,15 @@ namespace GameAIScreen {
   }
   
   AIScreen::~AIScreen(){
+    SDL_DestroyTexture(this->score_texture);
+    SDL_DestroyTexture(this->score_text_texture);
     delete this->player;
     delete this->food;
     delete this->nn;
     //TODO: see another way to clean these pointers
     this->chromosome->clear_gene_vector_pointer();
+    delete this->text_color;
+    delete this->score_text_shape;
+    delete this->score_shape;
   }
 }

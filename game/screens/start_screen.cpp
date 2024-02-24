@@ -66,7 +66,7 @@ namespace GameStartScreen {
   Screen* StartScreen::key_event(const SDL_Keycode& key){
     switch (key) {
       case SDLK_a:
-        return new AIScreen;
+        return new AIScreen(this->render);
       case SDLK_d:
         return new PlayerScreen(this->render);
       default:
