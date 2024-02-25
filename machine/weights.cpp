@@ -21,7 +21,7 @@ namespace NNWeights {
   }
 
   void Weights::load_weights(Matrix<Gene>* weights){
-    this->Weights::clear_pointers();
+    delete this->weights;
     this->width = weights->get_width();
     this->height = weights->get_height();
     this->weights = weights;
@@ -48,12 +48,8 @@ namespace NNWeights {
     return this->weights;
   }
 
-  void Weights::clear_pointers(){
-    delete this->weights;
-  }
-
   Weights::~Weights(){ 
-    this->Weights::clear_pointers();
+    delete this->weights;
   }
 
   unsigned int Weights::get_height(){

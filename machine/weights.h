@@ -23,7 +23,6 @@ namespace NNWeights {
     private:
       unsigned int width, height;
       Matrix<Gene> *weights;
-      void clear_pointers();
 
   };
 };

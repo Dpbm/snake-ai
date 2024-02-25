@@ -3,6 +3,7 @@
 #include "matrix.h"
 #include "../genetic/gene.h"
 
+using std::invalid_argument;
 using Genes::Gene;
 
 namespace Matrices{
@@ -34,7 +35,7 @@ namespace Matrices{
   template<> 
   void Matrix<double>::update_value(unsigned int i, unsigned int j, double value){
     if(i >= this->height || j >= this->width)
-      throw std::invalid_argument("i and j must be a value within the bounds of the matrix"); 
+      throw invalid_argument("i and j must be a value within the bounds of the matrix"); 
 
     this->matrix[i][j] = value;
   }
@@ -42,7 +43,7 @@ namespace Matrices{
   template<> 
   void Matrix<Gene>::update_value(unsigned int i, unsigned int j, double value){
     if(i >= this->height || j >= this->width)
-      throw std::invalid_argument("i and j must be a value within the bounds of the matrix"); 
+      throw invalid_argument("i and j must be a value within the bounds of the matrix"); 
 
     this->matrix[i][j].set_gene_value(value);
   }
@@ -51,14 +52,14 @@ namespace Matrices{
   template <> 
   double Matrix<double>::get_position_value(unsigned int i, unsigned int j) const {
     if(i >= this->height || j >= this->width) 
-      throw std::invalid_argument("i and j must be a value within the bounds of the matrix");
+      throw invalid_argument("i and j must be a value within the bounds of the matrix");
     return this->matrix[i][j];
   }
   
   template <> 
   double Matrix<Gene>::get_position_value(unsigned int i, unsigned int j) const {
     if(i >= this->height || j >= this->width) 
-      throw std::invalid_argument("i and j must be a value within the bounds of the matrix");
+      throw invalid_argument("i and j must be a value within the bounds of the matrix");
     return this->matrix[i][j].get_gene_value();
   }
 
@@ -89,7 +90,7 @@ namespace Matrices{
   template<> 
   Matrix<double>* Matrix<double>::operator *(const Matrix<Gene>& another_matrix){
     if(this->width != another_matrix.get_height())
-      throw std::invalid_argument("The first matrix's width must be equal to the second's height!");
+      throw invalid_argument("The first matrix's width must be equal to the second's height!");
     
     // here's also a better idea to instanciate in the heap
     unsigned int second_matrix_width = another_matrix.get_width();
@@ -123,6 +124,8 @@ namespace Matrices{
   }
 
   template <typename T> Matrix<T>::~Matrix(){
+    for(unsigned int i = 0; i < this->height; i++)
+      delete[] this->matrix[i];
     delete[] this->matrix;
   }
   

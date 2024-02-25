@@ -93,7 +93,6 @@ namespace GameAIScreen {
         this->player->direction_down();
         break;    
     }
-    
     this->nn->add_layer(this->input_layer);
     this->nn->add_layer(15);
     this->nn->add_layer(15);
@@ -103,20 +102,19 @@ namespace GameAIScreen {
     this->nn->get_layer(2)->set_activation_function(relu);
     this->nn->get_layer(3)->set_activation_function(sigmoid);
     this->input_layer->set_values(this->input_data);
-    
+    /*
     vector<Gene*>* genes = new vector<Gene*>;
     for(Weights* weight : *(this->nn->get_weights()))
       concat_vectors<Gene*>(genes, weights_to_genes_vector(weight->get_weights()), genes); 
-    //this->chromosome = new Chromosome(genes, 100);
+    this->chromosome = new Chromosome(genes, 100);*/
   }
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
-    nn->feedforward();
-   
-    Matrix<double>* result = nn->get_layer(3)->get_values();
+    this->nn->feedforward();
+    //Matrix<double>* result = nn->get_layer(3)->get_values();
     //result->show();
     //this->chromosome->show();
-    double biggest = 0;
+    /*double biggest = 0;
     unsigned int direction = 0;
     for(unsigned int i = 0; i < 4; i++){
       double actual_value = result->get_position_value(0, i);
@@ -124,8 +122,8 @@ namespace GameAIScreen {
         biggest = actual_value;
         direction = i;
       }
-    }
-
+    }*/
+    /*
     switch (direction) {
       case 0:
         this->player->direction_up();
@@ -143,7 +141,7 @@ namespace GameAIScreen {
         this->player->direction_right();
         break;
     }
-
+*/
 
     int px = player->get_x();
     int py = player->get_y();
@@ -154,7 +152,7 @@ namespace GameAIScreen {
     int py_offset = PLAYER_H/2;
     int fx_offset = FOOD_W/2;
     int fy_offset = FOOD_H/2;
-
+    /*
     this->input_data->update_value(0, 0, (double)WIDTH-px);
     this->input_data->update_value(0, 1, (double)px);
     this->input_data->update_value(0, 2, (double)py);
@@ -171,7 +169,7 @@ namespace GameAIScreen {
       SDL_RenderDrawLine(render, px+px_offset, py, px+px_offset, HEIGHT);
       SDL_RenderDrawLine(render, px+py_offset, py+px_offset, fx+fx_offset, fy+fy_offset);
     }
-  
+  */
 
     this->player->update_position();
     if(this->player->is_die()){
