@@ -7,7 +7,6 @@ namespace Genes {
       double get_gene_value();
       void set_gene_value(double value);
       void mutate(float rate);
-      Genes::Gene* copy();
       void operator= (double value);
       double operator+ (double value);
       double operator* (double value);

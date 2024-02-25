@@ -13,39 +13,25 @@ namespace {
   TEST(CreationTest, CreateDefaultChromosomeTest){
     Chromosome *chromosome = new Chromosome(2, 100);
     ASSERT_EQ(chromosome->get_size(), 2);
-    vector<Gene*> *genes = chromosome->get_genes();
-    ASSERT_EQ(genes->size(), 2);
     ASSERT_EQ(chromosome->get_points(), 100);
     delete chromosome;
   }
 
   TEST(CreationTest, CreateChromosomeByGenesVectorTest){
-    vector<Gene*> *genes = new vector<Gene*>;  
-    for(unsigned int i = 0; i < 5; i++)
-      genes->push_back(new Gene);
-   
-    Chromosome* chromosome = new Chromosome(genes, 100);
-    ASSERT_EQ(chromosome->get_genes()->size(), genes->size());   
+    Gene* genes = new Gene[5];  
+    Chromosome* chromosome = new Chromosome(genes, 5, 100);
+    ASSERT_EQ(chromosome->get_size(), 5);   
 
     delete chromosome;
   }
   
   TEST(ValuesTest, SliceTest){
     Chromosome *chromosome = new Chromosome(3, 100);
-    vector<Gene*> *chromosome_genes = chromosome->get_genes();  
-
-  vector<Gene*> *genes_manual = new vector<Gene*>;
-    genes_manual->push_back(chromosome_genes->at(1));
-    genes_manual->push_back(chromosome_genes->at(2));
-
-    vector<Gene*> *slice = chromosome->slice(1, 2);
-    ASSERT_EQ(slice->size(), 2);
-    ASSERT_EQ(slice->at(0)->get_gene_value(), genes_manual->at(0)->get_gene_value());
-    ASSERT_EQ(slice->at(1)->get_gene_value(), genes_manual->at(1)->get_gene_value());
+    Gene *slice = chromosome->slice(1, 2);
     
+    ASSERT_EQ(slice[0].get_gene_value(), chromosome->get_genes()[1].get_gene_value());
+    ASSERT_EQ(slice[1].get_gene_value(), chromosome->get_genes()[2].get_gene_value());
     
-    ASSERT_NE(slice->at(0), genes_manual->at(0));
-    ASSERT_NE(slice->at(1), genes_manual->at(1));
     delete chromosome;
     delete slice;
   }  
@@ -66,121 +52,85 @@ namespace {
     delete chromosome;
   }
   
-  TEST(ValuesTest, CrossoverInvalidSizeTest){
-    Chromosome *chromosome = new Chromosome(4, 100);
-    vector<Gene*>* slice = chromosome->slice(1,2); 
-    
-    EXPECT_THROW({
-      chromosome->crossover(0, 3, slice);
-    }, std::invalid_argument);
-    delete chromosome;
-  }
-  
   TEST(ValuesTest, CrossoverDisplacedFromStartTest){
-    vector<Gene*> *genes1 = new vector<Gene*>;
-    for(unsigned int i = 0; i < 4; i++){
-      Gene* gene = new Gene;
-      gene->set_gene_value(1);
-      genes1->push_back(gene);
-    }  
-    Chromosome* chromosome = new Chromosome(genes1, 100);
+    Gene *genes1 = new Gene[4];
+    for(unsigned int i = 0; i < 4; i++)
+      genes1[i].set_gene_value(1);
+    Chromosome* chromosome = new Chromosome(genes1, 4, 100);
   
-    vector<Gene*> *genes2 = new vector<Gene*>;
-    for(unsigned int i = 0; i < 3; i++){
-      Gene* gene = new Gene;
-      gene->set_gene_value(0);
-      genes2->push_back(gene);
-    }
+    Gene *genes2 = new Gene[3];
+    for(unsigned int i = 0; i < 3; i++)
+      genes2[i].set_gene_value(0);
 
     chromosome->crossover(1, 3, genes2);
 
-    ASSERT_EQ(chromosome->get_genes()->at(0)->get_gene_value(), 1);
-    ASSERT_EQ(chromosome->get_genes()->at(1)->get_gene_value(), 0);
-    ASSERT_EQ(chromosome->get_genes()->at(2)->get_gene_value(), 0);
-    ASSERT_EQ(chromosome->get_genes()->at(3)->get_gene_value(), 0);
+    ASSERT_EQ(chromosome->get_genes()[0].get_gene_value(), 1);
+    ASSERT_EQ(chromosome->get_genes()[1].get_gene_value(), 0);
+    ASSERT_EQ(chromosome->get_genes()[2].get_gene_value(), 0);
+    ASSERT_EQ(chromosome->get_genes()[3].get_gene_value(), 0);
     
     delete chromosome;
   }
 
   TEST(ValuesTest, CrossoverDisplacedFromEndTest){
-    vector<Gene*> *genes1 = new vector<Gene*>;
-    for(unsigned int i = 0; i < 4; i++){
-      Gene* gene = new Gene;
-      gene->set_gene_value(1);
-      genes1->push_back(gene);
-    }  
-    Chromosome* chromosome = new Chromosome(genes1, 100);
+    Gene *genes1 = new Gene[4];
+    for(unsigned int i = 0; i < 4; i++)
+      genes1[i].set_gene_value(1);
+    Chromosome* chromosome = new Chromosome(genes1, 4, 100);
     
   
-    vector<Gene*> *genes2 = new vector<Gene*>;
-    for(unsigned int i = 0; i < 3; i++){
-      Gene* gene = new Gene;
-      gene->set_gene_value(0);
-      genes2->push_back(gene);
-    }
+    Gene *genes2 = new Gene[3];
+    for(unsigned int i = 0; i < 3; i++)
+      genes2[i].set_gene_value(0);
 
     chromosome->crossover(0, 2, genes2);
 
-    ASSERT_EQ(chromosome->get_genes()->at(0)->get_gene_value(), 0);
-    ASSERT_EQ(chromosome->get_genes()->at(1)->get_gene_value(), 0);
-    ASSERT_EQ(chromosome->get_genes()->at(2)->get_gene_value(), 0);
-    ASSERT_EQ(chromosome->get_genes()->at(3)->get_gene_value(), 1);
+    ASSERT_EQ(chromosome->get_genes()[0].get_gene_value(), 0);
+    ASSERT_EQ(chromosome->get_genes()[1].get_gene_value(), 0);
+    ASSERT_EQ(chromosome->get_genes()[2].get_gene_value(), 0);
+    ASSERT_EQ(chromosome->get_genes()[3].get_gene_value(), 1);
     
     delete chromosome;
   }  
   
   TEST(ValuesTest, CrossoverInTheMiddleTest){
-    vector<Gene*> *genes1 = new vector<Gene*>;
-    for(unsigned int i = 0; i < 4; i++){
-      Gene* gene = new Gene;
-      gene->set_gene_value(1);
-      genes1->push_back(gene);
-    }  
-
-    Chromosome* chromosome = new Chromosome(genes1, 100);
+    Gene *genes1 = new Gene[4];
+    for(unsigned int i = 0; i < 4; i++)
+      genes1[i].set_gene_value(1);
+    Chromosome* chromosome = new Chromosome(genes1, 4, 100);
     
   
-    vector<Gene*> *genes2 = new vector<Gene*>;
-    for(unsigned int i = 0; i < 2; i++){
-      Gene* gene = new Gene;
-      gene->set_gene_value(0);
-      genes2->push_back(gene);
-    }
+    Gene *genes2 = new Gene[2];
+    for(unsigned int i = 0; i < 2; i++)
+      genes2[i].set_gene_value(0);
 
     chromosome->crossover(1,2, genes2);
 
-    ASSERT_EQ(chromosome->get_genes()->at(0)->get_gene_value(), 1);
-    ASSERT_EQ(chromosome->get_genes()->at(1)->get_gene_value(), 0);
-    ASSERT_EQ(chromosome->get_genes()->at(2)->get_gene_value(), 0);
-    ASSERT_EQ(chromosome->get_genes()->at(3)->get_gene_value(), 1);
+    ASSERT_EQ(chromosome->get_genes()[0].get_gene_value(), 1);
+    ASSERT_EQ(chromosome->get_genes()[1].get_gene_value(), 0);
+    ASSERT_EQ(chromosome->get_genes()[2].get_gene_value(), 0);
+    ASSERT_EQ(chromosome->get_genes()[3].get_gene_value(), 1);
     
     delete chromosome;
   }
 
   
   TEST(ValuesTest, CrossoverWithTheWholeChromosomeTest){
-    vector<Gene*> *genes1 = new vector<Gene*>;
-    for(unsigned int i = 0; i < 4; i++){
-      Gene* gene = new Gene;
-      gene->set_gene_value(1);
-      genes1->push_back(gene);
-    }  
-    
-    Chromosome* chromosome = new Chromosome(genes1, 100);
+    Gene *genes1 = new Gene[4];
+    for(unsigned int i = 0; i < 4; i++)
+      genes1[i].set_gene_value(1);
+    Chromosome* chromosome = new Chromosome(genes1, 4, 100);
   
-    vector<Gene*> *genes2 = new vector<Gene*>;
-    for(unsigned int i = 0; i < 4; i++){
-      Gene* gene = new Gene;
-      gene->set_gene_value(0);
-      genes2->push_back(gene);
-    }
+    Gene *genes2 = new Gene[4];
+    for(unsigned int i = 0; i < 4; i++)
+      genes2[i].set_gene_value(0);
 
     chromosome->crossover(0,3, genes2);
 
-    ASSERT_EQ(chromosome->get_genes()->at(0)->get_gene_value(), 0);
-    ASSERT_EQ(chromosome->get_genes()->at(1)->get_gene_value(), 0);
-    ASSERT_EQ(chromosome->get_genes()->at(2)->get_gene_value(), 0);
-    ASSERT_EQ(chromosome->get_genes()->at(3)->get_gene_value(), 0);
+    ASSERT_EQ(chromosome->get_genes()[0].get_gene_value(), 0);
+    ASSERT_EQ(chromosome->get_genes()[1].get_gene_value(), 0);
+    ASSERT_EQ(chromosome->get_genes()[2].get_gene_value(), 0);
+    ASSERT_EQ(chromosome->get_genes()[3].get_gene_value(), 0);
     
     delete chromosome;
   }

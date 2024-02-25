@@ -52,19 +52,6 @@ namespace {
     delete gene;
   }
 
-  TEST(ValuesTest, CopyGeneTest){
-    Gene *gene = new Gene();
-    gene->set_gene_value(100);
-    
-    Gene *copy_gene = gene->copy();
-    
-    ASSERT_EQ(gene->get_gene_value(), copy_gene->get_gene_value());
-    ASSERT_NE(gene, copy_gene);
-
-    delete gene;
-    delete copy_gene;
-  }
-
   TEST(UpdateTest, AssignOperatorTest){
     Gene* gene = new Genes::Gene();
     ASSERT_NE(gene->get_gene_value(), 10);

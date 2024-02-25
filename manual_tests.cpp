@@ -33,11 +33,11 @@ int main(){
   chromosome->mutate(0.5);
   chromosome->show();
 
-  std::vector<Genes::Gene*> *genes = chromosome->slice(3,7);
+  /**std::vector<Genes::Gene*> *genes = chromosome->slice(3,7);
   for(Genes::Gene *gene : *genes){
     std::cout << "sliced : " << gene->get_gene_value() << std::endl;
   }
-  
+  */
   Chromosomes::Chromosome *ch1 = new Chromosomes::Chromosome(size, points);
   Chromosomes::Chromosome *ch2 = new Chromosomes::Chromosome(size, points);
 
@@ -46,7 +46,7 @@ int main(){
   std::cout << "---Chromossome 2---" << std::endl;
   ch2->show();
   std::cout << "crossover"<<std::endl;
-  
+/*  
   std::vector<Genes::Gene*>* slice = ch1->slice(3,6);
   for(Genes::Gene *gene : *slice){
     std::cout <<gene->get_gene_value() << " ";
@@ -63,7 +63,7 @@ int main(){
   delete chromosome;
   delete ch1;
   delete ch2;
-  
+  */
   Populations::Population *population = new Populations::Population(10, 5, 100);
   population->show();
   std::cout << "new" << std::endl;
@@ -72,16 +72,23 @@ int main(){
   delete population;
 
 
-  Matrix<double>* matrix_1 = new Matrix<double>(3, 1);
+  /*Matrix<double>* matrix_1 = new Matrix<double>(3, 1);
   Matrix<Gene>* matrix_2 = new Matrix<Gene>(2, 3);
   matrix_1->map_to_a_single_value(1);
   matrix_2->show();
-
-  std::cout << "test with chromosome and weights" << std::endl;
+*/
+  /*std::cout << "test with chromosome and weights" << std::endl;
   Weights* weights = new Weights(3, 3);
   weights->get_weights()->show();
   Chromosomes::Chromosome* weights_chromosome = new Chromosomes::Chromosome(Utils::weights_to_genes_vector(weights->get_weights()), 100);
   weights_chromosome->show();
+*/
+  Matrix<double>* m = new Matrix<double>(1);
+  m->update_value(0, 0, 10);
+  std::cout << &m->get_matrix()[0][0] << std::endl; 
+  
+  /*Matrix<Genes::Gene>* m2 = new Matrix<Genes::Gene>(1);
+  std::cout << &m2->get_matrix()[0][0] << std::endl;*/ 
   //std::cout << "first" << std::endl;
   //matrix->show();
   /*std::cout << "second" << std::endl;

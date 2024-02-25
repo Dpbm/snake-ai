@@ -107,16 +107,15 @@ namespace GameAIScreen {
     vector<Gene*>* genes = new vector<Gene*>;
     for(Weights* weight : *(this->nn->get_weights()))
       concat_vectors<Gene*>(genes, weights_to_genes_vector(weight->get_weights()), genes); 
-    this->chromosome = new Chromosome(genes, 100);
+    //this->chromosome = new Chromosome(genes, 100);
   }
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
     nn->feedforward();
    
     Matrix<double>* result = nn->get_layer(3)->get_values();
-   
     //result->show();
-    this->chromosome->show();
+    //this->chromosome->show();
     double biggest = 0;
     unsigned int direction = 0;
     for(unsigned int i = 0; i < 4; i++){
@@ -241,8 +240,7 @@ namespace GameAIScreen {
     delete this->player;
     delete this->food;
     delete this->nn;
-    //TODO: see another way to clean these pointers
-    this->chromosome->clear_gene_vector_pointer();
+    //delete chromosome
     delete this->text_color;
     delete this->score_text_shape;
     delete this->score_shape;

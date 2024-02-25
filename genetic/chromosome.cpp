@@ -1,91 +1,78 @@
 #include <iostream>
-#include <vector>
+#include <stdexcept>
 #include "gene.h"
 #include "chromosome.h"
 
-using std::vector;
+using std::cout;
+using std::endl;
+using std::invalid_argument;
 using Genes::Gene;
 
 namespace Chromosomes {
-  vector<Gene*> *genes;
+  Gene* genes;
   unsigned int total_genes;
   int points;
 
   Chromosome::Chromosome(unsigned int size, int points){
-    this->add_genes(size);
+    this->genes = new Gene[size];
     this->total_genes = size;
     this->points = points;
   }
  
-  Chromosome::Chromosome(vector<Gene*>* genes, int points){
+  Chromosome::Chromosome(Gene* genes, unsigned int size, int points){
     this->genes = genes;
-    this->total_genes = genes->size();
+    this->total_genes = size;
     this->points = points;
   }
 
-  vector<Gene*>* Chromosome::get_genes(){
+  Gene* Chromosome::get_genes(){
     return this->genes;
-  }
-
-  void Chromosome::add_genes(unsigned int size){
-    for(unsigned int i = 0; i < size; i++)
-      this->genes->push_back(new Gene);
   }
   
   void Chromosome::mutate(float rate){
-    for(Gene *gene: (*this->genes))
-      gene->mutate(rate);
+    for(unsigned int i = 0; i < this->total_genes; i++)
+      this->genes[i].mutate(rate);
   }
  
-  vector<Gene*> *Chromosome::slice(unsigned int start, unsigned int end){
+  Gene* Chromosome::slice(unsigned int start, unsigned int end){
     if(this->total_genes == 0 || end > this->total_genes-1 || start > end)  
-      throw std::invalid_argument("Invalid slice arguments!");
+      throw invalid_argument("Invalid slice arguments!");
     
-    vector<Gene*> *chromosome_slice = new vector<Gene*>;
+    Gene *chromosome_slice = new Gene[end-start+1];
     
-    for(unsigned int i = start; i <= end; i++)
-      chromosome_slice->push_back(this->genes->at(i)->copy());    
+    for(unsigned int i = start; i <= end; i++){
+      Gene gene;
+      gene.set_gene_value(this->genes[i].get_gene_value());
+      chromosome_slice[i-start] = gene;   
+    }
     
     return chromosome_slice;
   }
 
-  void Chromosome::crossover(unsigned int start, unsigned int end, vector<Gene*> *genes_slice){
-    if(end-start+1 != genes_slice->size())
-      throw std::invalid_argument("Invalid crossover arguments!");
+  void Chromosome::crossover(unsigned int start, unsigned int end, Gene* genes_slice){
+    Gene* new_genes = new Gene[this->total_genes];
 
-    vector<Gene*>* final = new vector<Gene*>;
-    
-    if(start > 0){
-      vector<Gene*> *first = this->slice(0, start-1);
-      final->insert(final->end(), first->begin(), first->end());
-      delete first;
-    }
-    
-    // clear the old genes in the start->end positions 
-    for(unsigned int i = start; i <= end; i++)
-      delete this->genes->at(i);
-    
-    final->insert(final->end(), genes_slice->begin(), genes_slice->end());
+    for(unsigned int i = 0; i < this->total_genes; i++){
+      if(i < start || i > end)
+        new_genes[i] = this->genes[i];
+      else
+        new_genes[i] = genes_slice[i-start];
+      
+    } 
 
-    if(end < this->total_genes-1){
-      vector<Gene*> *last = this->slice(end+1, this->total_genes-1);
-      final->insert(final->end(), last->begin(), last->end());
-      delete last;
-    }
-    
-    delete this->genes;
-    this->set_genes(final);
+    delete[] this->genes;
+    this->genes = new_genes;
   }
 
-  void Chromosome::set_genes(vector<Gene*>* genes){
+  void Chromosome::set_genes(Gene* genes, unsigned int size){
     this->genes = genes;
-    this->total_genes = genes->size();
+    this->total_genes = size;
   }
 
   void Chromosome::show(){
-    for(Gene* gene: (*this->genes))
-      std::cout << gene->get_gene_value() << " ";
-    std::cout << std::endl;
+    for(unsigned int i = 0; i < this->total_genes; i++)
+      cout << this->genes[i].get_gene_value() << " ";
+    cout << endl;
   }
 
   void Chromosome::update_points(int factor){
@@ -101,14 +88,7 @@ namespace Chromosomes {
   }
   
   Chromosome::~Chromosome(){
-    for(Gene* gene : (*this->genes))
-      delete gene;
-    this->clear_gene_vector_pointer();
+    delete[] this->genes;
   }
-  
-  void Chromosome::clear_gene_vector_pointer(){
-    delete this->genes;
-  }
-
 }
 

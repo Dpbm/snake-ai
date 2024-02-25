@@ -31,14 +31,16 @@ namespace Matrices{
         this->update_value(i, j, value);
   }
  
-  template<> void Matrix<double>::update_value(unsigned int i, unsigned int j, double value){
+  template<> 
+  void Matrix<double>::update_value(unsigned int i, unsigned int j, double value){
     if(i >= this->height || j >= this->width)
       throw std::invalid_argument("i and j must be a value within the bounds of the matrix"); 
 
     this->matrix[i][j] = value;
   }
   
-  template<> void Matrix<Gene>::update_value(unsigned int i, unsigned int j, double value){
+  template<> 
+  void Matrix<Gene>::update_value(unsigned int i, unsigned int j, double value){
     if(i >= this->height || j >= this->width)
       throw std::invalid_argument("i and j must be a value within the bounds of the matrix"); 
 
@@ -46,13 +48,15 @@ namespace Matrices{
   }
 
 
-  template <> double Matrix<double>::get_position_value(unsigned int i, unsigned int j) const {
+  template <> 
+  double Matrix<double>::get_position_value(unsigned int i, unsigned int j) const {
     if(i >= this->height || j >= this->width) 
       throw std::invalid_argument("i and j must be a value within the bounds of the matrix");
     return this->matrix[i][j];
   }
   
-  template <> double Matrix<Gene>::get_position_value(unsigned int i, unsigned int j) const {
+  template <> 
+  double Matrix<Gene>::get_position_value(unsigned int i, unsigned int j) const {
     if(i >= this->height || j >= this->width) 
       throw std::invalid_argument("i and j must be a value within the bounds of the matrix");
     return this->matrix[i][j].get_gene_value();
@@ -67,6 +71,7 @@ namespace Matrices{
   }
   
   template <typename T> double* Matrix<T>::get_row(unsigned int i) const{
+    // REMEMBER TO DEALLOCATE AFTER USING THE RETURNED ROW
     double* row = new double[this->width];
     for(unsigned int j = 0; j < this->width; j++)
       row[j] = this->get_position_value(i, j);
@@ -74,13 +79,15 @@ namespace Matrices{
   }
   
   template <typename T> double* Matrix<T>::get_column(unsigned int j) const{
+    // REMEMBER TO DEALLOCATE AFTER USING THE RETURNED COLUMN
     double* column = new double[this->height];
     for(unsigned int i = 0; i < this->height; i++)
       column[i] = this->get_position_value(i, j);
     return column;
   }
 
-  template<> Matrix<double>* Matrix<double>::operator *(const Matrix<Gene>& another_matrix){
+  template<> 
+  Matrix<double>* Matrix<double>::operator *(const Matrix<Gene>& another_matrix){
     if(this->width != another_matrix.get_height())
       throw std::invalid_argument("The first matrix's width must be equal to the second's height!");
     
@@ -99,9 +106,9 @@ namespace Matrices{
           value += row[n_index]*column[n_index];
 
         resulting_matrix->update_value(i, j, value);
-        delete column;
+        delete[] column;
       }  
-      delete row;
+      delete[] row;
     }
     
     return resulting_matrix;
@@ -116,14 +123,11 @@ namespace Matrices{
   }
 
   template <typename T> Matrix<T>::~Matrix(){
-    this->clear_pointers();
-  }
-  
-  template <typename T> void Matrix<T>::clear_pointers(){
     delete[] this->matrix;
   }
-
-  template <typename T> T** Matrix<T>::generate_matrix_body(unsigned int width, unsigned int height){
+  
+  template <typename T> 
+  T** Matrix<T>::generate_matrix_body(unsigned int width, unsigned int height){
     T** new_matrix = new T*[height];
     for(unsigned int i = 0; i<height; i++)
       new_matrix[i] = new T[width];
