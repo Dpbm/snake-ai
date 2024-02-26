@@ -14,8 +14,6 @@ namespace Chromosomes {
       Chromosome(unsigned int size, int points); 
       Chromosome(Gene* genes, unsigned int size, int points);
       Gene* get_genes();
-      Gene* slice(unsigned int start, unsigned int end);
-      void crossover(unsigned int start, unsigned int end, Gene *genes_slice);
       void mutate(float rate);
       void show();
       void update_points(int factor);
