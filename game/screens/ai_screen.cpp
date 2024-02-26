@@ -48,6 +48,7 @@ namespace GameAIScreen {
   SDL_Rect* score_shape;
   SDL_Texture* score_text_texture;
   SDL_Texture* score_texture;
+  int last_player_score;
 
   AIScreen::AIScreen(SDL_Renderer* render){
     if(!this->font){
@@ -116,7 +117,7 @@ namespace GameAIScreen {
         }
       }
     }
-    this->chromosome = new Chromosome(genes, genes_array_size, 100);
+    this->chromosome = new Chromosome(genes, genes_array_size);
   }
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
@@ -182,11 +183,10 @@ namespace GameAIScreen {
     this->player->update_position();
     if(this->player->is_die()){
       cout << "GAME OVER!" << endl;
-      game_loop = false;
+      if(this->last_player_score)
       return;
     }else if(this->player->get_score() >= this->max_score){
       cout << "WON!" << endl;
-      game_loop = false;
       return;
     }
     

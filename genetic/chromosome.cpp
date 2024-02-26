@@ -1,29 +1,23 @@
 #include <iostream>
-#include <stdexcept>
 #include "gene.h"
 #include "chromosome.h"
 
 using std::cout;
 using std::endl;
-using std::invalid_argument;
 using Genes::Gene;
 
 namespace Chromosomes {
   Gene* genes;
   unsigned int total_genes;
-  int points, starting_points;
 
-
-  Chromosome::Chromosome(unsigned int size, int points){
+  Chromosome::Chromosome(unsigned int size){
     this->genes = new Gene[size];
     this->total_genes = size;
-    this->points = points;
   }
  
-  Chromosome::Chromosome(Gene* genes, unsigned int size, int points){
+  Chromosome::Chromosome(Gene* genes, unsigned int size){
     this->genes = genes;
     this->total_genes = size;
-    this->points = points;
   }
 
   Gene* Chromosome::get_genes(){
@@ -35,27 +29,14 @@ namespace Chromosomes {
       this->genes[i].mutate(rate);
   }
  
-  void Chromosome::set_genes(Gene* genes, unsigned int size){
-    this->genes = genes;
-    this->total_genes = size;
-  }
-
   void Chromosome::show(){
     for(unsigned int i = 0; i < this->total_genes; i++)
       cout << this->genes[i].get_gene_value() << " ";
     cout << endl;
   }
 
-  void Chromosome::update_points(int factor){
-    this->points += factor;
-  }
-
   unsigned int Chromosome::get_size(){
     return this->total_genes;
-  }
-  
-  int Chromosome::get_points(){
-    return this->points;
   }
   
   Chromosome::~Chromosome(){

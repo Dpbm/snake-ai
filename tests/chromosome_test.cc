@@ -10,24 +10,17 @@ using Genes::Gene;
 namespace {
 
   TEST(CreationTest, CreateDefaultChromosomeTest){
-    Chromosome *chromosome = new Chromosome(2, 100);
+    Chromosome *chromosome = new Chromosome(2);
     ASSERT_EQ(chromosome->get_size(), 2);
-    ASSERT_EQ(chromosome->get_points(), 100);
     delete chromosome;
   }
 
   TEST(CreationTest, CreateChromosomeByGenesVectorTest){
     Gene* genes = new Gene[5];  
-    Chromosome* chromosome = new Chromosome(genes, 5, 100);
+    Chromosome* chromosome = new Chromosome(genes, 5);
     ASSERT_EQ(chromosome->get_size(), 5);   
 
     delete chromosome;
   }
   
-  TEST(UpdateTest, UpdatePointsTest){
-    Chromosome *chromosome = new Chromosome(1, 1);
-    chromosome->update_points(-1);
-    ASSERT_EQ(chromosome->get_points(), 0);
-    delete chromosome;
-  }
 }

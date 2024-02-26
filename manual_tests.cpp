@@ -25,8 +25,8 @@ int main(){
 
   cout << endl << "---CHROMOSOMES---" << endl;
   cout << "!!!!Creating 2 different chromosomes and checking if their values are different!!!!" << endl;
-  Chromosome* ch1 = new Chromosome(10, 100);
-  Chromosome* ch2 = new Chromosome(10, 100);
+  Chromosome* ch1 = new Chromosome(10);
+  Chromosome* ch2 = new Chromosome(10);
   ch1->show();
   ch2->show();
   delete ch1;

@@ -30,6 +30,7 @@ namespace GameAIScreen{
       Player* player = new Player(1, this->max_score);
       Food* food = new Food;
       bool debug = false;
+      int last_player_score = 0;
       
       NN* nn = new NN;   
       Layer* input_layer = new Layer(7, true);
