@@ -4,15 +4,10 @@
 #include <SDL2/SDL_timer.h>
 #include "utils.h"
 #include "constants.h"
-#include "../genetic/gene.h"
-#include "../matrix/matrix.h"
 
-using std::vector;
 using std::ofstream;
 using std::string;
 using std::ios;
-using Genes::Gene;
-using Matrices::Matrix;
 
 namespace Utils {
   double random(int start, int end){
@@ -62,20 +57,4 @@ namespace Utils {
     return SDL_GetTicks() - last_tick >= DEBOUNCE_TIME;
   }
 
-  vector<Gene*>* weights_to_genes_vector(Matrix<Gene>* weights){
-    vector<Gene*> *genes = new vector<Gene*>;
-    Gene** weights_matrix = weights->get_matrix();
-    for(unsigned int i = 0; i < weights->get_height(); i++)
-      for(unsigned int j = 0; j < weights->get_width(); j++)
-        genes->push_back(&weights_matrix[i][j]);
-    return genes;
-  } 
-
-  template <typename T> 
-  void concat_vectors(vector<T>* vector_a, vector<T>* vector_b, vector<T>* target_vector){
-    target_vector->insert(target_vector->end(), vector_a->begin(), vector_a->end());
-    target_vector->insert(target_vector->end(), vector_b->begin(), vector_b->end());
-  }
-
-  template void concat_vectors<Gene*>(vector<Gene*>* vector_a, vector<Gene*>* vector_b, vector<Gene*>* target_vector);
 }

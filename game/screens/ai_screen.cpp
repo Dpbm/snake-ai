@@ -1,7 +1,6 @@
 #include <cmath>
 #include <iostream>
 #include <string>
-#include <vector>
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
@@ -20,7 +19,6 @@
 #include "../../genetic/gene.h"
 
 using std::to_string;
-using std::vector;
 using std::cout;
 using std::endl;
 using std::sqrt;
@@ -29,8 +27,6 @@ using Players::Player;
 using Foods::Food;
 using Screens::Screen;
 using Utils::random_int;
-using Utils::weights_to_genes_vector;
-using Utils::concat_vectors;
 using Machine::NN;
 using Layers::Layer;
 using Activations::relu;
@@ -102,19 +98,32 @@ namespace GameAIScreen {
     this->nn->get_layer(2)->set_activation_function(relu);
     this->nn->get_layer(3)->set_activation_function(sigmoid);
     this->input_layer->set_values(this->input_data);
-    /*
-    vector<Gene*>* genes = new vector<Gene*>;
-    for(Weights* weight : *(this->nn->get_weights()))
-      concat_vectors<Gene*>(genes, weights_to_genes_vector(weight->get_weights()), genes); 
-    this->chromosome = new Chromosome(genes, 100);*/
+    
+    unsigned int genes_array_size = (this->nn->get_weight(0)->get_width() * this->nn->get_weight(0)->get_height()) + 
+                                      (this->nn->get_weight(1)->get_width() * this->nn->get_weight(1)->get_height()) + 
+                                      (this->nn->get_weight(2)->get_width() * this->nn->get_weight(2)->get_height());
+    
+    Gene* genes = new Gene[genes_array_size]; 
+    unsigned int index = 0;
+    for(Weights* weight : *(this->nn->get_weights())){
+     
+      Gene** gene_matrix = weight->get_weights()->get_matrix(); 
+      
+      for(unsigned int i = 0; i < weight->get_height(); i++){
+        for(unsigned int j = 0; j < weight->get_width(); j++){
+          genes[index] = gene_matrix[i][j];
+          index++;
+        }
+      }
+    }
+    this->chromosome = new Chromosome(genes, genes_array_size, 100);
   }
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
     this->nn->feedforward();
-    //Matrix<double>* result = nn->get_layer(3)->get_values();
-    //result->show();
-    //this->chromosome->show();
-    /*double biggest = 0;
+    Matrix<double>* result = nn->get_layer(3)->get_values();
+    this->chromosome->show();
+    double biggest = 0;
     unsigned int direction = 0;
     for(unsigned int i = 0; i < 4; i++){
       double actual_value = result->get_position_value(0, i);
@@ -122,8 +131,8 @@ namespace GameAIScreen {
         biggest = actual_value;
         direction = i;
       }
-    }*/
-    /*
+    }
+    
     switch (direction) {
       case 0:
         this->player->direction_up();
@@ -141,7 +150,7 @@ namespace GameAIScreen {
         this->player->direction_right();
         break;
     }
-*/
+
 
     int px = player->get_x();
     int py = player->get_y();
@@ -152,7 +161,7 @@ namespace GameAIScreen {
     int py_offset = PLAYER_H/2;
     int fx_offset = FOOD_W/2;
     int fy_offset = FOOD_H/2;
-    /*
+
     this->input_data->update_value(0, 0, (double)WIDTH-px);
     this->input_data->update_value(0, 1, (double)px);
     this->input_data->update_value(0, 2, (double)py);
@@ -169,7 +178,6 @@ namespace GameAIScreen {
       SDL_RenderDrawLine(render, px+px_offset, py, px+px_offset, HEIGHT);
       SDL_RenderDrawLine(render, px+py_offset, py+px_offset, fx+fx_offset, fy+fy_offset);
     }
-  */
 
     this->player->update_position();
     if(this->player->is_die()){
@@ -238,7 +246,7 @@ namespace GameAIScreen {
     delete this->player;
     delete this->food;
     delete this->nn;
-    //delete chromosome
+    delete this->chromosome;
     delete this->text_color;
     delete this->score_text_shape;
     delete this->score_shape;

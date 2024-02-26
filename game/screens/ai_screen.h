@@ -30,10 +30,12 @@ namespace GameAIScreen{
       Player* player = new Player(1, this->max_score);
       Food* food = new Food;
       bool debug = false;
-      NN* nn = new NN; 
+      
+      NN* nn = new NN;   
       Layer* input_layer = new Layer(7, true);
       Matrix<double>* input_data = new Matrix<double>(7, 1);
       Chromosome* chromosome = nullptr;
+      
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
       SDL_Color* text_color = new SDL_Color{ 255, 255, 255 };
       SDL_Rect* score_text_shape = new SDL_Rect;
