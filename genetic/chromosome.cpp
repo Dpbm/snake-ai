@@ -13,21 +13,6 @@ namespace Chromosomes {
   unsigned int total_genes;
   int points, starting_points;
 
-  Chromosome::Chromosome(){}
-
-  void Chromosome::add_genes(unsigned int size, int points){
-    this->genes = new Gene[size];
-    this->total_genes = size;
-    this->points = points;
-    this->starting_points = points;
-  }
-  
-  void Chromosome::reset_genes(){
-    if(this->genes != nullptr)
-      delete[] this->genes;
-    this->genes = new Gene[this->total_genes];
-    this->points = this->starting_points; 
-  }
 
   Chromosome::Chromosome(unsigned int size, int points){
     this->genes = new Gene[size];

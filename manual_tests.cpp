@@ -1,12 +1,10 @@
 #include <iostream>
 #include "./genetic/gene.h"
 #include "./genetic/chromosome.h"
-#include "./genetic/population.h"
 
 using std::cout;
 using std::endl;
 using Genes::Gene;
-using Populations::Population;
 using Chromosomes::Chromosome;
 
 int main(){
@@ -33,21 +31,4 @@ int main(){
   ch2->show();
   delete ch1;
   delete ch2;
-
-  cout << "!!!!Creating a chromosomes array to test if their values are different!!!!" << endl;
-  Chromosome* chromosomes = new Chromosome[3];
-  chromosomes[0].add_genes(10, 100);
-  chromosomes[1].add_genes(10, 100);
-  chromosomes[2].add_genes(10, 100);
-  chromosomes[0].show();
-  chromosomes[1].show();
-  chromosomes[2].show();
-  delete[] chromosomes;
-
-
-  cout << endl << "---POPULATION---" << endl;
-  cout << "!!!!Creating a population to check if each individual have different chromosomes!!!!" << endl;
-  Population* p = new Population(3, 10, 100);
-  p->show();
-  delete p;
 }

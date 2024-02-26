@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <stdexcept>
 #include <vector>
 #include "../genetic/gene.h"
 #include "../genetic/chromosome.h"
@@ -140,23 +139,5 @@ namespace {
     chromosome->update_points(-1);
     ASSERT_EQ(chromosome->get_points(), 0);
     delete chromosome;
-  }
-
-
-  TEST(UpdateTest, AddGenesTest){
-    Chromosome *ch = new Chromosome;
-    ASSERT_EQ(ch->get_genes(), nullptr);
-    ch->add_genes(10, 100);
-    ASSERT_NE(ch->get_genes(), nullptr);
-  }
-  
-  TEST(UpdateTest, ResetGenesTest){
-    Chromosome *ch = new Chromosome(5, 100);
-    for(unsigned int i = 0; i < 5; i++)
-      ch->get_genes()[i].set_gene_value(20);
-    ch->reset_genes();
-    
-    for(unsigned int i = 0; i < 5; i++)
-      ASSERT_NE(ch->get_genes()[i].get_gene_value(), 20);
   }
 }
