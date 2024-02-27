@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
 #include "screens.h"
 #include "../player.h"
@@ -22,27 +23,37 @@ namespace GameAIScreen{
     public:
       AIScreen(SDL_Renderer* render);
       void execute(SDL_Renderer* render, bool& game_loop);
+      void randomize_player_direction();
+      void reset(SDL_Renderer* render);
       Screen* key_event(const SDL_Keycode& key);
       ~AIScreen();
 
     private:
       unsigned int max_score = 10;
+      unsigned int generation = 1;
+      unsigned int individual = 0;
       Player* player = new Player(1, this->max_score);
       Food* food = new Food;
       bool debug = false;
       int last_player_score = 0;
-      
+     
       NN* nn = new NN;   
-      Layer* input_layer = new Layer(7, true);
-      Matrix<double>* input_data = new Matrix<double>(7, 1);
+      Layer* input_layer = new Layer(5, true);
+      Matrix<double>* input_data = new Matrix<double>(5, 1);
       Chromosome* chromosome = nullptr;
       
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
       SDL_Color* text_color = new SDL_Color{ 255, 255, 255 };
+  
       SDL_Rect* score_text_shape = new SDL_Rect;
       SDL_Rect* score_shape = new SDL_Rect;
       SDL_Texture* score_text_texture;
       SDL_Texture* score_texture;
 
+
+      SDL_Rect* generation_text_shape = new SDL_Rect;
+      SDL_Rect* generation_shape = new SDL_Rect;
+      SDL_Texture* generation_text_texture;
+      SDL_Texture* generation_texture;
   };
 };

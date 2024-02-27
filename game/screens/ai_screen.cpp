@@ -49,6 +49,12 @@ namespace GameAIScreen {
   SDL_Texture* score_text_texture;
   SDL_Texture* score_texture;
   int last_player_score;
+  unsigned int generation;
+  unsigned int individual;
+  SDL_Rect* generation_text_shape;
+  SDL_Rect* generation_shape;
+  SDL_Texture* generation_text_texture;
+  SDL_Texture* generation_texture;
 
   AIScreen::AIScreen(SDL_Renderer* render){
     if(!this->font){
@@ -70,26 +76,27 @@ namespace GameAIScreen {
     this->score_shape->h = score_surface->h;
     this->score_shape->w = score_surface->w;
     
+    SDL_Surface* generation_text_surface = TTF_RenderText_Solid(this->font, "Generation ", *this->text_color);
+    this->generation_text_texture = SDL_CreateTextureFromSurface(render, generation_text_surface);
+    this->generation_text_shape->x = 20;
+    this->generation_text_shape->y = 50;
+    this->generation_text_shape->h = generation_text_surface->h;
+    this->generation_text_shape->w = generation_text_surface->w;
+    
+    SDL_Surface* generation_surface = TTF_RenderText_Solid(this->font, "1", *this->text_color);
+    this->generation_texture = SDL_CreateTextureFromSurface(render, generation_surface);
+    this->generation_shape->x = generation_text_shape->w+20;
+    this->generation_shape->y = 50;
+    this->generation_shape->h = generation_surface->h;
+    this->generation_shape->w = generation_surface->w;
+    
     SDL_FreeSurface(score_text_surface);
     SDL_FreeSurface(score_surface);
+    SDL_FreeSurface(generation_text_surface);
+    SDL_FreeSurface(generation_surface);
+
+    this->randomize_player_direction();
     
-    switch (random_int(0, 3)) {
-      case 0:
-        this->player->direction_right();
-        break;
-      
-      case 1:
-        this->player->direction_up();
-        break;
-    
-      case 2:
-        this->player->direction_left();
-        break;
-      
-      default:
-        this->player->direction_down();
-        break;    
-    }
     this->nn->add_layer(this->input_layer);
     this->nn->add_layer(15);
     this->nn->add_layer(15);
@@ -120,10 +127,31 @@ namespace GameAIScreen {
     this->chromosome = new Chromosome(genes, genes_array_size);
   }
 
+  void AIScreen::randomize_player_direction(){
+    switch (random_int(0, 3)) {
+      case 0:
+        this->player->direction_right();
+        break;
+      
+      case 1:
+        this->player->direction_up();
+        break;
+    
+      case 2:
+        this->player->direction_left();
+        break;
+      
+      default:
+        this->player->direction_down();
+        break;    
+    }
+  }
+
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
+    
     this->nn->feedforward();
-    Matrix<double>* result = nn->get_layer(3)->get_values();
-    this->chromosome->show();
+    Matrix<double>* result = this->nn->get_layer(3)->get_values();
+    result->show(); 
     double biggest = 0;
     unsigned int direction = 0;
     for(unsigned int i = 0; i < 4; i++){
@@ -133,7 +161,7 @@ namespace GameAIScreen {
         direction = i;
       }
     }
-    
+   
     switch (direction) {
       case 0:
         this->player->direction_up();
@@ -152,7 +180,6 @@ namespace GameAIScreen {
         break;
     }
 
-
     int px = player->get_x();
     int py = player->get_y();
     int fx = food->get_x();
@@ -163,13 +190,13 @@ namespace GameAIScreen {
     int fx_offset = FOOD_W/2;
     int fy_offset = FOOD_H/2;
 
-    this->input_data->update_value(0, 0, (double)WIDTH-px);
-    this->input_data->update_value(0, 1, (double)px);
-    this->input_data->update_value(0, 2, (double)py);
-    this->input_data->update_value(0, 3, (double)HEIGHT-py);
-    this->input_data->update_value(0, 4, sqrt(pow(px-fx, 2) + pow(py-fy, 2)));
-    this->input_data->update_value(0, 5, (double)this->player->get_mov_x());
-    this->input_data->update_value(0, 6, (double)this->player->get_mov_y());
+    //this->input_data->update_value(0, 0, (double)WIDTH-px);
+    this->input_data->update_value(0, 0, (double)px);
+    this->input_data->update_value(0, 1, (double)py);
+    //this->input_data->update_value(0, 3, (double)HEIGHT-py);
+    this->input_data->update_value(0, 2, sqrt(pow(px-fx, 2) + pow(py-fy, 2)));
+    this->input_data->update_value(0, 3, (double)this->player->get_mov_x()+1);
+    this->input_data->update_value(0, 4, (double)this->player->get_mov_y()+1);
     
     if(this->debug){
       SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
@@ -181,12 +208,25 @@ namespace GameAIScreen {
     }
 
     this->player->update_position();
+    bool ended_game = false;
+
     if(this->player->is_die()){
       cout << "GAME OVER!" << endl;
-      if(this->last_player_score)
-      return;
+      ended_game = true;
     }else if(this->player->get_score() >= this->max_score){
       cout << "WON!" << endl;
+      ended_game = true;
+    }
+    
+    if(ended_game){
+      int player_score = this->player->get_score();
+      if(player_score > this->last_player_score)
+        this->chromosome->mutate(0.1);
+      else
+        this->chromosome->mutate(0.7);
+      
+      this->last_player_score = player_score;
+      this->reset(render);
       return;
     }
     
@@ -207,6 +247,8 @@ namespace GameAIScreen {
     
     SDL_RenderCopy(render, this->score_text_texture, NULL, this->score_text_shape);
     SDL_RenderCopy(render, this->score_texture, NULL, this->score_shape);
+    SDL_RenderCopy(render, this->generation_text_texture, NULL, this->generation_text_shape);
+    SDL_RenderCopy(render, this->generation_texture, NULL, this->generation_shape);
     this->food->render(render);
     this->player->render(render);
   }
@@ -243,6 +285,8 @@ namespace GameAIScreen {
   AIScreen::~AIScreen(){
     SDL_DestroyTexture(this->score_texture);
     SDL_DestroyTexture(this->score_text_texture);
+    SDL_DestroyTexture(this->generation_texture);
+    SDL_DestroyTexture(this->generation_text_texture);
     delete this->player;
     delete this->food;
     delete this->nn;
@@ -250,5 +294,24 @@ namespace GameAIScreen {
     delete this->text_color;
     delete this->score_text_shape;
     delete this->score_shape;
+    delete this->generation_text_shape;
+    delete this->generation_shape;
+  }
+  
+  void AIScreen::reset(SDL_Renderer* render){
+    delete this->player;
+    delete this->food;
+    this->player = new Player(1, this->max_score);
+    this->food = new Food;
+    this->randomize_player_direction();
+    
+    SDL_DestroyTexture(this->score_texture);
+    SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, "0", *this->text_color);
+    this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
+    this->score_shape->x = this->score_text_shape->w + 20;
+    this->score_shape->y = 20;
+    this->score_shape->h = score_surface->h;
+    this->score_shape->w = score_surface->w;
+    SDL_FreeSurface(score_surface);
   }
 }

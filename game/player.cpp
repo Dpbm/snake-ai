@@ -26,10 +26,8 @@ namespace Players {
   Player::~Player(){
     Node* actual_node = this->head;
     while(actual_node != nullptr){
-      Node* tmp = actual_node;
-      delete tmp->value;
-      delete actual_node;
-      actual_node = tmp->next;
+      delete actual_node->value;
+      actual_node = actual_node->next;
     }
   }
 
