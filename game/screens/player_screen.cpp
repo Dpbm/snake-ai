@@ -35,17 +35,11 @@ namespace GamePlayerScreen{
     }
     SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "Score ", *this->text_color);
     this->score_text_texture = SDL_CreateTextureFromSurface(render, score_text_surface);
-    this->score_text_shape->x = 20;
-    this->score_text_shape->y = 20;
-    this->score_text_shape->h = score_text_surface->h;
-    this->score_text_shape->w = score_text_surface->w;
+    this->score_text_shape = new SDL_Rect{20, 20, score_text_surface->w, score_text_surface->h};
     
     SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, "0", *this->text_color);
     this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
-    this->score_shape->x = score_text_shape->w + 20;
-    this->score_shape->y = 20;
-    this->score_shape->h = score_surface->h;
-    this->score_shape->w = score_surface->w;
+    this->score_shape = new SDL_Rect{score_text_shape->w+20, 20, score_surface->w, score_surface->h};
     
     SDL_FreeSurface(score_text_surface);
     SDL_FreeSurface(score_surface);
@@ -95,7 +89,6 @@ namespace GamePlayerScreen{
       SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(player_score).c_str(), *this->text_color);
       SDL_DestroyTexture(this->score_texture);
       this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
-      this->score_shape->h = score_surface->h;
       this->score_shape->w = score_surface->w;
       SDL_FreeSurface(score_surface);
       cout << "Player score: " << player_score << endl;

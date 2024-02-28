@@ -52,11 +52,7 @@ namespace Players {
   }
   
   Node* Player::create_body_part(unsigned int x, unsigned int y){
-    SDL_Rect* part = new SDL_Rect;
-    part->x = x;
-    part->y = y;
-    part->h = PLAYER_H;
-    part->w = PLAYER_W;
+    SDL_Rect* part = new SDL_Rect{(int)x, (int)y, PLAYER_H, PLAYER_W};
     
     Node* node = new Node;
     node->next = nullptr;

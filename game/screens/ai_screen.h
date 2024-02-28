@@ -45,14 +45,14 @@ namespace GameAIScreen{
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
       SDL_Color* text_color = new SDL_Color{ 255, 255, 255 };
   
-      SDL_Rect* score_text_shape = new SDL_Rect;
-      SDL_Rect* score_shape = new SDL_Rect;
+      SDL_Rect* score_text_shape = nullptr;
+      SDL_Rect* score_shape = nullptr;
       SDL_Texture* score_text_texture;
       SDL_Texture* score_texture;
 
 
-      SDL_Rect* generation_text_shape = new SDL_Rect;
-      SDL_Rect* generation_shape = new SDL_Rect;
+      SDL_Rect* generation_text_shape = nullptr;
+      SDL_Rect* generation_shape = nullptr;
       SDL_Texture* generation_text_texture;
       SDL_Texture* generation_texture;
   };

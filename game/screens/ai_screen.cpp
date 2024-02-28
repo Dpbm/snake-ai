@@ -64,31 +64,19 @@ namespace GameAIScreen {
     }
     SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "AI Score ", *this->text_color);
     this->score_text_texture = SDL_CreateTextureFromSurface(render, score_text_surface);
-    this->score_text_shape->x = 20;
-    this->score_text_shape->y = 20;
-    this->score_text_shape->h = score_text_surface->h;
-    this->score_text_shape->w = score_text_surface->w;
+    this->score_text_shape = new SDL_Rect{20, 20, score_text_surface->w, score_text_surface->h};
     
     SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, "0", *this->text_color);
     this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
-    this->score_shape->x = score_text_shape->w + 20;
-    this->score_shape->y = 20;
-    this->score_shape->h = score_surface->h;
-    this->score_shape->w = score_surface->w;
+    this->score_shape = new SDL_Rect{score_text_shape->w+20, 20, score_surface->w, score_surface->h};
     
     SDL_Surface* generation_text_surface = TTF_RenderText_Solid(this->font, "Generation ", *this->text_color);
     this->generation_text_texture = SDL_CreateTextureFromSurface(render, generation_text_surface);
-    this->generation_text_shape->x = 20;
-    this->generation_text_shape->y = 50;
-    this->generation_text_shape->h = generation_text_surface->h;
-    this->generation_text_shape->w = generation_text_surface->w;
+    this->generation_text_shape = new SDL_Rect{20, 50, generation_text_surface->w, generation_text_surface->h};
     
     SDL_Surface* generation_surface = TTF_RenderText_Solid(this->font, "1", *this->text_color);
     this->generation_texture = SDL_CreateTextureFromSurface(render, generation_surface);
-    this->generation_shape->x = generation_text_shape->w+20;
-    this->generation_shape->y = 50;
-    this->generation_shape->h = generation_surface->h;
-    this->generation_shape->w = generation_surface->w;
+    this->generation_shape = new SDL_Rect{generation_text_shape->w+20, 50, generation_surface->w, generation_surface->h};
     
     SDL_FreeSurface(score_text_surface);
     SDL_FreeSurface(score_surface);
@@ -238,7 +226,6 @@ namespace GameAIScreen {
       SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(ai_score).c_str(), *this->text_color);
       SDL_DestroyTexture(this->score_texture);
       this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
-      this->score_shape->h = score_surface->h;
       this->score_shape->w = score_surface->w;
       SDL_FreeSurface(score_surface);
     
@@ -247,7 +234,7 @@ namespace GameAIScreen {
     
     SDL_RenderCopy(render, this->score_text_texture, NULL, this->score_text_shape);
     SDL_RenderCopy(render, this->score_texture, NULL, this->score_shape);
-    SDL_RenderCopy(render, this->generation_text_texture, NULL, this->generation_text_shape);
+  SDL_RenderCopy(render, this->generation_text_texture, NULL, this->generation_text_shape);
     SDL_RenderCopy(render, this->generation_texture, NULL, this->generation_shape);
     this->food->render(render);
     this->player->render(render);
@@ -308,10 +295,13 @@ namespace GameAIScreen {
     SDL_DestroyTexture(this->score_texture);
     SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, "0", *this->text_color);
     this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
-    this->score_shape->x = this->score_text_shape->w + 20;
-    this->score_shape->y = 20;
-    this->score_shape->h = score_surface->h;
     this->score_shape->w = score_surface->w;
     SDL_FreeSurface(score_surface);
+    
+    SDL_DestroyTexture(this->generation_texture);
+    SDL_Surface* generation_surface = TTF_RenderText_Solid(this->font, to_string(this->generation).c_str(), *this->text_color);
+    this->generation_texture = SDL_CreateTextureFromSurface(render, generation_surface);
+    this->generation_shape->w = generation_surface->w;
+    SDL_FreeSurface(generation_surface);
   }
 }

@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
+#include "../helpers/constants.h"
 
 namespace Foods {
   class Food{
@@ -14,8 +15,7 @@ namespace Foods {
       void update_position();
 
     private:
-      unsigned int x, y;
-      SDL_Rect *shape = new SDL_Rect; 
+      SDL_Rect *shape = new SDL_Rect{0, 0, FOOD_W, FOOD_H}; 
       double rendered = false;
   };
 };
