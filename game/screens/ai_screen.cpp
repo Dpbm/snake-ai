@@ -48,13 +48,17 @@ namespace GameAIScreen {
   SDL_Rect* score_shape;
   SDL_Texture* score_text_texture;
   SDL_Texture* score_texture;
-  int last_player_score;
   unsigned int generation;
+  unsigned int max_individuals;
   unsigned int individual;
   SDL_Rect* generation_text_shape;
   SDL_Rect* generation_shape;
   SDL_Texture* generation_text_texture;
   SDL_Texture* generation_texture;
+  SDL_Rect* individual_text_shape;
+  SDL_Rect* individual_shape;
+  SDL_Texture* individual_text_texture;
+  SDL_Texture* individual_texture;
 
   AIScreen::AIScreen(SDL_Renderer* render){
     if(!this->font){
@@ -70,18 +74,29 @@ namespace GameAIScreen {
     this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
     this->score_shape = new SDL_Rect{score_text_shape->w+20, 20, score_surface->w, score_surface->h};
     
+    SDL_Surface* individual_text_surface = TTF_RenderText_Solid(this->font, "Individual ", *this->text_color);
+    this->individual_text_texture = SDL_CreateTextureFromSurface(render, individual_text_surface);
+    this->individual_text_shape = new SDL_Rect{20, 50, individual_text_surface->w, individual_text_surface->h};
+    
+    SDL_Surface* individual_surface = TTF_RenderText_Solid(this->font, "1", *this->text_color);
+    this->individual_texture = SDL_CreateTextureFromSurface(render, individual_surface);
+    this->individual_shape = new SDL_Rect{individual_text_shape->w+20, 50, individual_surface->w, individual_surface->h};
+    
     SDL_Surface* generation_text_surface = TTF_RenderText_Solid(this->font, "Generation ", *this->text_color);
     this->generation_text_texture = SDL_CreateTextureFromSurface(render, generation_text_surface);
-    this->generation_text_shape = new SDL_Rect{20, 50, generation_text_surface->w, generation_text_surface->h};
+    this->generation_text_shape = new SDL_Rect{20, 80, generation_text_surface->w, generation_text_surface->h};
     
     SDL_Surface* generation_surface = TTF_RenderText_Solid(this->font, "1", *this->text_color);
     this->generation_texture = SDL_CreateTextureFromSurface(render, generation_surface);
-    this->generation_shape = new SDL_Rect{generation_text_shape->w+20, 50, generation_surface->w, generation_surface->h};
+    this->generation_shape = new SDL_Rect{generation_text_shape->w+20, 80, generation_surface->w, generation_surface->h};
+    
     
     SDL_FreeSurface(score_text_surface);
     SDL_FreeSurface(score_surface);
     SDL_FreeSurface(generation_text_surface);
     SDL_FreeSurface(generation_surface);
+    SDL_FreeSurface(individual_text_surface);
+    SDL_FreeSurface(individual_surface);
 
     this->randomize_player_direction();
     
@@ -207,13 +222,6 @@ namespace GameAIScreen {
     }
     
     if(ended_game){
-      int player_score = this->player->get_score();
-      if(player_score > this->last_player_score)
-        this->chromosome->mutate(0.1);
-      else
-        this->chromosome->mutate(0.7);
-      
-      this->last_player_score = player_score;
       this->reset(render);
       return;
     }
@@ -234,8 +242,10 @@ namespace GameAIScreen {
     
     SDL_RenderCopy(render, this->score_text_texture, NULL, this->score_text_shape);
     SDL_RenderCopy(render, this->score_texture, NULL, this->score_shape);
-  SDL_RenderCopy(render, this->generation_text_texture, NULL, this->generation_text_shape);
+    SDL_RenderCopy(render, this->generation_text_texture, NULL, this->generation_text_shape);
     SDL_RenderCopy(render, this->generation_texture, NULL, this->generation_shape);
+    SDL_RenderCopy(render, this->individual_text_texture, NULL, this->individual_text_shape);
+    SDL_RenderCopy(render, this->individual_texture, NULL, this->individual_shape);
     this->food->render(render);
     this->player->render(render);
   }
@@ -274,6 +284,8 @@ namespace GameAIScreen {
     SDL_DestroyTexture(this->score_text_texture);
     SDL_DestroyTexture(this->generation_texture);
     SDL_DestroyTexture(this->generation_text_texture);
+    SDL_DestroyTexture(this->individual_texture);
+    SDL_DestroyTexture(this->individual_text_texture);
     delete this->player;
     delete this->food;
     delete this->nn;
@@ -283,6 +295,8 @@ namespace GameAIScreen {
     delete this->score_shape;
     delete this->generation_text_shape;
     delete this->generation_shape;
+    delete this->individual_text_shape;
+    delete this->individual_shape;
   }
   
   void AIScreen::reset(SDL_Renderer* render){
@@ -290,6 +304,11 @@ namespace GameAIScreen {
     delete this->food;
     this->player = new Player(1, this->max_score);
     this->food = new Food;
+    this->individual++;
+    if(this->individual > this->max_individuals){ 
+      this->generation++;
+      this->individual=1;
+    }
     this->randomize_player_direction();
     
     SDL_DestroyTexture(this->score_texture);
@@ -303,5 +322,11 @@ namespace GameAIScreen {
     this->generation_texture = SDL_CreateTextureFromSurface(render, generation_surface);
     this->generation_shape->w = generation_surface->w;
     SDL_FreeSurface(generation_surface);
+    
+    SDL_DestroyTexture(this->individual_texture);
+    SDL_Surface* individual_surface = TTF_RenderText_Solid(this->font, to_string(this->individual).c_str(), *this->text_color);
+    this->individual_texture = SDL_CreateTextureFromSurface(render, individual_surface);
+    this->individual_shape->w = individual_surface->w;
+    SDL_FreeSurface(individual_surface);
   }
 }
