@@ -26,8 +26,13 @@ namespace Utils {
     return distr(eng);
   }
 
-  unsigned int get_random_pos(unsigned int max_range, unsigned int factor){
-    unsigned int rand = Utils::random_int(0, max_range);
+  unsigned int get_random_x(unsigned int factor){
+    unsigned int rand = Utils::random_int(WIDTH-PLAY_WIDTH, WIDTH);
+    return rand-(rand%factor);
+  }
+  
+  unsigned int get_random_y(unsigned int factor){
+    unsigned int rand = Utils::random_int(0, HEIGHT);
     return rand-(rand%factor);
   }
 

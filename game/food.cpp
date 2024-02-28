@@ -4,7 +4,8 @@
 #include "../helpers/constants.h"
 #include "../helpers/utils.h"
 
-using Utils::get_random_pos;
+using Utils::get_random_x;
+using Utils::get_random_y;
 
 namespace Foods {
   SDL_Rect *shape; 
@@ -33,7 +34,7 @@ namespace Foods {
   }
 
   void Food::update_position(){
-    this->shape->x = get_random_pos(WIDTH, FOOD_W);  
-    this->shape->y = get_random_pos(HEIGHT, FOOD_H);
+    this->shape->x = get_random_x(FOOD_W);  
+    this->shape->y = get_random_y(FOOD_H);
   }
 }

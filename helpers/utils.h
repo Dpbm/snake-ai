@@ -11,7 +11,8 @@ using Matrices::Matrix;
 using Genes::Gene;
 
 namespace Utils {
-  unsigned int get_random_pos(unsigned int max_range, unsigned int factor);
+  unsigned int get_random_x(unsigned int factor);
+  unsigned int get_random_y(unsigned int factor);
   double random(int start, int end);
   unsigned int random_int(int start, int end);
   bool passed_debounce_time(int last_tick);

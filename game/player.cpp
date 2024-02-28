@@ -7,7 +7,8 @@
 
 using Players::LinkedList;
 using Players::Node;
-using Utils::get_random_pos;
+using Utils::get_random_x;
+using Utils::get_random_y;
 using Utils::passed_debounce_time;
 
 namespace Players {
@@ -32,8 +33,8 @@ namespace Players {
   }
 
   void Player::randomize_position(){
-    unsigned int x = get_random_pos(WIDTH, PLAYER_W);  
-    unsigned int y = get_random_pos(HEIGHT, PLAYER_H);
+    unsigned int x = get_random_x(PLAYER_W);  
+    unsigned int y = get_random_y(PLAYER_H);
     this->add_body_part(x, y); 
   }
   
@@ -167,7 +168,7 @@ namespace Players {
   bool Player::border_head_collision(){
     unsigned int head_x = this->head->value->x; 
     unsigned int head_y = this->head->value->y;
-    return head_x < 0 || head_x > WIDTH || head_y < 0 || head_y > HEIGHT;
+    return head_x < WIDTH-PLAY_WIDTH || head_x > WIDTH || head_y < 0 || head_y > HEIGHT;
   }
 
   bool Player::head_tail_collision(){

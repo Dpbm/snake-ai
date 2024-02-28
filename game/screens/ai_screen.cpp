@@ -193,7 +193,7 @@ namespace GameAIScreen {
     int fx_offset = FOOD_W/2;
     int fy_offset = FOOD_H/2;
 
-    //this->input_data->update_value(0, 0, (double)WIDTH-px);
+    //this->input_data->update_value(0, 0, (double)PLAY_WIDTH-px);
     this->input_data->update_value(0, 0, (double)px);
     this->input_data->update_value(0, 1, (double)py);
     //this->input_data->update_value(0, 3, (double)HEIGHT-py);
@@ -203,7 +203,7 @@ namespace GameAIScreen {
     
     if(this->debug){
       SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
-      SDL_RenderDrawLine(render, px, py+py_offset, WIDTH, py+py_offset);
+      SDL_RenderDrawLine(render, px, py+py_offset, PLAY_WIDTH, py+py_offset);
       SDL_RenderDrawLine(render, 0, py+py_offset, px, py+py_offset);
       SDL_RenderDrawLine(render, px+px_offset, 0, px+px_offset, py);
       SDL_RenderDrawLine(render, px+px_offset, py, px+px_offset, HEIGHT);
