@@ -12,12 +12,6 @@ using Utils::get_random_y;
 using Utils::passed_debounce_time;
 
 namespace Players {
-  LinkedList* player;
-  Node* head, tail;
-  unsigned int score, score_step, max_score, size;
-  int mov_x, mov_y, last_tick;
-  bool died;
-
   Player::Player(unsigned int score_step, unsigned int max_score){
     this->randomize_position();
     this->score_step = score_step;
@@ -168,7 +162,7 @@ namespace Players {
   bool Player::border_head_collision(){
     unsigned int head_x = this->head->value->x; 
     unsigned int head_y = this->head->value->y;
-    return head_x < WIDTH-PLAY_WIDTH || head_x > WIDTH || head_y < 0 || head_y > HEIGHT;
+    return head_x < LEFT_WALL || head_x > WIDTH || head_y < 0 || head_y > HEIGHT;
   }
 
   bool Player::head_tail_collision(){

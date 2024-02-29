@@ -27,7 +27,7 @@ namespace Utils {
   }
 
   unsigned int get_random_x(unsigned int factor){
-    unsigned int rand = Utils::random_int(WIDTH-PLAY_WIDTH, WIDTH);
+    unsigned int rand = Utils::random_int(LEFT_WALL, WIDTH);
     return rand-(rand%factor);
   }
   

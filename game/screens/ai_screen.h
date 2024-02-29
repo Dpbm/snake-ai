@@ -59,5 +59,7 @@ namespace GameAIScreen{
       SDL_Rect individual_shape;
       SDL_Texture* individual_text_texture;
       SDL_Texture* individual_texture;
+      
+      SDL_Rect screen_separator{LEFT_WALL, 0, 1, HEIGHT};
   };
 };

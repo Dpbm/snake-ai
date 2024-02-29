@@ -41,7 +41,7 @@ namespace GameAIScreen {
       cout << TTF_GetError() << endl;
       exit(1);
     }
-    SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "AI Score ", this->text_color);
+    SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "Score ", this->text_color);
     this->score_text_texture = SDL_CreateTextureFromSurface(render, score_text_surface);
     this->score_text_shape = SDL_Rect{20, 20, score_text_surface->w, score_text_surface->h};
    
@@ -49,7 +49,7 @@ namespace GameAIScreen {
     this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
     this->score_shape = SDL_Rect{score_text_shape.w+20, 20, score_surface->w, score_surface->h};
     
-    SDL_Surface* individual_text_surface = TTF_RenderText_Solid(this->font, "Individual ", this->text_color);
+    SDL_Surface* individual_text_surface = TTF_RenderText_Solid(this->font, "Indiv. ", this->text_color);
     this->individual_text_texture = SDL_CreateTextureFromSurface(render, individual_text_surface);
     this->individual_text_shape = SDL_Rect{20, 50, individual_text_surface->w, individual_text_surface->h};
     
@@ -57,7 +57,7 @@ namespace GameAIScreen {
     this->individual_texture = SDL_CreateTextureFromSurface(render, individual_surface);
     this->individual_shape = SDL_Rect{individual_text_shape.w+20, 50, individual_surface->w, individual_surface->h};
     
-    SDL_Surface* generation_text_surface = TTF_RenderText_Solid(this->font, "Generation ", this->text_color);
+    SDL_Surface* generation_text_surface = TTF_RenderText_Solid(this->font, "Gen. ", this->text_color);
     this->generation_text_texture = SDL_CreateTextureFromSurface(render, generation_text_surface);
     this->generation_text_shape = SDL_Rect{20, 80, generation_text_surface->w, generation_text_surface->h};
     
@@ -215,6 +215,8 @@ namespace GameAIScreen {
       cout << "AI score: " << ai_score << endl;
     }
     
+    SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
+    SDL_RenderFillRect(render, &this->screen_separator);
     SDL_RenderCopy(render, this->score_text_texture, NULL, &this->score_text_shape);
     SDL_RenderCopy(render, this->score_texture, NULL, &this->score_shape);
     SDL_RenderCopy(render, this->generation_text_texture, NULL, &this->generation_text_shape);

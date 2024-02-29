@@ -28,6 +28,7 @@ namespace GamePlayerScreen{
       SDL_Color text_color{ 255, 255, 255 };
       SDL_Rect score_text_shape;
       SDL_Rect score_shape;
+      SDL_Rect screen_separator{LEFT_WALL, 0, 1, HEIGHT};
       SDL_Texture* score_text_texture;
       SDL_Texture* score_texture;
   };

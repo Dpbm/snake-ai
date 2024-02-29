@@ -82,6 +82,8 @@ namespace GamePlayerScreen{
       cout << "Player score: " << player_score << endl;
     }
 
+    SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
+    SDL_RenderFillRect(render, &this->screen_separator);
     SDL_RenderCopy(render, this->score_text_texture, NULL, &this->score_text_shape);
     SDL_RenderCopy(render, this->score_texture, NULL, &this->score_shape);
     this->food.render(render);
