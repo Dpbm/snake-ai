@@ -21,15 +21,15 @@ namespace GameStartScreen {
     private:
       SDL_Renderer* render = nullptr;
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 35);
-      SDL_Color* text_color = new SDL_Color{ 255, 255, 255 };
+      SDL_Color text_color{ 255, 255, 255 };
       
       SDL_Texture* title_texture;
       SDL_Texture* ai_texture;
       SDL_Texture* player_texture;
 
-      SDL_Rect* title_shape = new SDL_Rect;
-      SDL_Rect* ai_shape = new SDL_Rect;
-      SDL_Rect* player_shape = new SDL_Rect;
+      SDL_Rect title_shape;
+      SDL_Rect ai_shape;
+      SDL_Rect player_shape;
   };
 
 };

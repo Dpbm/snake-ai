@@ -34,7 +34,7 @@ namespace GameAIScreen{
       unsigned int individual = 1;
       unsigned int max_individuals = 3;
       Player* player = new Player(1, this->max_score);
-      Food* food = new Food;
+      Food food;
       bool debug = false;
      
       NN* nn = new NN;   
@@ -43,20 +43,20 @@ namespace GameAIScreen{
       Chromosome* chromosome = nullptr;
       
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
-      SDL_Color* text_color = new SDL_Color{ 255, 255, 255 };
+      SDL_Color text_color{ 255, 255, 255 };
   
-      SDL_Rect* score_text_shape = nullptr;
-      SDL_Rect* score_shape = nullptr;
+      SDL_Rect score_text_shape;
+      SDL_Rect score_shape;
       SDL_Texture* score_text_texture;
       SDL_Texture* score_texture;
 
-      SDL_Rect* generation_text_shape = nullptr;
-      SDL_Rect* generation_shape = nullptr;
+      SDL_Rect generation_text_shape;
+      SDL_Rect generation_shape;
       SDL_Texture* generation_text_texture;
       SDL_Texture* generation_texture;
       
-      SDL_Rect* individual_text_shape = nullptr;
-      SDL_Rect* individual_shape = nullptr;
+      SDL_Rect individual_text_shape;
+      SDL_Rect individual_shape;
       SDL_Texture* individual_text_texture;
       SDL_Texture* individual_texture;
   };
