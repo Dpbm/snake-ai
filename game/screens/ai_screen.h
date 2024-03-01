@@ -32,6 +32,7 @@ namespace GameAIScreen{
       unsigned int max_score = 10;
       unsigned int generation = 1;
       unsigned int individual = 1;
+      unsigned int best_individual = 1;
       unsigned int max_individuals = 3;
       Player* player = new Player(1, this->max_score);
       Food food;
@@ -60,6 +61,11 @@ namespace GameAIScreen{
       SDL_Texture* individual_text_texture;
       SDL_Texture* individual_texture;
       
-      SDL_Rect screen_separator{LEFT_WALL, 0, 1, HEIGHT};
+      SDL_Rect best_individual_text_shape;
+      SDL_Rect best_individual_shape;
+      SDL_Texture* best_individual_text_texture;
+      SDL_Texture* best_individual_texture;
+      
+    SDL_Rect screen_separator{LEFT_WALL, 0, 1, HEIGHT};
   };
 };

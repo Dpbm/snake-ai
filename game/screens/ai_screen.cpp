@@ -65,6 +65,13 @@ namespace GameAIScreen {
     this->generation_texture = SDL_CreateTextureFromSurface(render, generation_surface);
     this->generation_shape = SDL_Rect{generation_text_shape.w+20, 80, generation_surface->w, generation_surface->h};
     
+    SDL_Surface* best_individual_text_surface = TTF_RenderText_Solid(this->font, "Best ", this->text_color);
+    this->best_individual_text_texture = SDL_CreateTextureFromSurface(render, best_individual_text_surface);
+    this->best_individual_text_shape = SDL_Rect{20, 110, best_individual_text_surface->w, best_individual_text_surface->h};
+    
+    SDL_Surface* best_individual_surface = TTF_RenderText_Solid(this->font, "1", this->text_color);
+    this->best_individual_texture = SDL_CreateTextureFromSurface(render, best_individual_surface);
+    this->best_individual_shape = SDL_Rect{best_individual_text_shape.w+20, 110, best_individual_surface->w, best_individual_surface->h};
     
     SDL_FreeSurface(score_text_surface);
     SDL_FreeSurface(score_surface);
@@ -72,6 +79,8 @@ namespace GameAIScreen {
     SDL_FreeSurface(generation_surface);
     SDL_FreeSurface(individual_text_surface);
     SDL_FreeSurface(individual_surface);
+    SDL_FreeSurface(best_individual_text_surface);
+    SDL_FreeSurface(best_individual_surface);
 
     this->randomize_player_direction();
     
@@ -223,6 +232,8 @@ namespace GameAIScreen {
     SDL_RenderCopy(render, this->generation_texture, NULL, &this->generation_shape);
     SDL_RenderCopy(render, this->individual_text_texture, NULL, &this->individual_text_shape);
     SDL_RenderCopy(render, this->individual_texture, NULL, &this->individual_shape);
+    SDL_RenderCopy(render, this->best_individual_text_texture, NULL, &this->best_individual_text_shape);
+    SDL_RenderCopy(render, this->best_individual_texture, NULL, &this->best_individual_shape);
     this->food.render(render);
     this->player->render(render);
   }
@@ -263,6 +274,8 @@ namespace GameAIScreen {
     SDL_DestroyTexture(this->generation_text_texture);
     SDL_DestroyTexture(this->individual_texture);
     SDL_DestroyTexture(this->individual_text_texture);
+    SDL_DestroyTexture(this->best_individual_texture);
+    SDL_DestroyTexture(this->best_individual_text_texture);
     delete this->player;
     delete this->nn;
     delete this->chromosome;
