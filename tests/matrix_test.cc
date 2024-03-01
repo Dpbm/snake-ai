@@ -2,18 +2,16 @@
 #include <gmock/gmock.h>
 #include <stdexcept>
 #include "../matrix/matrix.h"
-#include "../genetic/gene.h"
 
 using ::testing::AllOf;
 using ::testing::Ge;
 using ::testing::Le;
-using Genes::Gene;
 using Matrices::Matrix;
 using std::invalid_argument;
 
 namespace {
   TEST(CreationTest, SquareMatrixTest){
-    Matrix<double>* matrix = new Matrix<double>(3);
+    Matrix* matrix = new Matrix(3);
     matrix->update_value(0, 0, 1);
     matrix->update_value(0, 1, 1);
     matrix->update_value(0, 2, 1);
@@ -37,7 +35,7 @@ namespace {
   }
 
   TEST(CreationTest, DifferentSizeMatrixTest){
-    Matrix<double>* matrix = new Matrix<double>(2, 3);
+    Matrix* matrix = new Matrix(2, 3);
     matrix->update_value(0, 0, 1);
     matrix->update_value(0, 1, 1);
     matrix->update_value(1, 0, 2);
@@ -55,7 +53,7 @@ namespace {
   }
 
   TEST(CreationTest, MapToASingleValueTest){
-    Matrix<double>* matrix = new Matrix<double>(2);
+    Matrix* matrix = new Matrix(2);
     matrix->map_to_a_single_value(3);
     ASSERT_EQ(matrix->get_position_value(0, 0), 3);
     ASSERT_EQ(matrix->get_position_value(0, 1), 3);
@@ -65,7 +63,7 @@ namespace {
   }
 
   TEST(UpdateTest, UpdateMatrixValueTest){
-    Matrix<double>* matrix = new Matrix<double>(2);
+    Matrix* matrix = new Matrix(2);
     matrix->map_to_a_single_value(0);
     matrix->update_value(1, 1, 10);
     
@@ -77,7 +75,7 @@ namespace {
   }
 
   TEST(UpdateTest, UpdateMatrixGreaterThanHeightTest){
-    Matrix<double>* matrix = new Matrix<double>(2);
+    Matrix* matrix = new Matrix(2);
     matrix->map_to_a_single_value(0);
     EXPECT_THROW({ 
       matrix->update_value(2, 0, 10);
@@ -86,7 +84,7 @@ namespace {
   }
   
   TEST(UpdateTest, UpdateMatrixGreaterThanWidthTest){
-    Matrix<double>* matrix = new Matrix<double>(2);
+    Matrix* matrix = new Matrix(2);
     matrix->map_to_a_single_value(0);
     EXPECT_THROW({ 
       matrix->update_value(2, 0, 10);
@@ -95,7 +93,7 @@ namespace {
   }
 
   TEST(ValuesTest, GetPositionValueTest){
-    Matrix<double>* matrix = new Matrix<double>(2);
+    Matrix* matrix = new Matrix(2);
     matrix->map_to_a_single_value(0);
 
     matrix->update_value(1, 1, 5);
@@ -104,7 +102,7 @@ namespace {
   }
   
   TEST(ValuesTest, GetPositionValuePositionGreaterThanHeightTest){
-    Matrix<double>* matrix = new Matrix<double>(2);
+    Matrix* matrix = new Matrix(2);
     matrix->map_to_a_single_value(0);
     EXPECT_THROW({
       matrix->get_position_value(0, 2);
@@ -113,7 +111,7 @@ namespace {
   }
 
   TEST(ValuesTest, GetPositionValuePositionGreaterThanWidthTest){
-    Matrix<double>* matrix = new Matrix<double>(2);
+    Matrix* matrix = new Matrix(2);
     matrix->map_to_a_single_value(0);
     EXPECT_THROW({
       matrix->get_position_value(2, 0);
@@ -122,20 +120,20 @@ namespace {
   }
 
   TEST(ValuesTest, GetHeightTest){
-    Matrix<double>* matrix = new Matrix<double>(3);
+    Matrix* matrix = new Matrix(3);
     ASSERT_EQ(matrix->get_height(), 3);
     delete matrix;
   }
   
   TEST(ValuesTest, GetWidthTest){
-    Matrix<double>* matrix = new Matrix<double>(3);
+    Matrix* matrix = new Matrix(3);
     ASSERT_EQ(matrix->get_width(), 3);
     delete matrix;
   }
 
   
   TEST(ValuesTest, GetRowTest){
-    Matrix<double>* matrix = new Matrix<double>(3, 2);
+    Matrix* matrix = new Matrix(3, 2);
     matrix->map_to_a_single_value(0);
     matrix->update_value(0, 0, 1);
     matrix->update_value(0, 1, 2);
@@ -150,7 +148,7 @@ namespace {
   }
   
   TEST(ValuesTest, GetColumnTest){
-    Matrix<double>* matrix = new Matrix<double>(2, 3);
+    Matrix* matrix = new Matrix(2, 3);
     matrix->map_to_a_single_value(0);
     matrix->update_value(0, 1, 1);
     matrix->update_value(1, 1, 2);
@@ -165,8 +163,8 @@ namespace {
   }
 
   TEST(ValuesTest, DotProductTest){
-    Matrix<double>* matrix_1 = new Matrix<double>(3, 1);
-    Matrix<Gene>* matrix_2 = new Matrix<Gene>(2, 3);
+    Matrix* matrix_1 = new Matrix(3, 1);
+    Matrix* matrix_2 = new Matrix(2, 3);
   
     matrix_1->update_value(0, 0, 1);
     matrix_1->update_value(0, 1, 2);
@@ -179,7 +177,7 @@ namespace {
     matrix_2->update_value(2, 0, 1);
     matrix_2->update_value(2, 1, 2);
 
-    Matrix<double>* result = (*matrix_1) * (*matrix_2);
+    Matrix* result = (*matrix_1) * (*matrix_2);
     
     ASSERT_EQ(result->get_width(), 2);
     ASSERT_EQ(result->get_height(), 1);
@@ -192,8 +190,8 @@ namespace {
   }
   
   TEST(ValuesTest, DotProductErrorTest){
-    Matrix<double>* matrix_1 = new Matrix<double>(3, 1);
-    Matrix<Gene>* matrix_2 = new Matrix<Gene>(2, 5);
+    Matrix* matrix_1 = new Matrix(3, 1);
+    Matrix* matrix_2 = new Matrix(2, 5);
     EXPECT_THROW({ 
       (*matrix_1) * (*matrix_2); 
     }, invalid_argument);
@@ -201,35 +199,4 @@ namespace {
     delete matrix_2;
   }
 
-  TEST(UpdateTest, UpdateGeneMatrixValuesTest){
-    Matrix<Gene>* matrix = new Matrix<Gene>(1);
-    matrix->update_value(0, 0, 10);
-    ASSERT_EQ(matrix->get_position_value(0, 0), 10);
-    delete matrix; 
-  }
-
-  TEST(ValuesTest, GetPositionValueForGenesTest){
-    Matrix<Gene>* matrix = new Matrix<Gene>(2, 1);
-    matrix->update_value(0, 0, 10);
-    ASSERT_EQ(matrix->get_position_value(0, 0), 10);
-    EXPECT_THAT(matrix->get_position_value(0, 1), AllOf(Ge(-1), Le(1)));
-    delete matrix;    
-  }
-  
-  TEST(ValuesTest, GetPositionValuePositionGreaterThanHeightForGenesTest){
-    Matrix<Gene>* matrix = new Matrix<Gene>(2);
-    EXPECT_THROW({
-      matrix->get_position_value(0, 2);
-    }, invalid_argument);
-    delete matrix;
-  }
-
-  TEST(ValuesTest, GetPositionValuePositionGreaterThanWidthForGenesTest){
-    Matrix<Gene>* matrix = new Matrix<Gene>(2);
-    EXPECT_THROW({
-      matrix->get_position_value(2, 0);
-    }, invalid_argument);
-    delete matrix;
-  }
-  
 }  

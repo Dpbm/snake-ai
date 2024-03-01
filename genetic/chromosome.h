@@ -10,6 +10,8 @@ namespace Chromosomes {
 
   class Chromosome{
     public:
+      Chromosome();
+      void add_genes(unsigned int size);
       Chromosome(unsigned int size); 
       Chromosome(Gene* genes, unsigned int size);
       Gene* get_genes();

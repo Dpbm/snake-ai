@@ -36,11 +36,10 @@ target_link_libraries(genetic helpers)
 
 file(GLOB MATRIX_FILES "matrix/*.cpp")
 add_library(matrix ${MATRIX_FILES})
-target_link_libraries(matrix helpers genetic)
 
 file(GLOB MACHINE_FILES "machine/*.cpp")
 add_library(machine ${MACHINE_FILES})
-target_link_libraries(machine helpers matrix genetic)
+target_link_libraries(machine helpers matrix)
 
 file(GLOB GAME_FILES "game/*.cpp")
 file(GLOB SCREENS_FILES "game/screens/*.cpp")

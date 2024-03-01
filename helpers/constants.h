@@ -1,6 +1,6 @@
 #pragma once
 
-#define WIDTH 1000
+#define WIDTH 1100
 #define HEIGHT 600
 #define PLAY_WIDTH 800
 #define LEFT_WALL WIDTH-PLAY_WIDTH

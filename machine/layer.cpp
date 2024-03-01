@@ -7,16 +7,16 @@ using std::invalid_argument;
 namespace Layers {
   bool input;
   unsigned int size;
-  Matrix<double> *values;
+  Matrix *values;
   double (*activation)(double);
 
   Layer::Layer(unsigned int size, bool input){
     this->size = size;
-    this->values = new Matrix<double>(size, 1);
+    this->values = new Matrix(size, 1);
     this->input = input;
   }
 
-  Layer::Layer(Matrix<double> *values, bool input){
+  Layer::Layer(Matrix *values, bool input){
     if(values->get_height() != 1)
       throw invalid_argument("Invalid values dimensions!");
 
@@ -25,7 +25,7 @@ namespace Layers {
     this->input = input;
   }
 
-  Matrix<double>* Layer::get_values(){
+  Matrix* Layer::get_values(){
     return this->values;
   }
 
@@ -59,7 +59,7 @@ namespace Layers {
     return this->activation;
   }
 
-  void Layer::set_values(Matrix<double>* values){
+  void Layer::set_values(Matrix* values){
     if(values->get_width() != this->size || values->get_height() != 1)
       throw invalid_argument("The new values matrix must have the size dimensions as defined!");
     

@@ -29,19 +29,21 @@ namespace GameAIScreen{
       ~AIScreen();
 
     private:
-      unsigned int max_score = 10;
+      constexpr static unsigned int max_score = 10;
+      constexpr static unsigned int total_individuals = 3;
       unsigned int generation = 1;
       unsigned int individual = 1;
       unsigned int best_individual = 1;
-      unsigned int max_individuals = 3;
-      Player* player = new Player(1, this->max_score);
+      unsigned int best_pontuation = 0;
+      int points[total_individuals];
+      Chromosome* population = new Chromosome[total_individuals];
+      Player* player = new Player(1, max_score);
       Food food;
       bool debug = false;
      
       NN* nn = new NN;   
       Layer* input_layer = new Layer(5, true);
-      Matrix<double>* input_data = new Matrix<double>(5, 1);
-      Chromosome* chromosome = nullptr;
+      Matrix* input_data = new Matrix(5, 1);
       
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
       SDL_Color text_color{ 255, 255, 255 };
@@ -66,6 +68,12 @@ namespace GameAIScreen{
       SDL_Texture* best_individual_text_texture;
       SDL_Texture* best_individual_texture;
       
-    SDL_Rect screen_separator{LEFT_WALL, 0, 1, HEIGHT};
+      SDL_Rect best_pontuation_text_shape;
+      SDL_Rect best_pontuation_shape;
+      SDL_Texture* best_pontuation_text_texture;
+      SDL_Texture* best_pontuation_texture;
+      
+      SDL_Rect screen_separator{LEFT_WALL, 0, 1, HEIGHT};
+      void load_genes_into_nn();
   };
 };

@@ -20,7 +20,7 @@ namespace {
   }
 
   TEST(CreationTest, CreateLayerByMatrixTest){
-    Matrix<double>* values = new Matrix<double>(3, 1);
+    Matrix* values = new Matrix(3, 1);
     Layer* layer = new Layer(values, true);
     ASSERT_EQ(layer->get_size(), 3);
     ASSERT_EQ(layer->get_values(), values);
@@ -31,7 +31,7 @@ namespace {
   }
 
   TEST(CreationTest, CreateLayerWithInvalidWidhtTest){
-    Matrix<double>* values = new Matrix<double>(3, 3);
+    Matrix* values = new Matrix(3, 3);
     EXPECT_THROW({ new Layer(values, true); }, invalid_argument);
     delete values;
   }
@@ -58,7 +58,7 @@ namespace {
   }
 
   TEST(UpdateTest, ActivateNeuronsTest){
-    Matrix<double>* values = new Matrix<double>(2, 1);
+    Matrix* values = new Matrix(2, 1);
     values->update_value(0, 0, -15);
     values->update_value(0, 1, 12);
   
@@ -85,7 +85,7 @@ namespace {
 
   TEST(UpdateTest, SetValuesTest){
     Layer* layer = new Layer(3, true);
-    Matrix<double>* new_values = new Matrix<double>(3,1);
+    Matrix* new_values = new Matrix(3,1);
     new_values->map_to_a_single_value(1);
     layer->set_values(new_values);
     ASSERT_EQ(layer->get_values()->get_position_value(0,0), 1);
@@ -95,27 +95,27 @@ namespace {
   }
 
   TEST(UpdateTest, SetValuesCheckPointersTest){
-    Matrix<double>* values = new Matrix<double>(3,1);
+    Matrix* values = new Matrix(3,1);
     Layer* layer = new Layer(values, true);
-    Matrix<double>* values2 = new Matrix<double>(3,1);
+    Matrix* values2 = new Matrix(3,1);
     layer->set_values(values2);  
     ASSERT_EQ(layer->get_values(), values2);
     delete layer;
   }
 
   TEST(UpdateTest, SetValuesDifferentWidthTest){
-    Matrix<double>* values = new Matrix<double>(3,1);
+    Matrix* values = new Matrix(3,1);
     Layer* layer = new Layer(values, true);
-    Matrix<double>* values2 = new Matrix<double>(7,1);
+    Matrix* values2 = new Matrix(7,1);
     EXPECT_THROW({ layer->set_values(values2); }, invalid_argument);
     delete layer;
     delete values2;
   } 
 
   TEST(UpdateTest, SetValuesDifferentHeightTest){
-    Matrix<double>* values = new Matrix<double>(3,1);
+    Matrix* values = new Matrix(3,1);
     Layer* layer = new Layer(values, true);
-    Matrix<double>* values2 = new Matrix<double>(3,2);
+    Matrix* values2 = new Matrix(3,2);
     EXPECT_THROW({ layer->set_values(values2); }, invalid_argument);
     delete layer;
     delete values2;

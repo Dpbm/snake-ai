@@ -3,11 +3,9 @@
 #include "layer.h"
 #include "weights.h"
 #include "machine.h"
-#include "../genetic/gene.h"
 
 using Layers::Layer;
 using NNWeights::Weights;
-using Genes::Gene;
 using std::vector;
 using std::string;
 using std::invalid_argument;
@@ -98,10 +96,10 @@ namespace Machine {
       Layer* actual_layer = this->get_layer(layer);
       Layer* next_layer = this->get_layer(layer+1);
 
-      Matrix<double>* layer_values = actual_layer->get_values();
-      Matrix<Gene>* layer_weights = this->get_weight(layer)->get_weights();
+      Matrix* layer_values = actual_layer->get_values();
+      Matrix* layer_weights = this->get_weight(layer)->get_weights();
 
-      Matrix<double>* dot_product_result = (*layer_values) * (*layer_weights);
+      Matrix* dot_product_result = (*layer_values) * (*layer_weights);
       next_layer->set_values(dot_product_result);
       next_layer->activate_neurons();
     }
