@@ -17,8 +17,7 @@ using Players::Player;
 namespace GamePlayerScreen{
   PlayerScreen::PlayerScreen(SDL_Renderer* render){
     if(!this->font){
-      cout << "Failed on getting font!" << endl;
-      cout << TTF_GetError() << endl;
+      cout << "Failed on getting font!" << TTF_GetError() << endl;
       exit(1);
     }
     SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "Score ", this->text_color);
@@ -31,6 +30,11 @@ namespace GamePlayerScreen{
     
     SDL_FreeSurface(score_text_surface);
     SDL_FreeSurface(score_surface);
+
+    if(this->score_texture == nullptr || this->score_text_texture == nullptr){
+      cout << "Failed on creating textures!" << SDL_GetError() << endl;
+      exit(1);
+    }
   }
 
   Screen* PlayerScreen::key_event(const SDL_Keycode& key){
@@ -79,6 +83,11 @@ namespace GamePlayerScreen{
       this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
       this->score_shape.w = score_surface->w;
       SDL_FreeSurface(score_surface);
+      
+      if(this->score_texture == nullptr){
+        cout << "Failed on recreating score texture!" << SDL_GetError() << endl;
+        exit(1);
+      }
       cout << "Player score: " << player_score << endl;
     }
 
