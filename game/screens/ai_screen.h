@@ -39,11 +39,10 @@ namespace GameAIScreen{
       Chromosome* population = new Chromosome[total_individuals];
       Player* player = new Player(1, max_score);
       Food food;
-      bool debug = false;
      
       NN* nn = new NN;   
-      Layer* input_layer = new Layer(5, true);
-      Matrix* input_data = new Matrix(5, 1);
+      Layer* input_layer = new Layer(12, true);
+      Matrix* input_data = new Matrix(12, 1);
       
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
       SDL_Color text_color{ 255, 255, 255 };

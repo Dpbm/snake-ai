@@ -26,10 +26,12 @@ namespace GameStartScreen {
       SDL_Texture* title_texture;
       SDL_Texture* ai_texture;
       SDL_Texture* player_texture;
+      SDL_Texture* debug_texture;
 
       SDL_Rect title_shape;
       SDL_Rect ai_shape;
       SDL_Rect player_shape;
+      SDL_Rect debug_shape;
   };
 
 };

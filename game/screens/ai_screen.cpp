@@ -21,8 +21,6 @@
 using std::to_string;
 using std::cout;
 using std::endl;
-using std::sqrt;
-using std::pow;
 using Players::Player;
 using Screens::Screen;
 using Utils::random_int;
@@ -96,8 +94,8 @@ namespace GameAIScreen {
     this->randomize_player_direction();
     
     this->nn->add_layer(this->input_layer);
-    this->nn->add_layer(15);
-    this->nn->add_layer(15);
+    this->nn->add_layer(20);
+    this->nn->add_layer(20);
     this->nn->add_layer(4);
     
     this->nn->get_layer(1)->set_activation_function(sigmoid);
@@ -199,22 +197,18 @@ namespace GameAIScreen {
     int fx_offset = FOOD_W/2;
     int fy_offset = FOOD_H/2;
 
-    //this->input_data->update_value(0, 0, (double)PLAY_WIDTH-px);
     this->input_data->update_value(0, 0, (double)px);
     this->input_data->update_value(0, 1, (double)py);
-    //this->input_data->update_value(0, 3, (double)HEIGHT-py);
-    this->input_data->update_value(0, 2, sqrt(pow(px-fx, 2) + pow(py-fy, 2)));
-    this->input_data->update_value(0, 3, (double)(abs(this->player->get_mov_x())));
-    this->input_data->update_value(0, 4, (double)(abs(this->player->get_mov_y()+1)));
-    
-    if(this->debug){
-      SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
-      SDL_RenderDrawLine(render, px, py+py_offset, PLAY_WIDTH, py+py_offset);
-      SDL_RenderDrawLine(render, 0, py+py_offset, px, py+py_offset);
-      SDL_RenderDrawLine(render, px+px_offset, 0, px+px_offset, py);
-      SDL_RenderDrawLine(render, px+px_offset, py, px+px_offset, HEIGHT);
-      SDL_RenderDrawLine(render, px+py_offset, py+px_offset, fx+fx_offset, fy+fy_offset);
-    }
+    this->input_data->update_value(0, 2, (double)WIDTH-px);
+    this->input_data->update_value(0, 3, (double)HEIGHT-py);
+    this->input_data->update_value(0, 4, (double)(this->player->get_mov_y()==-1));
+    this->input_data->update_value(0, 5, (double)(this->player->get_mov_y()==1));
+    this->input_data->update_value(0, 6, (double)(this->player->get_mov_x()==-1));
+    this->input_data->update_value(0, 7, (double)(this->player->get_mov_x()==1));
+    this->input_data->update_value(0, 8, (double)(px > fx));
+    this->input_data->update_value(0, 9, (double)(px < fx));
+    this->input_data->update_value(0, 10, (double)(py > fy));
+    this->input_data->update_value(0, 11, (double)(py < fy));
 
     this->player->update_position();
     bool ended_game = false;
@@ -263,30 +257,6 @@ namespace GameAIScreen {
   }
 
   Screen* AIScreen::key_event(const SDL_Keycode& key){
-    if(key == SDLK_p)
-      this->debug = !this->debug;
-
-    if(this->debug){
-      switch (key) {
-        case SDLK_w:
-          this->player->direction_up();
-          break;
-
-        case SDLK_s:
-          this->player->direction_down();
-          break;
-
-        case SDLK_d:
-          this->player->direction_right();
-          break;
-
-        case SDLK_a:
-          this->player->direction_left();
-          break;
-
-        default: break;
-      }
-    }
     return nullptr;
   }
   

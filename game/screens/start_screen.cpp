@@ -11,12 +11,14 @@
 #include "../../helpers/constants.h"
 #include "player_screen.h"
 #include "ai_screen.h"
+#include "debug_screen.h"
 
 using std::exit;
 using std::cout;
 using std::endl;
 using GamePlayerScreen::PlayerScreen;
 using GameAIScreen::AIScreen;
+using GameDebugScreen::DebugScreen;
 
 namespace GameStartScreen {  
   StartScreen::StartScreen(SDL_Renderer* render){
@@ -41,6 +43,14 @@ namespace GameStartScreen {
     SDL_FreeSurface(title_surface);
     SDL_FreeSurface(ai_surface);
     SDL_FreeSurface(player_surface);
+    
+    #if DEBUG
+      SDL_Surface* debug_surface = TTF_RenderText_Solid(this->font, "PRESS 'P' FOR DEBUGGING", this->text_color);
+      this->debug_texture = SDL_CreateTextureFromSurface(render, debug_surface);
+      this->debug_shape = SDL_Rect{(WIDTH/2) - (debug_surface->w/2), this->player_shape.y+this->player_shape.h+20, debug_surface->w, debug_surface->h};
+      SDL_FreeSurface(debug_surface);
+    #endif
+
   }
 
   Screen* StartScreen::key_event(const SDL_Keycode& key){
@@ -49,6 +59,10 @@ namespace GameStartScreen {
         return new AIScreen(this->render);
       case SDLK_d:
         return new PlayerScreen(this->render);
+    #if DEBUG
+      case SDLK_p:
+        return new DebugScreen(this->render);
+    #endif
       default:
         break;
     }
@@ -60,6 +74,9 @@ namespace GameStartScreen {
     SDL_RenderCopy(render, this->title_texture, NULL, &this->title_shape);
     SDL_RenderCopy(render, this->ai_texture, NULL, &this->ai_shape);
     SDL_RenderCopy(render, this->player_texture, NULL, &this->player_shape);
+    #if DEBUG
+      SDL_RenderCopy(render, this->debug_texture, NULL, &this->debug_shape);
+    #endif
     SDL_RenderPresent(render);
   }
 
@@ -67,5 +84,8 @@ namespace GameStartScreen {
     SDL_DestroyTexture(this->title_texture);
     SDL_DestroyTexture(this->ai_texture);
     SDL_DestroyTexture(this->player_texture);
+    #if DEBUG
+      SDL_DestroyTexture(this->debug_texture);
+    #endif
   }
 };
