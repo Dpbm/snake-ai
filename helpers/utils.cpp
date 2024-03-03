@@ -27,12 +27,12 @@ namespace Utils {
   }
 
   unsigned int get_random_x(unsigned int factor){
-    unsigned int rand = Utils::random_int(LEFT_WALL, WIDTH);
+    unsigned int rand = Utils::random_int(LEFT_WALL, WIDTH-factor);
     return rand-(rand%factor);
   }
   
   unsigned int get_random_y(unsigned int factor){
-    unsigned int rand = Utils::random_int(0, HEIGHT);
+    unsigned int rand = Utils::random_int(0, HEIGHT-factor);
     return rand-(rand%factor);
   }
 

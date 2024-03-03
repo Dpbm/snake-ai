@@ -1,4 +1,4 @@
-#include <cmath>
+#include <SDL2/SDL_stdinc.h>
 #include <cstddef>
 #include <iostream>
 #include <string>
@@ -9,14 +9,11 @@
 #include "ai_screen.h"
 #include "../player.h"
 #include "screens.h"
-#include "../../helpers/constants.h"
 #include "../../helpers/utils.h"
 #include "../../machine/machine.h"
 #include "../../machine/layer.h"
 #include "../../machine/activation.h"
 #include "../../matrix/matrix.h"
-#include "../../genetic/chromosome.h"
-#include "../../genetic/gene.h"
 
 using std::to_string;
 using std::cout;
@@ -29,15 +26,41 @@ using Layers::Layer;
 using Activations::relu;
 using Activations::sigmoid;
 using Matrices::Matrix;
-using Chromosomes::Chromosome;
-using Genes::Gene;
 
 namespace GameAIScreen {
 
   AIScreen::AIScreen(SDL_Renderer* render){
+    this->create_text(render);
+    this->randomize_player_direction();
+    
+    this->nn->add_layer(this->input_layer);
+    // this->nn->add_layer(20);
+    // this->nn->add_layer(20);
+    this->nn->add_layer(3);
+    this->nn->add_layer(4);
+    // cout << this->nn->get_total_layers() << endl;
+    
+    // this->nn->get_layer(1)->set_activation_function(sigmoid);
+    this->nn->get_layer(1)->set_activation_function(relu);
+    this->nn->get_layer(2)->set_activation_function(sigmoid);
+    this->input_layer->set_values(this->input_data);
+    
+    unsigned int genes_array_size = 0;
+    for(size_t weight_i = 0; weight_i < this->nn->get_total_weights(); weight_i++){
+      unsigned int w = this->nn->get_weight(weight_i)->get_width();
+      unsigned int h = this->nn->get_weight(weight_i)->get_height();
+      genes_array_size += w*h;
+    } 
+
+    for(size_t i = 0; i < this->total_individuals; i++)
+      this->population[i].setup_choromosome(genes_array_size);
+    
+    this->load_genes_into_nn();
+  }
+
+  void AIScreen::create_text(SDL_Renderer* render){
     if(!this->font){
-      cout << "Failed on getting font!" << endl;
-      cout << TTF_GetError() << endl;
+      cout << "Failed on getting font!" << TTF_GetError() << endl;
       exit(1);
     }
     SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "Score ", this->text_color);
@@ -91,47 +114,30 @@ namespace GameAIScreen {
     SDL_FreeSurface(best_pontuation_text_surface);
     SDL_FreeSurface(best_pontuation_surface);
 
-    this->randomize_player_direction();
-    
-    this->nn->add_layer(this->input_layer);
-    this->nn->add_layer(20);
-    this->nn->add_layer(20);
-    this->nn->add_layer(4);
-    
-    this->nn->get_layer(1)->set_activation_function(sigmoid);
-    this->nn->get_layer(2)->set_activation_function(relu);
-    this->nn->get_layer(3)->set_activation_function(sigmoid);
-    this->input_layer->set_values(this->input_data);
-    
-    unsigned int genes_array_size = 0;
-    for(size_t weight_i = 0; weight_i < this->nn->get_total_weights(); weight_i++){
-      unsigned int w = this->nn->get_weight(weight_i)->get_width();
-      unsigned int h = this->nn->get_weight(weight_i)->get_height();
-      genes_array_size += w*h;
-    } 
-    
-    for(size_t individual = 0; individual < this->total_individuals; individual++)
-      this->population[individual].add_genes(genes_array_size);
-
-    this->load_genes_into_nn();
+    if(score_texture == nullptr ||
+       score_text_texture == nullptr ||
+       generation_text_texture == nullptr || 
+       generation_texture == nullptr || 
+       individual_text_texture == nullptr ||
+       individual_texture == nullptr ||
+       best_individual_text_surface == nullptr ||
+       best_individual_texture == nullptr ||
+       best_pontuation_text_texture == nullptr ||
+       best_pontuation_texture == nullptr){
+      cout << "Failed on adding textures!" << TTF_GetError() << endl;
+      exit(1);
+      
+    }
   }
 
   void AIScreen::load_genes_into_nn(){
-    Gene* individual_genes = this->population[this->individual-1].get_genes();
     for(size_t weight_i = 0; weight_i < this->nn->get_total_weights(); weight_i++){
       unsigned int w = this->nn->get_weight(weight_i)->get_width();
       unsigned int h = this->nn->get_weight(weight_i)->get_height();
 
-      Matrix* new_weights = new Matrix(w, h);
-      int gene_index = 0;
-      for(size_t i = 0; i < h; i++){
-        for(size_t j = 0; j < w; j++){
-          new_weights->update_value(i, j, individual_genes[gene_index].get_gene_value());        
-          gene_index++;
-        }
-      }
-
-      this->nn->get_weight(weight_i)->load_weights(new_weights);
+      this->nn->get_weight(weight_i)->load_weights(
+        this->population[this->individual-1].get_genes_matrix(w, h)
+      );
     }
   }
 
@@ -155,10 +161,8 @@ namespace GameAIScreen {
     }
   }
 
-  void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
-    
-    this->nn->feedforward();
-    Matrix* result = this->nn->get_layer(3)->get_values();
+  void AIScreen::get_new_direction(){
+    Matrix* result = this->nn->get_layer(2)->get_values();
     double biggest = 0;
     unsigned int direction = 0;
     for(size_t i = 0; i < 4; i++){
@@ -186,31 +190,42 @@ namespace GameAIScreen {
         this->player->direction_right();
         break;
     }
+  }
 
-    int px = player->get_x();
-    int py = player->get_y();
-    int fx = food.get_x();
-    int fy = food.get_y();
+  void AIScreen::execute(SDL_Renderer* render, bool& game_loop){  
+    int px = this->player->get_x();
+    int py = this->player->get_y();
+    int fx = this->food.get_x();
+    int fy = this->food.get_y();
 
-    int px_offset = PLAYER_W/2;
-    int py_offset = PLAYER_H/2;
-    int fx_offset = FOOD_W/2;
-    int fy_offset = FOOD_H/2;
 
-    this->input_data->update_value(0, 0, (double)px);
-    this->input_data->update_value(0, 1, (double)py);
-    this->input_data->update_value(0, 2, (double)WIDTH-px);
-    this->input_data->update_value(0, 3, (double)HEIGHT-py);
-    this->input_data->update_value(0, 4, (double)(this->player->get_mov_y()==-1));
-    this->input_data->update_value(0, 5, (double)(this->player->get_mov_y()==1));
-    this->input_data->update_value(0, 6, (double)(this->player->get_mov_x()==-1));
-    this->input_data->update_value(0, 7, (double)(this->player->get_mov_x()==1));
-    this->input_data->update_value(0, 8, (double)(px > fx));
-    this->input_data->update_value(0, 9, (double)(px < fx));
-    this->input_data->update_value(0, 10, (double)(py > fy));
-    this->input_data->update_value(0, 11, (double)(py < fy));
+    if(fx > px && fy < py){
+      double hip = sqrt(pow(fx-px,2) + pow(py-fy,2));
+      this->input_data->update_value(0, 0, hip==0 ? 0 : SDL_asin((py-fy)/hip));
+    } else if(px > fx && fy < py){
+      double hip = sqrt(pow(px-fx,2) + pow(py-fy,2));
+      this->input_data->update_value(0, 0, hip==0 ? 0 : SDL_asin((py-fy)/hip));
+    } else if(px > fx && fy > py){
+      double hip = sqrt(pow(px-fx,2) + pow(fy-py,2));
+      this->input_data->update_value(0, 0, hip==0 ? 0 : SDL_asin((py-fy)/hip));
+    } else if(px < fx && py < fy){
+      double hip = sqrt(pow(fx-px,2) + pow(fy-py,2));
+      this->input_data->update_value(0, 0, hip==0 ? 0 : SDL_asin((py-fy)/hip));
+    }else if(py == fy){
+      this->input_data->update_value(0, 0, px-fx);
+    }else {
+      this->input_data->update_value(0, 0, 0);
+    }
 
+    this->nn->feedforward();
+    this->nn->get_layer(0)->get_values()->show();
+    this->nn->get_layer(1)->get_values()->show();
+    this->nn->get_layer(2)->get_values()->show();
+    cout << endl;
+    this->get_new_direction();
     this->player->update_position();
+
+    int ai_score = this->player->get_score();
     bool ended_game = false;
 
     if(this->player->is_die()){
@@ -221,16 +236,11 @@ namespace GameAIScreen {
       ended_game = true;
     }
     
-    if(ended_game){
-      this->reset(render);
-      return;
-    }
     
     if(this->player->collision(this->food.get_x(), this->food.get_y())){
       this->food.update_position();
       this->player->update_score();
 
-      unsigned int ai_score = this->player->get_score();
       SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(ai_score).c_str(), this->text_color);
       SDL_DestroyTexture(this->score_texture);
       this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
@@ -240,6 +250,14 @@ namespace GameAIScreen {
       cout << "AI score: " << ai_score << endl;
     }
     
+    if(ai_score > this->best_pontuation){
+      this->best_pontuation = ai_score;
+      this->best_individual = this->individual;
+      this->update_best_individual_and_pontutaion_text(render);
+    }
+
+    SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+    SDL_RenderDrawLine(render, px, py, fx, fy);
     SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
     SDL_RenderFillRect(render, &this->screen_separator);
     SDL_RenderCopy(render, this->score_text_texture, NULL, &this->score_text_shape);
@@ -254,6 +272,27 @@ namespace GameAIScreen {
     SDL_RenderCopy(render, this->best_pontuation_texture, NULL, &this->best_pontuation_shape);
     this->food.render(render);
     this->player->render(render);
+    
+    if(ended_game){
+      this->reset(render);
+      return;
+    }
+  }
+
+  void AIScreen::update_best_individual_and_pontutaion_text(SDL_Renderer* render){
+    SDL_DestroyTexture(this->best_individual_texture);
+    SDL_DestroyTexture(this->best_pontuation_texture);
+    
+    SDL_Surface* best_individual_surface = TTF_RenderText_Solid(this->font, to_string(this->individual).c_str(), this->text_color);
+    this->best_individual_texture = SDL_CreateTextureFromSurface(render, best_individual_surface);
+    this->best_individual_shape.w = best_individual_surface->w;
+    
+    SDL_Surface* best_pontuation_surface = TTF_RenderText_Solid(this->font, to_string(this->best_pontuation).c_str(), this->text_color);
+    this->best_pontuation_texture = SDL_CreateTextureFromSurface(render, best_pontuation_surface);
+    this->best_pontuation_shape.w = best_pontuation_surface->w;
+
+    SDL_FreeSurface(best_individual_surface);
+    SDL_FreeSurface(best_pontuation_surface);
   }
 
   Screen* AIScreen::key_event(const SDL_Keycode& key){
@@ -275,49 +314,32 @@ namespace GameAIScreen {
     delete this->nn;
     delete[] this->population;
   }
-  
-  void AIScreen::reset(SDL_Renderer* render){
-    delete this->player;
-  
-    this->player = new Player(1, this->max_score);
-    this->food.update_position();
 
-    int player_score = player->get_score();
-
-    this->points[this->individual-1] = player_score;
-    cout << "points: ";
-    for(size_t i = 0; i < this->individual; i++)
-      cout << points[i] << " ";
-    cout << endl;
-
-    if(player_score > this->best_pontuation){
-      this->best_pontuation = player_score;
-      this->best_individual = this->individual;
-      
-      SDL_DestroyTexture(this->best_individual_texture);
-      SDL_DestroyTexture(this->best_pontuation_texture);
-      
-      SDL_Surface* best_individual_surface = TTF_RenderText_Solid(this->font, to_string(this->individual).c_str(), this->text_color);
-      this->best_individual_texture = SDL_CreateTextureFromSurface(render, best_individual_surface);
-      this->best_individual_shape.w = best_individual_surface->w;
-      
-      SDL_Surface* best_pontuation_surface = TTF_RenderText_Solid(this->font, to_string(player_score).c_str(), this->text_color);
-      this->best_pontuation_texture = SDL_CreateTextureFromSurface(render, best_pontuation_surface);
-      this->best_pontuation_shape.w = best_pontuation_surface->w;
-
-      SDL_FreeSurface(best_individual_surface);
-      SDL_FreeSurface(best_pontuation_surface);
+  void AIScreen::new_generation(){
+    for(size_t i = 0; i < this->total_individuals; i++){
+      if(this->points[i] > 0)
+        this->population[i].mutate(0.2);
+      else
+        this->population[i].mutate(1); 
     }
+  }
+
+  void AIScreen::reset(SDL_Renderer* render){
+    this->food.update_position();
+    
+    this->points[this->individual-1] = this->player->get_score();
 
     this->individual++;
-    if(this->individual > this->total_individuals){ 
+    if(this->individual > this->total_individuals){
       this->generation++;
       this->individual=1;
+      this->best_individual = 1;
+      this->best_pontuation = 0;
+      this->update_best_individual_and_pontutaion_text(render);
+      this->new_generation();
     }
     this->load_genes_into_nn();
-    this->randomize_player_direction();
 
-    
     SDL_DestroyTexture(this->score_texture);
     SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, "0", this->text_color);
     this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
@@ -335,5 +357,9 @@ namespace GameAIScreen {
     this->individual_texture = SDL_CreateTextureFromSurface(render, individual_surface);
     this->individual_shape.w = individual_surface->w;
     SDL_FreeSurface(individual_surface);
+    
+    delete this->player;
+    this->player = new Player(1, this->max_score);
+    this->randomize_player_direction();
   }
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
 #include "screens.h"
@@ -8,15 +9,16 @@
 #include "../../machine/machine.h"
 #include "../../machine/layer.h"
 #include "../../matrix/matrix.h"
-#include "../../genetic/chromosome.h"
+#include "agents/ai_player.h"
 
+using std::vector;
 using Screens::Screen;
 using Players::Player;
 using Foods::Food;
 using Machine::NN;
 using Layers::Layer;
 using Matrices::Matrix;
-using Chromosomes::Chromosome;
+using AIAgent::AIPlayer;
 
 namespace GameAIScreen{
   class AIScreen: public Screen{
@@ -30,19 +32,19 @@ namespace GameAIScreen{
 
     private:
       constexpr static unsigned int max_score = 10;
-      constexpr static unsigned int total_individuals = 3;
+      constexpr static unsigned int total_individuals = 4;
       unsigned int generation = 1;
       unsigned int individual = 1;
       unsigned int best_individual = 1;
       unsigned int best_pontuation = 0;
-      int points[total_individuals];
-      Chromosome* population = new Chromosome[total_individuals];
+      AIPlayer* population = new AIPlayer[total_individuals];
       Player* player = new Player(1, max_score);
       Food food;
+      int points[total_individuals];
      
       NN* nn = new NN;   
-      Layer* input_layer = new Layer(12, true);
-      Matrix* input_data = new Matrix(12, 1);
+      Layer* input_layer = new Layer(1, true);
+      Matrix* input_data = new Matrix(1, 1);
       
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
       SDL_Color text_color{ 255, 255, 255 };
@@ -74,5 +76,9 @@ namespace GameAIScreen{
       
       SDL_Rect screen_separator{LEFT_WALL, 0, 1, HEIGHT};
       void load_genes_into_nn();
+      void create_text(SDL_Renderer* render);
+      void update_best_individual_and_pontutaion_text(SDL_Renderer* render);
+      void get_new_direction();
+      void new_generation();
   };
 };

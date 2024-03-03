@@ -7,17 +7,9 @@ using std::endl;
 using Genes::Gene;
 
 namespace Chromosomes {
-
-  Chromosome::Chromosome(){}
-  
-  void Chromosome::add_genes(unsigned int size){
+  Chromosome::Chromosome(unsigned int size){
     this->genes = new Gene[size];
     this->total_genes = size;
-  }
-
-
-  Chromosome::Chromosome(unsigned int size){
-    this->add_genes(size);  
   }
  
   Chromosome::Chromosome(Gene* genes, unsigned int size){

@@ -25,8 +25,7 @@ namespace Genes {
       throw invalid_argument("Invalid mutation rate! Accepted from 0 to 1");
 
     unsigned int rand = random(1, 100);
-    bool mutate = rand <= rate*100;
-    if(mutate) this->Gene::rand_gene_value();
+    if(rand <= rate*100) this->rand_gene_value();
   }
           
   void Gene::rand_gene_value(){
