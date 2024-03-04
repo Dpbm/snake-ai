@@ -17,6 +17,7 @@ namespace Chromosomes {
       void show();
       unsigned int get_size();
       ~Chromosome();
+      void copy_genes(Gene* genes);
     
     private:
       Gene* genes = nullptr;

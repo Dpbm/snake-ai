@@ -13,6 +13,7 @@ namespace Foods {
       void render(SDL_Renderer* render);
       ~Food();
       void update_position();
+      void set_position(unsigned int x, unsigned int y);
 
     private:
       SDL_Rect *shape = new SDL_Rect{0, 0, FOOD_W, FOOD_H}; 

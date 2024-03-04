@@ -12,9 +12,9 @@ namespace AIAgent{
       AIPlayer();
       ~AIPlayer();
       void setup_choromosome(unsigned int chromosome_size);
+      Chromosome* get_chromosome();
       Matrix* get_genes_matrix(unsigned int w, unsigned int h);
-      void mutate(double rate);
-      
+
     private:
       Chromosome* chromosome = nullptr;
   };

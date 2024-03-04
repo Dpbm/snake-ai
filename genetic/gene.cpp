@@ -29,7 +29,7 @@ namespace Genes {
   }
           
   void Gene::rand_gene_value(){
-    this->value = random(-1, 1);
+    this->value = random(0, 1);
   }
 
   void Gene::operator= (double value){

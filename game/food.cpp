@@ -23,6 +23,11 @@ namespace Foods {
     return this->shape->y;
   }
 
+  void Food::set_position(unsigned int x, unsigned int y){
+    this->shape->x = x;
+    this->shape->y = y;
+  }
+
   void Food::render(SDL_Renderer* render){
     SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
     SDL_RenderFillRect(render, this->shape);

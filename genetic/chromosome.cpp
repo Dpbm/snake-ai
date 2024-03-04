@@ -1,7 +1,9 @@
+#include <cstddef>
 #include <iostream>
 #include "gene.h"
 #include "chromosome.h"
 
+using std::size_t;
 using std::cout;
 using std::endl;
 using Genes::Gene;
@@ -15,6 +17,11 @@ namespace Chromosomes {
   Chromosome::Chromosome(Gene* genes, unsigned int size){
     this->genes = genes;
     this->total_genes = size;
+  }
+
+  void Chromosome::copy_genes(Gene* genes){
+    for(size_t i = 0; i < this->total_genes; i++)
+      this->genes[i] = genes[i];
   }
 
   Gene* Chromosome::get_genes(){

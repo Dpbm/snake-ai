@@ -39,6 +39,7 @@ namespace GameAIScreen{
       unsigned int best_pontuation = 0;
       AIPlayer* population = new AIPlayer[total_individuals];
       Player* player = new Player(1, max_score);
+      int fx,fy;
       Food food;
       int points[total_individuals];
      
@@ -80,5 +81,7 @@ namespace GameAIScreen{
       void update_best_individual_and_pontutaion_text(SDL_Renderer* render);
       void get_new_direction();
       void new_generation();
+      void randomize_food_position();
+      void update_input_data();
   };
 };

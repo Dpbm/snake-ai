@@ -25,10 +25,9 @@ namespace AIAgent{
     return genes_matrix;
   }
 
-  void AIPlayer::mutate(double rate){
-    this->chromosome->mutate(rate);
-  }
-
+  Chromosome* AIPlayer::get_chromosome(){
+    return this->chromosome;
+  } 
 
   AIPlayer::~AIPlayer(){
     delete this->chromosome;
