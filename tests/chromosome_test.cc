@@ -22,5 +22,23 @@ namespace {
 
     delete chromosome;
   }
+
+  TEST(UpdateTest, CopyGenesTest){
+    Gene* genes = new Gene[3];
+    Chromosome* chromosome = new Chromosome(3);
+    chromosome->copy_genes(genes);
   
+    ASSERT_NE(&genes[0], &chromosome->get_genes()[0]);
+    ASSERT_NE(&genes[1], &chromosome->get_genes()[1]);
+    ASSERT_NE(&genes[2], &chromosome->get_genes()[2]);
+    
+    ASSERT_EQ(genes[0].get_gene_value(), chromosome->get_genes()[0].get_gene_value());
+    ASSERT_EQ(genes[1].get_gene_value(), chromosome->get_genes()[1].get_gene_value());
+    ASSERT_EQ(genes[2].get_gene_value(), chromosome->get_genes()[2].get_gene_value());
+
+
+    delete[] genes;
+    delete chromosome;
+  }
+
 }
