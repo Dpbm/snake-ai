@@ -1,7 +1,9 @@
+#include <cstddef>
 #include <iostream>
 #include <stdexcept>
 #include "matrix.h"
 
+using std::size_t;
 using std::invalid_argument;
 
 namespace Matrices{

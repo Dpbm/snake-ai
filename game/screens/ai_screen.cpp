@@ -15,6 +15,7 @@
 #include "../../machine/activation.h"
 #include "../../matrix/matrix.h"
 
+using std::size_t;
 using std::to_string;
 using std::cout;
 using std::endl;

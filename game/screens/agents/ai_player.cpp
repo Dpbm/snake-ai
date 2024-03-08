@@ -1,7 +1,9 @@
+#include <cstddef>
 #include "ai_player.h"
 #include "../../../genetic/chromosome.h"
 #include "../../../matrix/matrix.h"
 
+using std::size_t;
 using Chromosomes::Chromosome;
 using Matrices::Matrix;
 

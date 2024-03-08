@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -8,6 +9,7 @@
 #include "../../helpers/constants.h"
 #include "../../helpers/utils.h"
 
+using std::size_t;
 using std::cos;
 using std::sin;
 using std::abs;
