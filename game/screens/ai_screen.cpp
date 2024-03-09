@@ -10,28 +10,16 @@
 #include "../player.h"
 #include "screens.h"
 #include "../../helpers/utils.h"
-#include "../../machine/machine.h"
-#include "../../machine/layer.h"
-#include "../../machine/activation.h"
-#include "../../matrix/matrix.h"
 
 using std::size_t;
 using std::to_string;
 using std::cout;
 using std::endl;
-using std::sqrt;
-using std::acos;
-using std::pow;
 using Players::Player;
 using Screens::Screen;
 using Utils::random_int;
 using Utils::get_random_x;
 using Utils::get_random_y;
-using Machine::NN;
-using Layers::Layer;
-using Activations::relu;
-using Activations::sigmoid;
-using Matrices::Matrix;
 
 namespace GameAIScreen {
 
@@ -39,62 +27,6 @@ namespace GameAIScreen {
     this->create_text(render);
     this->randomize_food_position();
     this->randomize_player_direction();
-
-    this->nn->add_layer(this->input_layer);
-    this->nn->add_layer(3);
-    this->nn->add_layer(4);
-    
-    this->nn->get_layer(1)->set_activation_function(relu);
-    this->nn->get_layer(2)->set_activation_function(sigmoid);
-    this->input_layer->set_values(this->input_data);
-    
-    unsigned int genes_array_size = 0;
-    for(size_t weight_i = 0; weight_i < this->nn->get_total_weights(); weight_i++){
-      unsigned int w = this->nn->get_weight(weight_i)->get_width();
-      unsigned int h = this->nn->get_weight(weight_i)->get_height();
-      genes_array_size += w*h;
-    } 
-
-    for(size_t i = 0; i < this->total_individuals; i++)
-      this->population[i].setup_choromosome(genes_array_size);
-  }
-
-  void AIScreen::update_input_data(){
-    int px = this->player->get_x();  
-    int py = this->player->get_y();  
-    
-    double hip = sqrt(pow(fx-px,2) + pow(py-fy,2));
-    double angle = hip == 0 ? 0 : acos(abs(fx-px)/hip); 
-    
-    if(fx > px && fy > py)
-      angle += (3*PI)/2;
-    else if(fx < px && fy < py)
-      angle += PI/2;
-    else if(fx < px && fy > py)
-      angle += PI;
-    else if(fy == py && px < fx)
-      angle = 0;
-    else if(fy == py && px < fx)
-      angle = PI;
-    else if(px == fx && py > fy)
-      angle = PI/2;
-    else if(px == fx && py < fy)
-      angle = (3*PI)/2;
-    
-    // this->input_data->update_value(0, 0, hip);
-    this->input_data->update_value(0, 0, angle);
-
-  }
-
-  void AIScreen::load_genes_into_nn(){
-    for(size_t weight_i = 0; weight_i < this->nn->get_total_weights(); weight_i++){
-      unsigned int w = this->nn->get_weight(weight_i)->get_width();
-      unsigned int h = this->nn->get_weight(weight_i)->get_height();
-
-      this->nn->get_weight(weight_i)->load_weights(
-        this->population[this->individual-1].get_genes_matrix(w, h)
-      );
-    }
   }
 
   void AIScreen::randomize_player_direction(){
@@ -117,36 +49,6 @@ namespace GameAIScreen {
     }
   }
 
-  void AIScreen::get_new_direction(){
-    Matrix* result = this->nn->get_layer(2)->get_values();
-    double biggest = 0;
-    unsigned int direction = 0;
-    for(size_t i = 0; i < 4; i++){
-      double actual_value = result->get_position_value(0, i);
-      if(actual_value > biggest){
-        biggest = actual_value;
-        direction = i;
-      }
-    }
-   
-    switch (direction) {
-      case 0:
-        this->player->direction_up();
-        break;
-      
-      case 1:
-        this->player->direction_down();
-        break;
-
-      case 2:
-        this->player->direction_left();
-        break;
-
-      default:
-        this->player->direction_right();
-        break;
-    }
-  }
 
   void AIScreen::randomize_food_position(){
     this->fx = get_random_x(PLAYER_W); 
@@ -155,16 +57,12 @@ namespace GameAIScreen {
   }
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){  
-  
-    this->load_genes_into_nn();
-    this->update_input_data();
-  
-    this->nn->feedforward();
-    this->get_new_direction();
-    this->nn->get_layer(0)->get_values()->show();
+    this->population->update_input_data(this->player->get_x(), 
+                                        this->player->get_y(), 
+                                        food.get_x(), food.get_y()); 
+    this->population->update_player_direction(this->player); 
     this->player->update_position();
-    
-    this->population[this->individual-1].get_chromosome()->show();
+
     bool ended_game = false;
 
     if(this->player->is_die()){
@@ -186,7 +84,7 @@ namespace GameAIScreen {
       cout << "AI score: " << ai_score << endl;
       if(ai_score > this->best_pontuation){
         this->best_pontuation = ai_score;
-        this->best_individual = this->individual;
+        this->best_individual = this->population->get_actual_individual()+1;
         this->update_best_individual_and_pontutaion_text(render);
       }
       this->reset(render); 
@@ -219,7 +117,7 @@ namespace GameAIScreen {
     SDL_DestroyTexture(this->best_individual_texture);
     SDL_DestroyTexture(this->best_pontuation_texture);
     
-    SDL_Surface* best_individual_surface = TTF_RenderText_Solid(this->font, to_string(this->individual).c_str(), this->text_color);
+    SDL_Surface* best_individual_surface = TTF_RenderText_Solid(this->font, to_string(this->population->get_actual_individual()+1).c_str(), this->text_color);
     this->best_individual_texture = SDL_CreateTextureFromSurface(render, best_individual_surface);
     this->best_individual_shape.w = best_individual_surface->w;
     
@@ -247,37 +145,19 @@ namespace GameAIScreen {
     SDL_DestroyTexture(this->best_pontuation_texture);
     SDL_DestroyTexture(this->best_pontuation_text_texture);
     delete this->player;
-    delete this->nn;
-    delete[] this->population;
-  }
-
-  void AIScreen::new_generation(){
-    for(size_t i = 0; i < this->total_individuals; i++){
-      if(i == this->best_individual-1)
-        continue;
-        
-      this->population[i].get_chromosome()->copy_genes(
-        this->population[this->best_individual-1].get_chromosome()->get_genes()
-      );
-      this->population[i].get_chromosome()->mutate(0.6);
-    }
-
-    
+    delete this->population;
   }
 
   void AIScreen::reset(SDL_Renderer* render){
-    this->points[this->individual-1] = this->player->get_score();
-
-    this->individual++;
-    if(this->individual > this->total_individuals){
+    if(this->population->get_actual_individual()+1 == this->total_individuals){
       this->generation++;
-      this->individual=1;
-      this->new_generation();
-      this->best_individual = 1;
-      this->best_pontuation = 0;
+      this->population->reset_individual();
       this->update_best_individual_and_pontutaion_text(render);
       this->randomize_food_position();
-    }
+    }else
+      this->population->update_actual_individual();
+
+    this->population->load_genes_into_weights();
 
     SDL_DestroyTexture(this->score_texture);
     SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, "0", this->text_color);
@@ -292,7 +172,7 @@ namespace GameAIScreen {
     SDL_FreeSurface(generation_surface);
     
     SDL_DestroyTexture(this->individual_texture);
-    SDL_Surface* individual_surface = TTF_RenderText_Solid(this->font, to_string(this->individual).c_str(), this->text_color);
+    SDL_Surface* individual_surface = TTF_RenderText_Solid(this->font, to_string(this->population->get_actual_individual()+1).c_str(), this->text_color);
     this->individual_texture = SDL_CreateTextureFromSurface(render, individual_surface);
     this->individual_shape.w = individual_surface->w;
     SDL_FreeSurface(individual_surface);

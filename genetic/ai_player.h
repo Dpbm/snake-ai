@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../genetic/chromosome.h"
-#include "../../../matrix/matrix.h"
+#include "chromosome.h"
+#include "../matrix/matrix.h"
 
 using Chromosomes::Chromosome;
 using Matrices::Matrix;
