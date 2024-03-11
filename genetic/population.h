@@ -24,17 +24,24 @@ namespace Populations {
       void update_input_data(uint16_t px, uint16_t py, uint16_t fx, uint16_t fy);
       uint8_t get_actual_individual();
       void reset_individual();
+      void next_generation();
+      void add_points(int16_t points);
+      void add_distance(uint16_t distance);
       ~Population();
 
     private:
+      uint8_t total_individuals = 0;
       uint16_t total_weights = 0;
+      uint16_t* distances;
+      int16_t* points;
+
 
       NN* nn = new NN;   
-      Layer* input_layer = new Layer(1, true);
-      Matrix* input_data = new Matrix(1, 1);
+      Layer* input_layer = new Layer(2, true);
+      Matrix* input_data = new Matrix(2, 1);
       AIPlayer* individuals;
       uint8_t actual_individual = 0;
-      
+
       void setup_nn();
       void get_nn_total_weights();
       void get_new_direction(Player* player);

@@ -32,9 +32,10 @@ namespace GameAIScreen{
       uint8_t individual = 1;
       uint8_t best_individual = 1;
       uint8_t best_pontuation = 0;
+      uint16_t best_food_distance = (uint16_t)1000000;
       Population* population = new Population(total_individuals);
       Player* player = new Player(1, max_score);
-      int16_t fx,fy;
+      uint16_t fx,fy;
       Food food;
       int8_t points[total_individuals];
       
@@ -67,12 +68,9 @@ namespace GameAIScreen{
       SDL_Texture* best_pontuation_texture;
       
       SDL_Rect screen_separator{LEFT_WALL, 0, 1, HEIGHT};
-      void load_genes_into_nn();
       void create_text(SDL_Renderer* render);
       void update_best_individual_and_pontutaion_text(SDL_Renderer* render);
-      void get_new_direction();
-      void new_generation();
       void randomize_food_position();
-      void update_input_data();
+      void get_food_distance();
   };
 };

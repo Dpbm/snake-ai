@@ -1,5 +1,7 @@
 #include <SDL2/SDL_stdinc.h>
+#include <cmath>
 #include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <string>
 #include <SDL2/SDL_keycode.h>
@@ -56,12 +58,22 @@ namespace GameAIScreen {
     this->food.set_position(this->fx, this->fy); 
   }
 
+  void AIScreen::get_food_distance(){
+    uint16_t px = this->player->get_x();
+    uint16_t py = this->player->get_y();
+    uint16_t d = sqrt(pow(px-this->fx,2) + pow(py-this->fy,2));
+    if(d < this->best_food_distance)
+      this->best_food_distance = d;
+  } 
+
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){  
     this->population->update_input_data(this->player->get_x(), 
                                         this->player->get_y(), 
-                                        food.get_x(), food.get_y()); 
+                                        this->fx,
+                                        this->fy); 
     this->population->update_player_direction(this->player); 
     this->player->update_position();
+    this->get_food_distance();
 
     bool ended_game = false;
 
@@ -149,9 +161,14 @@ namespace GameAIScreen {
   }
 
   void AIScreen::reset(SDL_Renderer* render){
+    this->population->add_points(this->player->get_score());
+    this->population->add_distance(this->best_food_distance);
+    this->best_food_distance = 10000;
+
     if(this->population->get_actual_individual()+1 == this->total_individuals){
       this->generation++;
       this->population->reset_individual();
+      this->population->next_generation();
       this->update_best_individual_and_pontutaion_text(render);
       this->randomize_food_position();
     }else
