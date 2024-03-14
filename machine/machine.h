@@ -25,6 +25,7 @@ namespace Machine {
       void save_weights(string filename);
       ~NN();
       void feedforward();
+      Layer* get_output_layer();
 
     private:
       vector<Layer*>* layers = new vector<Layer*>;

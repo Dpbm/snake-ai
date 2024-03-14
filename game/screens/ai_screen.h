@@ -27,7 +27,7 @@ namespace GameAIScreen{
 
     private:
       constexpr static uint8_t max_score = 10;
-      constexpr static uint8_t total_individuals = 4;
+      constexpr static uint8_t total_individuals = 2;
       uint8_t generation = 1;
       uint8_t individual = 1;
       uint8_t best_individual = 1;

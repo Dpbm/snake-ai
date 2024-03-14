@@ -13,15 +13,16 @@ namespace Layers{
       Matrix* get_values();
       unsigned int get_size() const;
       ~Layer();
-      void set_activation_function(double (*activation)(double));
       void activate_neurons();
       bool is_input();
-      double (*get_activation_function())(double);
       void set_values(Matrix* values);
+      void set_activation_function(void(*activation)(Matrix*));
+      void (*get_activation_function())(Matrix*);
+    
     private:
       unsigned int size;
       bool input = false;
-      Matrix *values;
-      double (*activation)(double);
+      Matrix *values = nullptr;
+      void(*activation)(Matrix*);
   };
 };

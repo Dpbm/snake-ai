@@ -45,8 +45,8 @@ namespace {
 
   TEST(UpdateTest, SetActivationFunctionTest){
     Layer*layer = new Layer(1, false);
-    layer->set_activation_function(&relu);
-    double (*activation)(double) = layer->get_activation_function();
+    layer->set_activation_function(relu);
+    void (*activation)(Matrix*) = layer->get_activation_function();
     ASSERT_EQ(activation, &relu);
     delete layer;
   }

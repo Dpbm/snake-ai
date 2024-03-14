@@ -5,11 +5,6 @@ using Matrices::Matrix;
 using std::invalid_argument;
 
 namespace Layers {
-  bool input;
-  unsigned int size;
-  Matrix *values;
-  double (*activation)(double);
-
   Layer::Layer(unsigned int size, bool input){
     this->size = size;
     this->values = new Matrix(size, 1);
@@ -37,26 +32,12 @@ namespace Layers {
     return this->size;
   }
 
-  void Layer::set_activation_function(double (*activation)(double)){
-    if(this->input)
-      throw invalid_argument("Input layer must not have a activation function!");
-
-    this->activation = activation; 
-  }
-
   void Layer::activate_neurons(){
-    for(unsigned int i = 0; i < this->size; i++){
-      double neuron_value = this->values->get_position_value(0, i);
-      this->values->update_value(0, i, this->activation(neuron_value));
-    }
+    this->activation(this->values); 
   }
 
   bool Layer::is_input(){
     return this->input;
-  }
-
-  double (*Layer::get_activation_function())(double){
-    return this->activation;
   }
 
   void Layer::set_values(Matrix* values){
@@ -65,5 +46,15 @@ namespace Layers {
     
     delete this->values;
     this->values = values;
+  }
+
+  void Layer::set_activation_function(void(*activation)(Matrix*)){
+   if(this->input)
+      throw invalid_argument("Input layer must not have a activation function!");   
+    this->activation = activation;
+  }
+
+  void (*Layer::get_activation_function())(Matrix*){
+    return this->activation;
   }
 }

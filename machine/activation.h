@@ -1,6 +1,13 @@
 #pragma  once
 
+#include "../matrix/matrix.h"
+
+using Matrices::Matrix;
+
 namespace Activations {
-  double relu(double x);
-  double sigmoid(double x);
+  void relu(Matrix* values);
+  void tanh(Matrix* values);
+  void sigmoid(Matrix* values);
+  void softmax(Matrix* values);
+  void f_x(Matrix* values);
 }

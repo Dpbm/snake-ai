@@ -5,11 +5,11 @@
 #define PLAY_WIDTH 800
 #define LEFT_WALL WIDTH-PLAY_WIDTH
 
-#define FOOD_H 10
-#define FOOD_W 10
+#define FOOD_H 50 
+#define FOOD_W 50
 
-#define PLAYER_H 10
-#define PLAYER_W 10
+#define PLAYER_H 50
+#define PLAYER_W 50
 
 #define MAX_SCORE 2000
 
@@ -17,4 +17,4 @@
 
 #define PI 3.14159265358979323846
 
-#define DEBUG false 
+#define DEBUG true 

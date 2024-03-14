@@ -32,14 +32,14 @@ namespace Populations {
     private:
       uint8_t total_individuals = 0;
       uint16_t total_weights = 0;
-      uint16_t* distances;
-      int16_t* points;
+      uint16_t* distances = nullptr;
+      int16_t* points = nullptr;
 
 
       NN* nn = new NN;   
-      Layer* input_layer = new Layer(2, true);
-      Matrix* input_data = new Matrix(2, 1);
-      AIPlayer* individuals;
+      Layer* input_layer = new Layer(3, true);
+      Matrix* input_data = new Matrix(3, 1);
+      AIPlayer* individuals = nullptr;
       uint8_t actual_individual = 0;
 
       void setup_nn();

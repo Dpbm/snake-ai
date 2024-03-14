@@ -10,7 +10,7 @@ using std::string;
 using std::ios;
 
 namespace Utils {
-  double random(int start, int end){
+  double random(double start, double end){
     std::random_device device;
     std::mt19937 eng(device());
     std::uniform_real_distribution<> distr(start, end);

@@ -104,4 +104,8 @@ namespace Machine {
       next_layer->activate_neurons();
     }
   }
+
+  Layer* NN::get_output_layer(){
+    return this->layers->at(this->total_layers-1);
+  }
 }
