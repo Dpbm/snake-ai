@@ -21,29 +21,24 @@ namespace Populations {
       void load_genes_into_weights();
       void update_player_direction(Player* player);
       void update_actual_individual();
-      void update_input_data(uint16_t px, uint16_t py, uint16_t fx, uint16_t fy);
-      uint8_t get_actual_individual();
+      bool is_the_last_individual();
       void reset_individual();
       void next_generation();
-      void add_points(int16_t points);
-      void add_distance(uint16_t distance);
       ~Population();
 
     private:
       uint8_t total_individuals = 0;
       uint16_t total_weights = 0;
-      uint16_t* distances = nullptr;
-      int16_t* points = nullptr;
-
 
       NN* nn = new NN;   
       Layer* input_layer = new Layer(3, true);
       Matrix* input_data = new Matrix(3, 1);
       AIPlayer* individuals = nullptr;
-      uint8_t actual_individual = 0;
+
+      AIPlayer* actual_individual = nullptr;
+      uint8_t indvidual_i = 0;
 
       void setup_nn();
-      void get_nn_total_weights();
       void get_new_direction(Player* player);
   };
 };
