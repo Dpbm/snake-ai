@@ -14,6 +14,7 @@ namespace Players {
   
   class Player{
     public:
+      Player();
       Player(unsigned int score_step, unsigned int max_score);
       void direction_up();
       void direction_down();

@@ -3,23 +3,30 @@
 #include <cstdint>
 #include "../genetic/chromosome.h"
 #include "../matrix/matrix.h"
+#include "../machine/machine.h"
+#include "../machine/layer.h"
 #include "player.h"
 
 using Chromosomes::Chromosome;
 using Matrices::Matrix;
-using Players::Player;
+using Machine::NN;
+using Layers::Layer;
 
 namespace Players{
-  class AIPlayer : Player {
+  class AIPlayer : public Player {
     public:
       AIPlayer();
       ~AIPlayer();
-      void setup_choromosome(unsigned int chromosome_size);
+      void setup_agent();
       Chromosome* get_chromosome();
       Matrix* get_genes_matrix(unsigned int w, unsigned int h);
-      void update_input_data(Matrix* input_data, uint16_t px, uint16_t py, uint16_t fx, uint16_t fy);
+      void update_input_data(uint16_t fx, uint16_t fy);
 
     private:
       Chromosome* chromosome = nullptr;
+      
+      NN* nn = new NN;   
+      Layer* input_layer = new Layer(3, true);
+      Matrix* input_data = new Matrix(3, 1);
   };
 };

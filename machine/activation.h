@@ -4,7 +4,7 @@
 
 using Matrices::Matrix;
 
-namespace Activations {
+namespace Machine {
   void relu(Matrix* values);
   void tanh(Matrix* values);
   void sigmoid(Matrix* values);

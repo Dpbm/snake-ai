@@ -7,7 +7,7 @@
 using std::invalid_argument;
 using Matrices::Matrix;
 using Layers::Layer;
-using Activations::relu;
+using Machine::relu;
 
 namespace {
 

@@ -12,24 +12,16 @@ using Utils::get_random_y;
 using Utils::passed_debounce_time;
 
 namespace Players {
+  Player::Player(){}
+  
   Player::Player(unsigned int score_step, unsigned int max_score){
     this->randomize_position();
     this->score_step = score_step;
     this->max_score = max_score;
   }
 
-  Player::~Player(){
-    Node* actual_node = this->head;
-    while(actual_node != nullptr){
-      delete actual_node->value;
-      actual_node = actual_node->next;
-    }
-  }
-
   void Player::randomize_position(){
-    unsigned int x = get_random_x(PLAYER_W);  
-    unsigned int y = get_random_y(PLAYER_H);
-    this->add_body_part(x, y); 
+    this->add_body_part(get_random_x(PLAYER_W), get_random_y(PLAYER_H)); 
   }
   
   void Player::add_body_part(unsigned int x, unsigned int y){
@@ -190,6 +182,14 @@ namespace Players {
       SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
 
       actual_bpart = actual_bpart->next;
+    }
+  }
+  
+  Player::~Player(){
+    Node* actual_node = this->head;
+    while(actual_node != nullptr){
+      delete actual_node->value;
+      actual_node = actual_node->next;
     }
   }
 }
