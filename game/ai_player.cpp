@@ -1,5 +1,6 @@
 #include <cmath>
 #include <cstddef>
+#include <cstdint>
 #include <cstdlib>
 #include "ai_player.h"
 #include "../genetic/chromosome.h"
@@ -15,8 +16,11 @@ using Matrices::Matrix;
 namespace Players{
   AIPlayer::AIPlayer(){}
 
-
-  void AIPlayer::setup_agent(){ 
+  void AIPlayer::setup_agent(uint8_t score_step, uint16_t max_score){ 
+    this->randomize_position();
+    this->set_score_step(score_step);
+    this->set_max_score(max_score);
+    
     this->nn->add_layer(this->input_layer);
     this->nn->add_layer(4);
     this->nn->add_layer(4);
@@ -76,9 +80,41 @@ namespace Players{
     // else if(this->get_x() == fx && this->get_y() < fy)
     //   angle = (3*PI)/2;
     
-    this->input_data->update_value(0, 0, (fx-this->get_x())%50);
-    this->input_data->update_value(0, 1, (fy-this->get_y())%50);
+    this->input_data->update_value(0, 0, (fx-this->get_x()));
+    this->input_data->update_value(0, 1, (fy-this->get_y()));
     this->input_data->update_value(0, 2, 1);
+  }
+  
+  void AIPlayer::get_new_direction(){
+    this->nn->feedforward();
+    Matrix* result = this->nn->get_output_layer()->get_values();
+   
+    double biggest = 0;
+    size_t direction = 0;
+    for(size_t i = 0; i < 4; i++){
+      double actual_value = result->get_position_value(0, i);
+      if(actual_value > biggest){
+        biggest = actual_value;
+        direction = i;
+      }
+    }
+    switch (direction) {
+      case 0:
+        this->direction_up();
+        break;
+      
+      case 1:
+        this->direction_down();
+        break;
+
+      case 2:
+        this->direction_left();
+        break;
+
+      default:
+        this->direction_right();
+        break;
+    }
   }
 
   Chromosome* AIPlayer::get_chromosome(){

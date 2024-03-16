@@ -32,6 +32,9 @@ namespace Players {
       bool is_die();
       ~Player(); 
       void render(SDL_Renderer* render);
+      void randomize_position();
+      void set_score_step(uint8_t score_step);
+      void set_max_score(uint16_t max_score);
 
     private:
       unsigned int x, y;
@@ -46,7 +49,6 @@ namespace Players {
       Node* head = nullptr;
       Node* tail = nullptr;
       bool died=false;
-      void randomize_position();
       void update_size();
       Node* create_body_part(unsigned int x, unsigned int y);
       void add_body_part(unsigned int x, unsigned int y);

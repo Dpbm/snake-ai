@@ -32,7 +32,6 @@ namespace GameAIScreen {
       delete this->player;
     }
     
-    this->player = new Player(1, this->max_score);
     this->randomize_player_direction();
     this->create_text();
   }

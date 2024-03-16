@@ -1,6 +1,7 @@
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_timer.h>
+#include <cstdint>
 #include "player.h"
 #include "../helpers/utils.h"
 #include "../helpers/constants.h"
@@ -183,6 +184,14 @@ namespace Players {
 
       actual_bpart = actual_bpart->next;
     }
+  }
+
+  void Player::set_score_step(uint8_t score_step){
+    this->score_step = score_step;
+  }
+
+  void Player::set_max_score(uint16_t max_score){
+    this->max_score = max_score;
   }
   
   Player::~Player(){

@@ -6,13 +6,13 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
 #include "screens.h"
-#include "../player.h"
+#include "../ai_player.h"
 #include "../food.h"
 #include "../../genetic/population.h"
 
 using std::vector;
 using Screens::Screen;
-using Players::Player;
+using Players::AIPlayer;
 using Foods::Food;
 using Populations::Population;
 
@@ -26,7 +26,8 @@ namespace GameAIScreen{
       
     private:
       uint8_t max_score = 100;
-      Player* player = nullptr;
+      Population* population = new Population(4, 1, max_score);
+      AIPlayer* player = population->get_actual_individual();
       Food food;
      
 
