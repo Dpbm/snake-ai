@@ -9,7 +9,9 @@
 #include <SDL2/SDL_stdinc.h>
 #include "screens.h"
 #include "ai_screen.h"
-#include "../ai_player.h"
+#include "../players/ai_player.h"
+#include "../../helpers/utils.h"
+#include "../../helpers/constants.h"
 
 using std::size_t;
 using std::to_string;
@@ -17,67 +19,71 @@ using std::cout;
 using std::endl;
 using Screens::Screen;
 using Players::Directions;
+using Utils::get_random_x;
+using Utils::get_random_y;
 
 namespace GameAIScreen {
 
   AIScreen::AIScreen(SDL_Renderer* render){
     this->render = render;
-    this->player = this->population->get_actual_individual();
-    this->player->randomize_direction();
+    // this->player = this->population->get_actual_individual();
+    // this->player->randomize_direction();
     this->create_text();
+    this->food.set_position(get_random_x(FOOD_W), get_random_y(FOOD_H));
   }
 
-  void AIScreen::start_new_game(){
-    this->clear_textures();
+  // void AIScreen::start_new_game(){
+  //   this->clear_textures();
 
-    if(this->population->is_the_last_individual())
-      this->population->reset_agents();
-    else
-      this->population->update_actual_individual();
-    
-    this->player = this->population->get_actual_individual();
-    this->player->randomize_direction();
-    this->create_text();
-  }
+  //   if(this->population->is_the_last_individual())
+  //     this->population->reset_agents();
+  //   else
+  //     this->population->update_actual_individual();
+  //   
+  //   this->player = this->population->get_actual_individual();
+  //   this->player->randomize_direction();
+  //   this->create_text();
+  // }
 
 
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
-    int16_t fx = this->food.get_x();
-    int16_t fy = this->food.get_y();
+    this->population->run_population(this->food.get_x(), this->food.get_y());
+  //   int16_t fx = this->food.get_x();
+  //   int16_t fy = this->food.get_y();
 
-    this->player->update_input_data(fx, fy);
-    Directions dir = this->player->get_new_direction();
-  
-    this->population->update_direction_data(dir);
-    this->population->update_distance_data(fx, fy);  
+  //   this->player->update_input_data(fx, fy);
+  //   Directions dir = this->player->get_new_direction();
+  // 
+  //   this->population->update_direction_data(dir);
+  //   this->population->update_distance_data(fx, fy);  
 
-    this->player->update_direction(dir); 
-    this->player->update_position();
+  //   this->player->update_direction(dir); 
+  //   this->player->update_position();
 
-    bool ended_game = false;
-    
-    if(this->player->is_die()){
-      cout << "GAME OVER!" << endl;
-      ended_game = true;
-    }
-    
-    if(this->player->collision(this->food.get_x(), this->food.get_y())){
-      this->player->update_score();
-      int ai_score = this->player->get_score();
-      
-      this->population->update_points_data();
+  //   bool ended_game = false;
+  //   
+  //   if(this->player->is_die()){
+  //     cout << "GAME OVER!" << endl;
+  //     ended_game = true;
+  //   }
+  //   
+  //   if(this->player->collision(this->food.get_x(), this->food.get_y())){
+  //     this->player->update_score();
+  //     int ai_score = this->player->get_score();
+  //     
+  //     this->population->update_points_data();
 
-      food.update_position();
+  //     food.update_position();
 
-      SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(ai_score).c_str(), this->text_color);
-      SDL_DestroyTexture(this->score_texture);
-      this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
-      this->score_shape.w = score_surface->w;
-      SDL_FreeSurface(score_surface);
-    
-      cout << "AI score: " << ai_score << endl;
-    }
+  //     SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(ai_score).c_str(), this->text_color);
+  //     SDL_DestroyTexture(this->score_texture);
+  //     this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
+  //     this->score_shape.w = score_surface->w;
+  //     SDL_FreeSurface(score_surface);
+  //   
+  //     cout << "AI score: " << ai_score << endl;
+  //   }
 
     SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
     SDL_RenderDrawLine(render, this->player->get_x(), this->player->get_y(), this->food.get_x(), this->food.get_y());
@@ -94,12 +100,12 @@ namespace GameAIScreen {
     SDL_RenderCopy(render, this->best_pontuation_text_texture, NULL, &this->best_pontuation_text_shape);
     SDL_RenderCopy(render, this->best_pontuation_texture, NULL, &this->best_pontuation_shape);
     this->food.render(render);
-    this->player->render(render);
-    
-    if(ended_game){
-      this->start_new_game(); 
-      return;
-    }
+    // this->player->render(render);
+  //   
+  //   if(ended_game){
+  //     this->start_new_game(); 
+  //     return;
+  //   }
   }
 
   Screen* AIScreen::key_event(const SDL_Keycode& key){

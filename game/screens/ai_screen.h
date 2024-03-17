@@ -6,7 +6,7 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
 #include "screens.h"
-#include "../ai_player.h"
+#include "../players/ai_player.h"
 #include "../food.h"
 #include "../../genetic/population.h"
 

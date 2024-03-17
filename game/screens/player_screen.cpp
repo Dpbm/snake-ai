@@ -5,7 +5,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "player_screen.h"
 #include "screens.h"
-#include "../player.h"
+#include "../players/player.h"
 
 using std::to_string;
 using std::cout;

@@ -3,8 +3,8 @@
 #include <SDL2/SDL_timer.h>
 #include <cstdint>
 #include "player.h"
-#include "../helpers/utils.h"
-#include "../helpers/constants.h"
+#include "../../helpers/utils.h"
+#include "../../helpers/constants.h"
 
 using Players::LinkedList;
 using Players::Node;
@@ -85,7 +85,6 @@ namespace Players {
 
   void Player::update_position(){
     if(passed_debounce_time(this->last_tick)){
-      
       int16_t old_pos_x = this->head->value->x; 
       int16_t old_pos_y = this->head->value->y;
       

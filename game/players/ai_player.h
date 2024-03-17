@@ -1,10 +1,10 @@
 #pragma once
 
 #include <cstdint>
-#include "../genetic/chromosome.h"
-#include "../matrix/matrix.h"
-#include "../machine/machine.h"
-#include "../machine/layer.h"
+#include "../../genetic/chromosome.h"
+#include "../../matrix/matrix.h"
+#include "../../machine/machine.h"
+#include "../../machine/layer.h"
 #include "player.h"
 
 using Chromosomes::Chromosome;

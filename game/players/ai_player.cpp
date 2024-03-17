@@ -3,10 +3,10 @@
 #include <cstdint>
 #include <cstdlib>
 #include "ai_player.h"
-#include "../genetic/chromosome.h"
-#include "../matrix/matrix.h"
-#include "../machine/activation.h"
-#include "../helpers/utils.h"
+#include "../../genetic/chromosome.h"
+#include "../../matrix/matrix.h"
+#include "../../machine/activation.h"
+#include "../../helpers/utils.h"
 
 using std::sqrt;
 using std::pow;
@@ -146,7 +146,6 @@ namespace Players{
 
   bool AIPlayer::is_the_opposite_direction(Directions dir){
     // 0 - x, 1 - y
-
     return (this->get_mov_x() == 0 && (dir == UP || dir == DOWN)) || (this->get_mov_y() && (dir == LEFT || dir == RIGHT));
   }
 

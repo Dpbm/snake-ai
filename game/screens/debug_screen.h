@@ -1,7 +1,7 @@
 #pragma once
 
 #include "./screens.h"
-#include "../player.h"
+#include "../players/player.h"
 #include "../food.h"
 #include "ai_screen.h"
 #include <SDL2/SDL_keycode.h>
