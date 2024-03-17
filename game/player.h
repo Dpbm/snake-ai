@@ -25,6 +25,7 @@ namespace Players {
       unsigned int get_x();
       unsigned int get_y();
       unsigned int get_score();
+      void reset_score();
       unsigned int get_size();
       int get_mov_x();
       int get_mov_y();

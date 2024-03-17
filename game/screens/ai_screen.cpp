@@ -8,58 +8,41 @@
 #include <SDL2/SDL_stdinc.h>
 #include "screens.h"
 #include "ai_screen.h"
-#include "../player.h"
-#include "../../helpers/utils.h"
 
 using std::size_t;
 using std::to_string;
 using std::cout;
 using std::endl;
-using Players::Player;
 using Screens::Screen;
-using Utils::random_int;
 
 namespace GameAIScreen {
 
   AIScreen::AIScreen(SDL_Renderer* render){
     this->render = render;
-    this->start_new_game();
-  }
-
-  void AIScreen::start_new_game(){
-    if(this->player != nullptr){
-      this->clear_textures();
-      delete this->player;
-    }
-    
-    this->randomize_player_direction();
+    this->player = this->population->get_actual_individual();
+    this->player->randomize_direction();
     this->create_text();
   }
 
-  void AIScreen::randomize_player_direction(){
-    switch (random_int(0, 3)) {
-      case 0:
-        this->player->direction_right();
-        break;
-      
-      case 1:
-        this->player->direction_up();
-        break;
+  void AIScreen::start_new_game(){
+    this->clear_textures();
+
+    if(this->population->is_the_last_individual())
+      this->population->reset_agents();
+    else
+      this->population->update_actual_individual();
     
-      case 2:
-        this->player->direction_left();
-        break;
-      
-      default:
-        this->player->direction_down();
-        break;    
-    }
+    this->player = this->population->get_actual_individual();
+    this->player->randomize_direction();
+    this->create_text();
   }
+
 
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){  
     this->player->update_position();
     bool ended_game = false;
+    
     if(this->player->is_die()){
       cout << "GAME OVER!" << endl;
       ended_game = true;
@@ -182,7 +165,7 @@ namespace GameAIScreen {
   
   AIScreen::~AIScreen(){
     this->clear_textures();
-    delete this->player;
+    delete this->population;
   }
 
   void AIScreen::clear_textures(){

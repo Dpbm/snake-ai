@@ -18,9 +18,9 @@ namespace Populations {
       Population(uint8_t total, uint8_t score_step, uint16_t max_score);
       void update_actual_individual();
       bool is_the_last_individual();
-      void reset_individual();
       void next_generation();
       AIPlayer* get_actual_individual();
+      void reset_agents();
       ~Population();
 
     private:
@@ -28,6 +28,8 @@ namespace Populations {
       AIPlayer* individuals = nullptr;
       AIPlayer* actual_individual = nullptr;
       uint8_t indvidual_i = 0;
+      uint8_t score_step;
+      uint16_t max_score;
 
       void setup_nn();
   };

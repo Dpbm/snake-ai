@@ -6,16 +6,18 @@
 #include "../genetic/chromosome.h"
 #include "../matrix/matrix.h"
 #include "../machine/activation.h"
+#include "../helpers/utils.h"
 
 using std::sqrt;
 using std::pow;
 using std::size_t;
 using Chromosomes::Chromosome;
 using Matrices::Matrix;
+using Utils::random_int;
 
 namespace Players{
   AIPlayer::AIPlayer(){}
-
+  
   void AIPlayer::setup_agent(uint8_t score_step, uint16_t max_score){ 
     this->randomize_position();
     this->set_score_step(score_step);
@@ -46,6 +48,26 @@ namespace Players{
       this->nn->get_weight(weight_i)->load_weights(
         this->get_genes_matrix(w, h)
       );
+    }
+  }
+  
+  void AIPlayer::randomize_direction(){
+    switch (random_int(0, 3)) {
+      case 0:
+        this->direction_right();
+        break;
+      
+      case 1:
+        this->direction_up();
+        break;
+    
+      case 2:
+        this->direction_left();
+        break;
+      
+      default:
+        this->direction_down();
+        break;    
     }
   }
 

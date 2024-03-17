@@ -120,8 +120,8 @@ namespace Players {
   
   void Player::update_score(){
     this->score += this->score_step;
-    this->Player::update_size();
-    this->Player::add_body_part(this->tail->value->x, this->tail->value->y);
+    this->update_size();
+    this->add_body_part(this->tail->value->x, this->tail->value->y);
   }
 
   unsigned int Player::get_x(){

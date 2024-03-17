@@ -22,6 +22,7 @@ namespace Players{
       void update_input_data(uint16_t fx, uint16_t fy);
       void get_new_direction();
       void setup_agent(uint8_t score_step, uint16_t max_score); 
+      void randomize_direction();
 
     private:
       Chromosome* chromosome = nullptr;
@@ -29,5 +30,6 @@ namespace Players{
       NN* nn = new NN;   
       Layer* input_layer = new Layer(3, true);
       Matrix* input_data = new Matrix(3, 1);
+  
   };
 };
