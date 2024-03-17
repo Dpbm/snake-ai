@@ -1,5 +1,6 @@
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
+#include <cstdint>
 #include "food.h"
 #include "../helpers/constants.h"
 #include "../helpers/utils.h"
@@ -15,15 +16,15 @@ namespace Foods {
     this->update_position();
   }
   
-  unsigned int Food::get_x(){
+  int16_t Food::get_x(){
     return this->shape->x;
   }
   
-  unsigned int Food::get_y(){
+  int16_t Food::get_y(){
     return this->shape->y;
   }
 
-  void Food::set_position(unsigned int x, unsigned int y){
+  void Food::set_position(uint16_t x, uint16_t y){
     this->shape->x = x;
     this->shape->y = y;
   }

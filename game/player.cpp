@@ -25,7 +25,7 @@ namespace Players {
     this->add_body_part(get_random_x(PLAYER_W), get_random_y(PLAYER_H)); 
   }
   
-  void Player::add_body_part(unsigned int x, unsigned int y){
+  void Player::add_body_part(int16_t x, int16_t y){
     Node* node = this->create_body_part(x, y);
     
     if(this->head == nullptr){
@@ -39,8 +39,8 @@ namespace Players {
     this->tail = node;
   }
   
-  Node* Player::create_body_part(unsigned int x, unsigned int y){
-    SDL_Rect* part = new SDL_Rect{(int)x, (int)y, PLAYER_H, PLAYER_W};
+  Node* Player::create_body_part(int16_t x, int16_t y){
+    SDL_Rect* part = new SDL_Rect{x, y, PLAYER_H, PLAYER_W};
     
     Node* node = new Node;
     node->next = nullptr;
@@ -86,11 +86,11 @@ namespace Players {
   void Player::update_position(){
     if(passed_debounce_time(this->last_tick)){
       
-      unsigned int old_pos_x = this->head->value->x; 
-      unsigned int old_pos_y = this->head->value->y;
+      int16_t old_pos_x = this->head->value->x; 
+      int16_t old_pos_y = this->head->value->y;
       
-      unsigned int new_head_x = old_pos_x + (this->mov_x * PLAYER_W);
-      unsigned int new_head_y = old_pos_y + (this->mov_y * PLAYER_H);
+      int16_t new_head_x = old_pos_x + (this->mov_x * PLAYER_W);
+      int16_t new_head_y = old_pos_y + (this->mov_y * PLAYER_H);
 
       this->head->value->x = new_head_x;
       this->head->value->y = new_head_y;
@@ -99,8 +99,8 @@ namespace Players {
 
       Node* actual_part = this->head->next;
       while(actual_part != nullptr){ 
-        unsigned int tmp_x = actual_part->value->x;
-        unsigned int tmp_y = actual_part->value->y;
+        int16_t tmp_x = actual_part->value->x;
+        int16_t tmp_y = actual_part->value->y;
 
         actual_part->value->x = old_pos_x;
         actual_part->value->y = old_pos_y;
@@ -114,7 +114,7 @@ namespace Players {
     }
   }
 
-  bool Player::collision(unsigned int food_x, unsigned int food_y){
+  bool Player::collision(int16_t food_x, int16_t food_y){
     return food_x == this->head->value->x && food_y == this->head->value->y;
   }
   
@@ -124,11 +124,11 @@ namespace Players {
     this->add_body_part(this->tail->value->x, this->tail->value->y);
   }
 
-  unsigned int Player::get_x(){
+  int16_t Player::get_x(){
     return this->head->value->x;
   }
 
-  unsigned int Player::get_y(){
+  int16_t Player::get_y(){
     return this->head->value->y;
   }
 
@@ -144,17 +144,17 @@ namespace Players {
     return this->size;
   }
 
-  int Player::get_mov_x(){
+  int8_t Player::get_mov_x(){
     return this->mov_x;
   }
 
-  int Player::get_mov_y(){
+  int8_t Player::get_mov_y(){
     return this->mov_y;
   }
 
   bool Player::border_head_collision(){
-    unsigned int head_x = this->head->value->x; 
-    unsigned int head_y = this->head->value->y;
+    int16_t head_x = this->head->value->x; 
+    int16_t head_y = this->head->value->y;
     return head_x < LEFT_WALL || head_x > WIDTH || head_y < 0 || head_y > HEIGHT;
   }
 

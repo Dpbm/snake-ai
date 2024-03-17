@@ -25,18 +25,20 @@ namespace Populations {
       AIPlayer* get_actual_individual();
       void reset_agents();
       void update_direction_data(Directions dir);
+      void update_distance_data(int16_t fx, int16_t fy);
       void update_points_data();
       ~Population();
 
     private:
-      vector<int64_t> fitness;
+      int64_t* fitness;
+      vector<uint16_t> distances;      
+  
       uint8_t total_individuals = 0;
       AIPlayer* individuals = nullptr;
       AIPlayer* actual_individual = nullptr;
       uint8_t indvidual_i = 0;
+
       uint8_t score_step;
       uint16_t max_score;
-
-      void setup_nn();
   };
 };

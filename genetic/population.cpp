@@ -1,10 +1,11 @@
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
-#include <vector>
 #include "population.h"
 #include "../game/ai_player.h"
 
-using std::vector;
+using std::sqrt;
+using std::pow;
 using std::size_t;
 using Players::AIPlayer;
 using Players::AIPlayer;
@@ -16,13 +17,10 @@ namespace Populations{
     this->score_step = score_step;
     this->max_score = max_score;
     this->actual_individual = &this->individuals[0];
-    this->fitness = vector<int64_t>();
+    this->fitness = new int64_t[total];
 
-
-    for(size_t i = 0; i < total; i++){
+    for(size_t i = 0; i < total; i++)
       this->individuals[i].setup_agent(score_step, max_score);
-      this->fitness.push_back(0);
-    }
   }
 
   bool Population::is_the_last_individual(){
@@ -31,22 +29,31 @@ namespace Populations{
 
   void Population::update_direction_data(Directions dir){
     if(!this->actual_individual->is_the_opposite_direction(dir))
-      this->fitness.at(this->indvidual_i) -= 100;   
+      this->fitness[this->indvidual_i] -= 100;   
   }
   
   void Population::update_points_data(){
-    this->fitness.at(this->indvidual_i) += 200;   
+    this->fitness[this->indvidual_i] += 200;   
   }
 
   void Population::reset_agents(){
+    this->distances.clear();
+    delete[] this->fitness;
     delete[] this->individuals;
-     
+    
+
+    this->fitness = new int64_t[this->total_individuals];
     this->individuals = new AIPlayer[this->total_individuals];
     for(size_t i = 0; i < this->total_individuals; i++)
       this->individuals[i].setup_agent(score_step, max_score);
-    
+
     this->indvidual_i = 0;
     this->actual_individual = &this->individuals[0];
+  }
+
+  void Population::update_distance_data(int16_t fx, int16_t fy){
+    uint16_t d = sqrt(pow(fx-this->actual_individual->get_x(),2) + pow(fy-this->actual_individual->get_y(), 2));
+    this->distances.push_back(d);
   }
 
   void Population::update_actual_individual(){
@@ -60,5 +67,6 @@ namespace Populations{
 
   Population::~Population(){
     delete[] this->individuals;
+    delete[] this->fitness;
   }
 };

@@ -22,7 +22,7 @@ namespace Players{
       ~AIPlayer();
       Chromosome* get_chromosome();
       Matrix* get_genes_matrix(unsigned int w, unsigned int h);
-      void update_input_data(uint16_t fx, uint16_t fy);
+      void update_input_data(int16_t fx, int16_t fy);
       Directions get_new_direction();
       void setup_agent(uint8_t score_step, uint16_t max_score); 
       void randomize_direction();

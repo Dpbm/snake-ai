@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <string>
 #include <SDL2/SDL_keycode.h>
@@ -41,10 +42,16 @@ namespace GameAIScreen {
 
 
 
-  void AIScreen::execute(SDL_Renderer* render, bool& game_loop){  
-    this->player->update_input_data(this->food.get_x(), this->food.get_y());
+  void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
+    int16_t fx = this->food.get_x();
+    int16_t fy = this->food.get_y();
+
+    this->player->update_input_data(fx, fy);
     Directions dir = this->player->get_new_direction();
+  
     this->population->update_direction_data(dir);
+    this->population->update_distance_data(fx, fy);  
+
     this->player->update_direction(dir); 
     this->player->update_position();
 

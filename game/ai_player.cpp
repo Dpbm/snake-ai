@@ -83,7 +83,7 @@ namespace Players{
     return genes_matrix;
   }
 
-  void AIPlayer::update_input_data(uint16_t fx, uint16_t fy){
+  void AIPlayer::update_input_data(int16_t fx, int16_t fy){
     double hip = sqrt(pow(fx-this->get_x(),2) + pow(this->get_y()-fy,2));
     // double angle = hip == 0 ? 0 : acos(abs(fx-this->get_x())/hip); 
     // 
@@ -101,17 +101,15 @@ namespace Players{
     //   angle = PI/2;
     // else if(this->get_x() == fx && this->get_y() < fy)
     //   angle = (3*PI)/2;
-    
-    this->input_data->update_value(0, 0, (fx-this->get_x())/1000.0);
-    this->input_data->update_value(0, 1, (fy-this->get_y())/1000.0);
+    this->input_data->update_value(0, 0, (this->get_x()-fx)/1000.0);
+    this->input_data->update_value(0, 1, (this->get_y()-fy)/1000.0);
     this->input_data->update_value(0, 2, 1);
   }
   
   Directions AIPlayer::get_new_direction(){
     this->nn->feedforward();
     Matrix* result = this->nn->get_output_layer()->get_values();
-
-
+    
     double biggest = 0;
     Directions direction = UP;
     for(size_t i = 0; i < 4; i++){
