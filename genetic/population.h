@@ -25,6 +25,7 @@ namespace Populations {
       AIPlayer* get_actual_individual();
       void reset_agents();
       void update_direction_data(Directions dir);
+      void update_points_data();
       ~Population();
 
     private:

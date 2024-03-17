@@ -33,6 +33,10 @@ namespace Populations{
     if(!this->actual_individual->is_the_opposite_direction(dir))
       this->fitness.at(this->indvidual_i) -= 100;   
   }
+  
+  void Population::update_points_data(){
+    this->fitness.at(this->indvidual_i) += 200;   
+  }
 
   void Population::reset_agents(){
     delete[] this->individuals;

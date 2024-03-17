@@ -58,6 +58,8 @@ namespace GameAIScreen {
     if(this->player->collision(this->food.get_x(), this->food.get_y())){
       this->player->update_score();
       int ai_score = this->player->get_score();
+      
+      this->population->update_points_data();
 
       food.update_position();
 
