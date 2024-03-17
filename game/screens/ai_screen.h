@@ -26,11 +26,11 @@ namespace GameAIScreen{
       
     private:
       uint8_t max_score = 100;
-      Population* population = new Population(4, 1, max_score);
+      uint8_t population_size = 100;
+      Population* population = new Population(population_size, 1, max_score);
       AIPlayer* player = nullptr;
       Food food;
      
-
       SDL_Renderer* render;
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
       SDL_Color text_color{ 255, 255, 255 };
