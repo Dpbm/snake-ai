@@ -12,7 +12,10 @@ using Matrices::Matrix;
 using Machine::NN;
 using Layers::Layer;
 
+
 namespace Players{
+  enum Directions{UP=0, DOWN=1, LEFT=2, RIGHT=3};
+  
   class AIPlayer : public Player {
     public:
       AIPlayer();
@@ -20,9 +23,11 @@ namespace Players{
       Chromosome* get_chromosome();
       Matrix* get_genes_matrix(unsigned int w, unsigned int h);
       void update_input_data(uint16_t fx, uint16_t fy);
-      void get_new_direction();
+      Directions get_new_direction();
       void setup_agent(uint8_t score_step, uint16_t max_score); 
       void randomize_direction();
+      bool is_the_opposite_direction(Directions dir);
+      void update_direction(Directions dir);
 
     private:
       Chromosome* chromosome = nullptr;

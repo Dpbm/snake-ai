@@ -2,15 +2,18 @@
 
 
 #include <cstdint>
+#include <vector>
 #include "../machine/machine.h"
 #include "../machine/layer.h"
 #include "../matrix/matrix.h"
 #include "../game/ai_player.h"
 
+using std::vector;
 using Machine::NN;
 using Layers::Layer;
 using Matrices::Matrix;
 using Players::AIPlayer;
+using Players::Directions;
 
 namespace Populations {
   class Population{
@@ -21,9 +24,11 @@ namespace Populations {
       void next_generation();
       AIPlayer* get_actual_individual();
       void reset_agents();
+      void update_direction_data(Directions dir);
       ~Population();
 
     private:
+      vector<int64_t> fitness;
       uint8_t total_individuals = 0;
       AIPlayer* individuals = nullptr;
       AIPlayer* actual_individual = nullptr;

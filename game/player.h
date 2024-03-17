@@ -4,6 +4,7 @@
 #include <SDL2/SDL_render.h>
 
 namespace Players {
+
   struct Node{
     SDL_Rect *value;
     Node* next;

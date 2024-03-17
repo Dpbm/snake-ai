@@ -53,20 +53,20 @@ namespace Players{
   
   void AIPlayer::randomize_direction(){
     switch (random_int(0, 3)) {
-      case 0:
-        this->direction_right();
-        break;
-      
-      case 1:
+      case UP:
         this->direction_up();
         break;
+      
+      case DOWN:
+        this->direction_down();
+        break;
     
-      case 2:
+      case LEFT:
         this->direction_left();
         break;
       
       default:
-        this->direction_down();
+        this->direction_right();
         break;    
     }
   }
@@ -102,34 +102,41 @@ namespace Players{
     // else if(this->get_x() == fx && this->get_y() < fy)
     //   angle = (3*PI)/2;
     
-    this->input_data->update_value(0, 0, (fx-this->get_x()));
-    this->input_data->update_value(0, 1, (fy-this->get_y()));
+    this->input_data->update_value(0, 0, (fx-this->get_x())/1000.0);
+    this->input_data->update_value(0, 1, (fy-this->get_y())/1000.0);
     this->input_data->update_value(0, 2, 1);
   }
   
-  void AIPlayer::get_new_direction(){
+  Directions AIPlayer::get_new_direction(){
     this->nn->feedforward();
     Matrix* result = this->nn->get_output_layer()->get_values();
-   
+
+
     double biggest = 0;
-    size_t direction = 0;
+    Directions direction = UP;
     for(size_t i = 0; i < 4; i++){
       double actual_value = result->get_position_value(0, i);
       if(actual_value > biggest){
         biggest = actual_value;
-        direction = i;
+        direction = (Directions)i;
       }
     }
-    switch (direction) {
-      case 0:
+
+    return direction;
+  }
+
+
+  void AIPlayer::update_direction(Directions dir){
+    switch (dir) {
+      case UP:
         this->direction_up();
         break;
       
-      case 1:
+      case DOWN:
         this->direction_down();
         break;
 
-      case 2:
+      case LEFT:
         this->direction_left();
         break;
 
@@ -137,6 +144,12 @@ namespace Players{
         this->direction_right();
         break;
     }
+  }
+
+  bool AIPlayer::is_the_opposite_direction(Directions dir){
+    // 0 - x, 1 - y
+
+    return (this->get_mov_x() == 0 && (dir == UP || dir == DOWN)) || (this->get_mov_y() && (dir == LEFT || dir == RIGHT));
   }
 
   Chromosome* AIPlayer::get_chromosome(){

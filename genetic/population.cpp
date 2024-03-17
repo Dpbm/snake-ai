@@ -1,9 +1,12 @@
 #include <cstddef>
 #include <cstdint>
+#include <vector>
 #include "population.h"
 #include "../game/ai_player.h"
 
+using std::vector;
 using std::size_t;
+using Players::AIPlayer;
 using Players::AIPlayer;
 
 namespace Populations{
@@ -13,13 +16,22 @@ namespace Populations{
     this->score_step = score_step;
     this->max_score = max_score;
     this->actual_individual = &this->individuals[0];
+    this->fitness = vector<int64_t>();
 
-    for(size_t i = 0; i < total; i++)
+
+    for(size_t i = 0; i < total; i++){
       this->individuals[i].setup_agent(score_step, max_score);
+      this->fitness.push_back(0);
+    }
   }
 
   bool Population::is_the_last_individual(){
     return this->actual_individual == &this->individuals[this->total_individuals-1];
+  }
+
+  void Population::update_direction_data(Directions dir){
+    if(!this->actual_individual->is_the_opposite_direction(dir))
+      this->fitness.at(this->indvidual_i) -= 100;   
   }
 
   void Population::reset_agents(){
@@ -45,5 +57,4 @@ namespace Populations{
   Population::~Population(){
     delete[] this->individuals;
   }
-
 };

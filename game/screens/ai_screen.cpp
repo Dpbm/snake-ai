@@ -8,12 +8,14 @@
 #include <SDL2/SDL_stdinc.h>
 #include "screens.h"
 #include "ai_screen.h"
+#include "../ai_player.h"
 
 using std::size_t;
 using std::to_string;
 using std::cout;
 using std::endl;
 using Screens::Screen;
+using Players::Directions;
 
 namespace GameAIScreen {
 
@@ -40,7 +42,12 @@ namespace GameAIScreen {
 
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){  
+    this->player->update_input_data(this->food.get_x(), this->food.get_y());
+    Directions dir = this->player->get_new_direction();
+    this->population->update_direction_data(dir);
+    this->player->update_direction(dir); 
     this->player->update_position();
+
     bool ended_game = false;
     
     if(this->player->is_die()){

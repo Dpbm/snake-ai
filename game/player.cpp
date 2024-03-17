@@ -193,7 +193,7 @@ namespace Players {
   void Player::set_max_score(uint16_t max_score){
     this->max_score = max_score;
   }
-  
+
   Player::~Player(){
     Node* actual_node = this->head;
     while(actual_node != nullptr){
