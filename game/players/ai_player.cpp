@@ -51,9 +51,12 @@ namespace Players{
       );
     }
   }
-  
+ 
   void AIPlayer::randomize_direction(){
-    switch (random_int(0, 3)) {
+    Directions dir = (Directions)random_int(0,3);
+    this->direction = dir;
+
+    switch (dir) {
       case UP:
         this->direction_up();
         break;
@@ -126,6 +129,7 @@ namespace Players{
 
 
   void AIPlayer::update_direction(Directions dir){
+    this->direction = dir;
     switch (dir) {
       case UP:
         this->direction_up();
@@ -145,9 +149,11 @@ namespace Players{
     }
   }
 
-  bool AIPlayer::is_the_opposite_direction(Directions dir){
-    // 0 - x, 1 - y
-    return (this->get_mov_x() == 0 && (dir == UP || dir == DOWN)) || (this->get_mov_y() && (dir == LEFT || dir == RIGHT));
+  bool AIPlayer::is_trying_invalid_direction(Directions dir){
+    return (this->direction == UP && dir == DOWN) || 
+           (this->direction == DOWN && dir == UP) || 
+           (this->direction == LEFT && dir == RIGHT) || 
+           (this->direction == RIGHT && dir == LEFT);
   }
 
   Chromosome* AIPlayer::get_chromosome(){

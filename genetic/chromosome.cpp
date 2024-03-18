@@ -21,7 +21,7 @@ namespace Chromosomes {
 
   void Chromosome::copy_genes(Gene* genes){
     for(size_t i = 0; i < this->total_genes; i++)
-      this->genes[i] = genes[i];
+      this->genes[i] = genes[i].get_gene_value();
   }
 
   Gene* Chromosome::get_genes(){

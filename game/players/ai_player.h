@@ -26,12 +26,13 @@ namespace Players{
       Directions get_new_direction();
       void setup_agent(uint8_t score_step, uint16_t max_score); 
       void randomize_direction();
-      bool is_the_opposite_direction(Directions dir);
+      bool is_trying_invalid_direction(Directions dir);
       void update_direction(Directions dir);
 
     private:
       Chromosome* chromosome = nullptr;
-      
+      Directions direction = UP;   
+
       NN* nn = new NN;   
       Layer* input_layer = new Layer(3, true);
       Matrix* input_data = new Matrix(3, 1);

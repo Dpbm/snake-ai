@@ -26,7 +26,7 @@ namespace GameAIScreen{
       
     private:
       uint8_t max_score = 100;
-      uint8_t population_size = 100;
+      uint8_t population_size = 200;
       Population* population = new Population(population_size, 1, max_score);
       AIPlayer* player = nullptr;
       Food food;

@@ -28,6 +28,8 @@ namespace Populations {
       uint8_t total_individuals = 0;
       AIPlayer* individuals = nullptr;
 
+      vector<int64_t> fitness;
+
       uint8_t score_step;
       uint16_t max_score;
 
