@@ -7,6 +7,7 @@
 #include "../../matrix/matrix.h"
 #include "../../machine/activation.h"
 #include "../../helpers/utils.h"
+#include "../../helpers/constants.h"
 
 using std::sqrt;
 using std::pow;
@@ -89,31 +90,37 @@ namespace Players{
 
   void AIPlayer::update_input_data(int16_t fx, int16_t fy){
     double hip = sqrt(pow(fx-this->get_x(),2) + pow(this->get_y()-fy,2));
-    // double angle = hip == 0 ? 0 : acos(abs(fx-this->get_x())/hip); 
-    // 
-    // if(fx > this->get_x() && fy > this->get_y())
-    //   angle += (3*PI)/2;
-    // else if(fx < this->get_x() && fy < this->get_y())
-    //   angle += PI/2;
-    // else if(fx < this->get_x() && fy > this->get_y())
-    //   angle += PI;
-    // else if(fy == this->get_y() && this->get_x() < fx)
-    //   angle = 0;
-    // else if(fy == this->get_y() && this->get_x() < fx)
-    //   angle = PI;
-    // else if(this->get_x() == fx && this->get_y() > fy)
-    //   angle = PI/2;
-    // else if(this->get_x() == fx && this->get_y() < fy)
-    //   angle = (3*PI)/2;
-    this->input_data->update_value(0, 0, (this->get_x()-fx)/1000.0);
-    this->input_data->update_value(0, 1, (this->get_y()-fy)/1000.0);
-    this->input_data->update_value(0, 2, 1);
+    double angle = hip == 0 ? 0 : acos(abs(fx-this->get_x())/hip); 
+
+    if(fx > this->get_x() && fy > this->get_y())
+      angle += (3*PI)/2;
+    else if(fx < this->get_x() && fy < this->get_y())
+      angle += PI/2;
+    else if(fx < this->get_x() && fy > this->get_y())
+      angle += PI;
+    else if(fy == this->get_y() && this->get_x() < fx)
+      angle = 0;
+    else if(fy == this->get_y() && this->get_x() < fx)
+      angle = PI;
+    else if(this->get_x() == fx && this->get_y() > fy)
+      angle = PI/2;
+    else if(this->get_x() == fx && this->get_y() < fy)
+      angle = (3*PI)/2;
+    this->input_data->update_value(0, 0, abs((this->get_x()-fx)/1000.0));
+    this->input_data->update_value(0, 1, abs((this->get_y()-fy)/1000.0));
+    this->input_data->update_value(0, 2, angle/PI);
+    this->input_data->update_value(0, 3, (uint8_t)(this->direction != DOWN));
+    this->input_data->update_value(0, 4, (uint8_t)(this->direction != UP));
+    this->input_data->update_value(0, 5, (uint8_t)(this->direction != RIGHT));
+    this->input_data->update_value(0, 6, (uint8_t)(this->direction != LEFT));
   }
+ 
+
   
   Directions AIPlayer::get_new_direction(){
     this->nn->feedforward();
     Matrix* result = this->nn->get_output_layer()->get_values();
-    
+    this->nn->get_layer(0)->get_values()->show(); 
     double biggest = 0;
     Directions direction = UP;
     for(size_t i = 0; i < 4; i++){

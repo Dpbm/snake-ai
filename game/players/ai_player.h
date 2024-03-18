@@ -7,6 +7,7 @@
 #include "../../machine/layer.h"
 #include "player.h"
 
+
 using Chromosomes::Chromosome;
 using Matrices::Matrix;
 using Machine::NN;
@@ -34,8 +35,8 @@ namespace Players{
       Directions direction = UP;   
 
       NN* nn = new NN;   
-      Layer* input_layer = new Layer(3, true);
-      Matrix* input_data = new Matrix(3, 1);
+      Layer* input_layer = new Layer(7, true);
+      Matrix* input_data = new Matrix(7, 1);
   
   };
 };

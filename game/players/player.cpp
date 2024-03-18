@@ -2,7 +2,6 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_timer.h>
 #include <cstdint>
-#include <iostream>
 #include "player.h"
 #include "../../helpers/utils.h"
 #include "../../helpers/constants.h"
