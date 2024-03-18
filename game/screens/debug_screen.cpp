@@ -26,15 +26,15 @@ using Matrices::Matrix;
 namespace GameDebugScreen{
 
   DebugScreen::DebugScreen(SDL_Renderer* render){
-    this->nn->add_layer(this->input_layer);
-    this->nn->add_layer(4);
-    this->nn->add_layer(4);
-    
-    this->nn->get_layer(1)->set_activation_function(Activations::tanh);
-    this->nn->get_layer(2)->set_activation_function(Activations::softmax);
-    this->input_layer->set_values(this->input_data);
-    this->player->direction_right();
-    this->reset_weights();
+    // this->nn->add_layer(this->input_layer);
+    // this->nn->add_layer(4);
+    // this->nn->add_layer(4);
+    // 
+    // this->nn->get_layer(1)->set_activation_function(Activations::tanh);
+    // this->nn->get_layer(2)->set_activation_function(Activations::softmax);
+    // this->input_layer->set_values(this->input_data);
+    // this->player->direction_right();
+    // this->reset_weights();
 };
  
   void DebugScreen::reset_weights(){

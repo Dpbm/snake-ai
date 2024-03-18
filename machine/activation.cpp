@@ -7,7 +7,7 @@ using std::pow;
 using std::abs;
 using Matrices::Matrix;
 
-namespace Activations {
+namespace Machine {
   void relu(Matrix* values){
     for(size_t i = 0; i < values->get_width(); i++){
       double x = values->get_position_value(0, i);

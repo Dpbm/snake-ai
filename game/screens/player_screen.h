@@ -6,7 +6,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "screens.h"
 #include "../food.h"
-#include "../player.h"
+#include "../players/player.h"
 
 using Screens::Screen;
 using Foods::Food;

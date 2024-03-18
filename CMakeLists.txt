@@ -32,7 +32,7 @@ target_link_libraries(helpers ${SDL2_LIBRARIES})
 
 file(GLOB GENETIC_FILES "genetic/*.cpp")
 add_library(genetic ${GENETIC_FILES})
-target_link_libraries(genetic game matrix machine helpers)
+target_link_libraries(genetic players matrix machine helpers)
 
 file(GLOB MATRIX_FILES "matrix/*.cpp")
 add_library(matrix ${MATRIX_FILES})
@@ -43,11 +43,13 @@ target_link_libraries(machine helpers matrix)
 
 file(GLOB GAME_FILES "game/*.cpp")
 file(GLOB SCREENS_FILES "game/screens/*.cpp")
+file(GLOB PLAYERS_FILES "game/players/*.cpp")
 add_library(game ${GAME_FILES})
 add_library(screens ${SCREENS_FILES})
-target_link_libraries(screens genetic game machine matrix helpers ${SDL2_LIBRARIES} SDL2_ttf)
+add_library(players ${PLAYERS_FILES})
+target_link_libraries(players machine matrix genetic helpers ${SDL2_LIBRARIES})
+target_link_libraries(screens players game helpers genetic ${SDL2_LIBRARIES} SDL2_ttf)
 target_link_libraries(game helpers screens ${SDL2_LIBRARIES})
-
 
 target_link_libraries(ga.out PRIVATE helpers game genetic matrix machine ${SDL2_LIBRARIES})
 

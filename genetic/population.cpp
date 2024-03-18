@@ -1,244 +1,121 @@
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
-#include <iostream>
+#include <iterator>
+#include <unistd.h>
 #include "population.h"
-#include "ai_player.h"
-#include "../machine/activation.h"
-#include "../game/player.h"
-#include "../helpers/constants.h"
-#include "../helpers/utils.h"
-#include "chromosome.h"
 #include "gene.h"
+#include "../game/players/ai_player.h"
+#include "../helpers/utils.h"
 
-using AIAgent::AIPlayer;
-using Players::Player;
-using Chromosomes::Chromosome;
+using std::max_element;
+using std::distance;
+using std::size_t;
+using Players::AIPlayer;
 using Utils::random_int;
 using Genes::Gene;
 
 namespace Populations{
-
-  Population::Population(uint8_t total){
+  Population::Population(uint8_t total, uint8_t score_step, uint16_t max_score){
     this->individuals = new AIPlayer[total];
     this->total_individuals = total;
-    this->distances = new uint16_t[total];
-    this->points = new int16_t[total];
-    this->setup_nn();
-    this->get_nn_total_weights();
+    this->score_step = score_step;
+    this->max_score = max_score;
 
-    for(size_t i = 0; i < total; i++)
-      this->individuals[i].setup_choromosome(this->total_weights);
-    this->load_genes_into_weights();
-  }
-
-  void Population::setup_nn(){
-    this->nn->add_layer(this->input_layer);
-    this->nn->add_layer(4);
-    this->nn->add_layer(4);
-    
-    this->nn->get_layer(1)->set_activation_function(Activations::tanh);
-    this->nn->get_layer(2)->set_activation_function(Activations::softmax);
-    this->input_layer->set_values(this->input_data);
-  }
-
-  void Population::get_nn_total_weights(){
-    uint16_t genes_array_size = 0;
-    for(size_t weight_i = 0; weight_i < this->nn->get_total_weights(); weight_i++){
-      uint8_t w = this->nn->get_weight(weight_i)->get_width();
-      uint8_t h = this->nn->get_weight(weight_i)->get_height();
-      genes_array_size += w*h;
-    }
-    this->total_weights = genes_array_size;
-  }
-
-  void Population::load_genes_into_weights(){
-    for(size_t weight_i = 0; weight_i < this->nn->get_total_weights(); weight_i++){
-      uint8_t w = this->nn->get_weight(weight_i)->get_width();
-      uint8_t h = this->nn->get_weight(weight_i)->get_height();
-
-      this->nn->get_weight(weight_i)->load_weights(
-        this->individuals[this->actual_individual].get_genes_matrix(w, h)
-      );
+    for(size_t i = 0; i < total; i++){
+      this->individuals[i].setup_agent(score_step, max_score);
+      this->fitness.push_back(0);
     }
   }
-  
-  void Population::next_generation(){
-    int16_t fitness[this->total_individuals];
-  
-    // uint16_t closest_distance = (uint16_t)10000;
-    // size_t indiv_closest_distance = 0;
-    // size_t second_indiv_closest_distance = 1;
-    // for(size_t i = 0; i < this->total_individuals; i++){
-    //   if(this->distances[i] <= closest_distance){
-    //     closest_distance = this->distances[i];
-    //     size_t tmp = indiv_closest_distance;
-    //     indiv_closest_distance = i;
-    //     second_indiv_closest_distance = tmp;
-    //   }
-    // }
-   
+
+  AIPlayer* Population::get_individuals(){
+    return this->individuals;
+  }
+
+  bool Population::run_population(int16_t fx, int16_t fy){
+    uint8_t total_invalid = 0;
 
     for(size_t i = 0; i < this->total_individuals; i++){
-      fitness[i] = 0;
-
-      if(this->points[i] == 0){
-        fitness[i] += -10000;
-      }else{
-        fitness[i] += this->points[i]*100;
-      }
-
-      if(this->distances[i] >= 200){
-        fitness[i] += -10000;
-      }else{
-        fitness[i] += 1000;
-      }
-    }
-
-    for(size_t i = 0; i < this->total_individuals; i++){
-      std::cout << fitness[i] << " ";
-    }
-    std::cout << "\n\n";
-
-    size_t best_p1 = 0;
-    int16_t best_f1 = 0;
-    for(size_t i = 0; i < this->total_individuals; i++){
-      if(fitness[i] > best_f1){
-        best_p1 = i;
-        best_f1 = fitness[i];
-      }
-    }
-    
-
-    size_t best_p2 = 0;
-    int16_t best_f2 = 0;
-    for(size_t i = 0; i < this->total_individuals; i++){
-      if(fitness[i] >= best_f2 && i != best_p1){
-        best_p2 = i;
-        best_f2 = fitness[i];
-      }
-    }
-
-    Chromosome* indiv1 = this->individuals[best_p1].get_chromosome();
-    Chromosome* indiv2 = this->individuals[best_p2].get_chromosome();
-    uint8_t chromosome_pivot = random_int(0, this->total_weights-1);
-
-    Chromosome* offspring = new Chromosome(this->total_weights);
-    
-    Gene* offspring_genes = offspring->get_genes();
-    Gene* indiv1_genes = indiv1->get_genes();
-    Gene* indiv2_genes = indiv2->get_genes();
-
-    for(size_t i = 0; i < this->total_weights; i++){
-      if(i <= chromosome_pivot)
-        offspring_genes[i].set_gene_value(indiv1_genes[i].get_gene_value());
-      else
-        offspring_genes[i].set_gene_value(indiv2_genes[i].get_gene_value());
-    }
-
-    for(size_t i = 0; i < this->total_individuals; i++){
-      Chromosome* actual_individual_chromosome = this->individuals[i].get_chromosome();
-      if(i == best_p1 || i == best_f2){
-        actual_individual_chromosome->mutate(0.03);  
+      AIPlayer* individual = &this->individuals[i];
+      
+      if(individual->is_die() || individual->get_score() > 0){
+        total_invalid++;
         continue;
       }
-      actual_individual_chromosome->copy_genes(offspring_genes);
-      actual_individual_chromosome->mutate(0.1);
-    }
-    delete offspring;
-  }
-  
 
-  void Population::update_input_data(uint16_t px, uint16_t py, uint16_t fx, uint16_t fy){
-    double hip = sqrt(pow(fx-px,2) + pow(py-fy,2));
-    double angle = hip == 0 ? 0 : acos(abs(fx-px)/hip); 
+      individual->update_input_data(fx, fy);
+      
+      Directions dir = individual->get_new_direction();
+      
+      if(individual->is_trying_invalid_direction(dir))
+        this->fitness.at(i) -= 100;
 
-    if(fx > px && fy > py)
-      angle += (3*PI)/2;
-    else if(fx < px && fy < py)
-      angle += PI/2;
-    else if(fx < px && fy > py)
-      angle += PI;
-    else if(fy == py && px < fx)
-      angle = 0;
-    else if(fy == py && px < fx)
-      angle = PI;
-    else if(px == fx && py > fy)
-      angle = PI/2;
-    else if(px == fx && py < fy)
-      angle = (3*PI)/2;
-    
-    
-    this->input_data->update_value(0, 0, (fx-px)%50);
-    this->input_data->update_value(0, 1, (fy-py)%50);
-    this->input_data->update_value(0, 2, (angle));
-  }
+      individual->update_direction(dir); 
+      individual->update_position();
 
-  uint8_t Population::get_actual_individual(){
-    return this->actual_individual;
-  }
-
-  void Population::add_points(int16_t points){
-    this->points[this->actual_individual] = points;
-  }
-
-  void Population::add_distance(uint16_t distance){
-    this->distances[this->actual_individual] = distance;
-  }
-  
-  void Population::reset_individual(){
-    this->actual_individual=0;
-  }
-
-  void Population::update_actual_individual(){
-    this->actual_individual ++;
-  }
-
-  void Population::get_new_direction(Player* player){
-    Matrix* result = this->nn->get_output_layer()->get_values();
-    // std::cout << "\n\n"; 
-    // this->nn->get_layer(0)->get_values()->show();
-    // this->nn->get_layer(1)->get_values()->show();
-    // result->show();
-    // std::cout << "\n\n";
-    result->show();
-    double biggest = 0;
-    size_t direction = 0;
-    for(size_t i = 0; i < 4; i++){
-      double actual_value = result->get_position_value(0, i);
-      if(actual_value > biggest){
-        biggest = actual_value;
-        direction = i;
+      if(individual->collision(fx, fy)){
+        individual->update_score();
+        this->fitness.at(i) += 200;
       }
     }
-    switch (direction) {
-      case 0:
-        player->direction_up();
-        break;
-      
-      case 1:
-        player->direction_down();
-        break;
+    return total_invalid == this->total_individuals;
+  }
 
-      case 2:
-        player->direction_left();
-        break;
+  void Population::next_generation(){
+    vector<int64_t>::iterator max_fitness = max_element(this->fitness.begin(), this->fitness.end()); 
+    uint8_t max_fitness_i = distance(this->fitness.begin(), max_fitness);
 
-      default:
-        player->direction_right();
-        break;
+    this->fitness.at(max_fitness_i) = this->fitness[max_fitness_i]-10000;
+    vector<int64_t>::iterator max_fitness_2 = max_element(this->fitness.begin(), this->fitness.end()); 
+    uint8_t max_fitness_2_i = distance(this->fitness.begin(), max_fitness_2);
+
+    AIPlayer* best = &this->individuals[max_fitness_i];
+    AIPlayer* second_best = &this->individuals[max_fitness_2_i];
+    
+    Chromosome* best_chromosome = best->get_chromosome();
+    Chromosome* second_best_chromosome = second_best->get_chromosome();
+    
+    uint16_t chromosome_size = best_chromosome->get_size();
+    uint16_t pivot = random_int(0, chromosome_size);
+
+    Gene* best_genes = best_chromosome->get_genes();
+    Gene* second_best_genes = second_best_chromosome->get_genes();
+    Gene* offspring_genes = new Gene[chromosome_size];
+    for(size_t i = 0; i < chromosome_size; i++){
+      if(i <= pivot)
+        offspring_genes[i].set_gene_value(best_genes[i].get_gene_value());
+      else
+        offspring_genes[i].set_gene_value(second_best_genes[i].get_gene_value());
+    }
+
+    this->reset_individuals();
+    
+   for(size_t i = 0; i < this->total_individuals; i++){
+      Chromosome* individual = this->individuals[i].get_chromosome();
+      individual->copy_genes(offspring_genes);
+      individual->mutate(0.3);
+  
+      individual->show();
+    }
+
+
+
+    delete[] offspring_genes;
+  }  
+  
+  void Population::reset_individuals(){
+    delete[] this->individuals;
+    this->fitness.clear();
+
+    this->individuals = new AIPlayer[this->total_individuals];
+  
+    for(size_t i = 0; i < this->total_individuals; i++){
+      this->individuals[i].setup_agent(this->score_step, this->max_score);
+      this->fitness.push_back(0);
     }
   }
-
-  void Population::update_player_direction(Player* player){
-    this->nn->feedforward();
-    this->get_new_direction(player);
-  }
-
+  
   Population::~Population(){
     delete[] this->individuals;
-    delete[] this->distances;
-    delete[] this->points;
-    delete this->nn;
   }
-
 };
