@@ -7,13 +7,11 @@
 #include <SDL2/SDL_ttf.h>
 #include "screens.h"
 #include "../players/ai_player.h"
-#include "../food.h"
 #include "../../genetic/population.h"
 
 using std::vector;
 using Screens::Screen;
 using Players::AIPlayer;
-using Foods::Food;
 using Populations::Population;
 
 namespace GameAIScreen{
@@ -27,9 +25,11 @@ namespace GameAIScreen{
     private:
       uint8_t max_score = 100;
       uint8_t population_size = 200;
+
+      uint32_t start_tick = 0;
+
       Population* population = new Population(population_size, 1, max_score);
       AIPlayer* player = nullptr;
-      Food food;
      
       SDL_Renderer* render;
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
@@ -45,11 +45,6 @@ namespace GameAIScreen{
       SDL_Texture* generation_text_texture;
       SDL_Texture* generation_texture;
       
-      SDL_Rect individual_text_shape;
-      SDL_Rect individual_shape;
-      SDL_Texture* individual_text_texture;
-      SDL_Texture* individual_texture;
-      
       SDL_Rect best_individual_text_shape;
       SDL_Rect best_individual_shape;
       SDL_Texture* best_individual_text_texture;
@@ -59,6 +54,11 @@ namespace GameAIScreen{
       SDL_Rect best_pontuation_shape;
       SDL_Texture* best_pontuation_text_texture;
       SDL_Texture* best_pontuation_texture;
+      
+      SDL_Rect timer_text_shape;
+      SDL_Rect timer_shape;
+      SDL_Texture* timer_text_texture;
+      SDL_Texture* timer_texture;
       
       SDL_Rect screen_separator{LEFT_WALL, 0, 1, HEIGHT};
       void create_text();

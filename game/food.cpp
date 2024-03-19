@@ -30,7 +30,7 @@ namespace Foods {
   }
 
   void Food::render(SDL_Renderer* render){
-    SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(render, 0, 255, 0, 255);
     SDL_RenderFillRect(render, this->shape);
     SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
   }

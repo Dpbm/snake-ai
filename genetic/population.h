@@ -19,9 +19,13 @@ namespace Populations {
   class Population{
     public:
       Population(uint8_t total, uint8_t score_step, uint16_t max_score);
-      bool run_population(int16_t fx, int16_t fy);
+      bool run_population();
       AIPlayer* get_individuals();
       void next_generation();
+      int64_t get_best_fitness();
+      uint8_t get_best_fitness_i();
+      AIPlayer* get_best_player();
+      AIPlayer* get_best_player_alive();
       ~Population();
 
     private:

@@ -177,7 +177,12 @@ namespace Players {
   void Player::render(SDL_Renderer* render){
     Node* actual_bpart = this->head;
     while(actual_bpart != nullptr){
-      SDL_SetRenderDrawColor(render, 0, 0, 255, 255);
+      
+      if(this->is_die())
+        SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+      else
+        SDL_SetRenderDrawColor(render, 0, 0, 255, 255);
+      
       SDL_RenderFillRect(render, actual_bpart->value);
       SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
 

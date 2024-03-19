@@ -14,6 +14,10 @@ using std::size_t;
 using Players::AIPlayer;
 using Utils::random_int;
 using Genes::Gene;
+using Players::Directions::UP;
+using Players::Directions::DOWN;
+using Players::Directions::LEFT;
+using Players::Directions::RIGHT;
 
 namespace Populations{
   Population::Population(uint8_t total, uint8_t score_step, uint16_t max_score){
@@ -32,42 +36,59 @@ namespace Populations{
     return this->individuals;
   }
 
-  bool Population::run_population(int16_t fx, int16_t fy){
+  bool Population::run_population(){
     uint8_t total_invalid = 0;
 
     for(size_t i = 0; i < this->total_individuals; i++){
       AIPlayer* individual = &this->individuals[i];
-      
-      if(individual->is_die() || individual->get_score() > 0){
+      Food* food = individual->get_food();
+      int16_t fx = food->get_x();
+      int16_t fy = food->get_y();
+
+      if(individual->is_die()){
         total_invalid++;
         continue;
       }
+        
+      // this->fitness.at(i) += 100;
 
-      individual->update_input_data(fx, fy);
+      individual->update_input_data();
       
       Directions dir = individual->get_new_direction();
       
-      if(individual->is_trying_invalid_direction(dir))
-        this->fitness.at(i) -= 100;
+      int16_t px = individual->get_x();
+      int16_t py = individual->get_y();
+      
+      if((dir == LEFT && fx > px) || (dir == RIGHT && fx < px))
+        this->fitness.at(i) -= 1000;
+      if((dir == UP && fy > py) || (dir == DOWN && fy < py))
+        this->fitness.at(i) -= 1000;
+
+
+      // if(individual->is_trying_invalid_direction(dir))
+      //   this->fitness.at(i) -= 100;
+
+      // if(dir != individual->get_direction())
+      //   this->fitness.at(i) += 200;
 
       individual->update_direction(dir); 
       individual->update_position();
 
       if(individual->collision(fx, fy)){
         individual->update_score();
-        this->fitness.at(i) += 200;
+        food->update_position();
+        this->fitness.at(i) += 10000;
       }
     }
+
+
     return total_invalid == this->total_individuals;
   }
 
   void Population::next_generation(){
-    vector<int64_t>::iterator max_fitness = max_element(this->fitness.begin(), this->fitness.end()); 
-    uint8_t max_fitness_i = distance(this->fitness.begin(), max_fitness);
-
+    uint8_t max_fitness_i = this->get_best_fitness_i();
     this->fitness.at(max_fitness_i) = this->fitness[max_fitness_i]-10000;
-    vector<int64_t>::iterator max_fitness_2 = max_element(this->fitness.begin(), this->fitness.end()); 
-    uint8_t max_fitness_2_i = distance(this->fitness.begin(), max_fitness_2);
+    uint8_t max_fitness_2_i = this->get_best_fitness_i();
 
     AIPlayer* best = &this->individuals[max_fitness_i];
     AIPlayer* second_best = &this->individuals[max_fitness_2_i];
@@ -95,7 +116,7 @@ namespace Populations{
       individual->copy_genes(offspring_genes);
       individual->mutate(0.3);
   
-      individual->show();
+      // individual->show();
     }
 
 
@@ -113,6 +134,38 @@ namespace Populations{
       this->individuals[i].setup_agent(this->score_step, this->max_score);
       this->fitness.push_back(0);
     }
+  }
+
+  uint8_t Population::get_best_fitness_i(){
+    vector<int64_t>::iterator max_fitness = max_element(this->fitness.begin(), this->fitness.end()); 
+    uint8_t max_fitness_i = distance(this->fitness.begin(), max_fitness);
+    return max_fitness_i;
+  }
+
+  int64_t Population::get_best_fitness(){
+    return this->fitness.at(this->get_best_fitness_i());
+  }
+
+  AIPlayer* Population::get_best_player(){
+    return &this->individuals[this->get_best_fitness_i()];
+  }
+
+  AIPlayer* Population::get_best_player_alive(){
+    AIPlayer* best_player = this->get_best_player();
+    if(!best_player->is_die())
+      return best_player;
+    
+    int64_t max_fitness = -100000000;
+    uint8_t best_i = 0;
+    for(size_t i = 0; i < this->total_individuals; i ++){
+      int64_t fitness = this->fitness[i];
+      if(fitness > max_fitness && !this->individuals[i].is_die()){
+        max_fitness = fitness;
+        best_i = i;
+      }
+    }
+    
+    return &this->individuals[best_i];
   }
   
   Population::~Population(){
