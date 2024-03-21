@@ -32,6 +32,10 @@ namespace Populations{
     }
   }
 
+  uint32_t Population::get_generation(){
+    return this->generation;
+  }
+
   AIPlayer* Population::get_individuals(){
     return this->individuals;
   }
@@ -81,8 +85,13 @@ namespace Populations{
       }
     }
 
+    bool finished_gen = total_invalid == this->total_individuals;
 
-    return total_invalid == this->total_individuals;
+    return finished_gen;
+  }
+
+  void Population::update_gen(){
+    this->generation ++;
   }
 
   void Population::next_generation(){

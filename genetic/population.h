@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <cstdint>
 #include <vector>
 #include "../machine/machine.h"
@@ -26,9 +25,13 @@ namespace Populations {
       uint8_t get_best_fitness_i();
       AIPlayer* get_best_player();
       AIPlayer* get_best_player_alive();
+      uint32_t get_generation();
+      void update_gen();
       ~Population();
 
     private:
+      uint32_t generation = 1;
+      uint32_t max_generation = 1000;
       uint8_t total_individuals = 0;
       AIPlayer* individuals = nullptr;
 

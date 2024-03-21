@@ -50,11 +50,6 @@ namespace GameAIScreen{
       SDL_Texture* best_individual_text_texture;
       SDL_Texture* best_individual_texture;
       
-      SDL_Rect best_pontuation_text_shape;
-      SDL_Rect best_pontuation_shape;
-      SDL_Texture* best_pontuation_text_texture;
-      SDL_Texture* best_pontuation_texture;
-      
       SDL_Rect timer_text_shape;
       SDL_Rect timer_shape;
       SDL_Texture* timer_text_texture;

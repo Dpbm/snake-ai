@@ -47,7 +47,7 @@ namespace GameAIScreen {
     
     SDL_Surface* timer_surface = TTF_RenderText_Solid(this->font, to_string(timer).c_str(), this->text_color);
     this->timer_texture = SDL_CreateTextureFromSurface(this->render, timer_surface);
-    this->timer_shape = SDL_Rect{timer_text_shape.w+20, 140, timer_surface->w, timer_surface->h};
+    this->timer_shape = SDL_Rect{timer_text_shape.w+20, 110, timer_surface->w, timer_surface->h};
    
     SDL_FreeSurface(score_surface);
     SDL_FreeSurface(best_individual_surface);
@@ -70,8 +70,6 @@ namespace GameAIScreen {
     SDL_RenderCopy(render, this->generation_texture, NULL, &this->generation_shape);
     SDL_RenderCopy(render, this->best_individual_text_texture, NULL, &this->best_individual_text_shape);
     SDL_RenderCopy(render, this->best_individual_texture, NULL, &this->best_individual_shape);
-    SDL_RenderCopy(render, this->best_pontuation_text_texture, NULL, &this->best_pontuation_text_shape);
-    SDL_RenderCopy(render, this->best_pontuation_texture, NULL, &this->best_pontuation_shape);
     SDL_RenderCopy(render, this->timer_text_texture, NULL, &this->timer_text_shape);
     SDL_RenderCopy(render, this->timer_texture, NULL, &this->timer_shape);
 
@@ -79,6 +77,19 @@ namespace GameAIScreen {
     best_player_alive->get_food()->render(render);
   
     if(reset || timer >= TOTAL_GENERATION_TIME){
+      this->population->update_gen();
+
+      SDL_DestroyTexture(this->generation_texture);
+      SDL_Surface* generation_surface = TTF_RenderText_Solid(this->font, to_string(this->population->get_generation()).c_str(), this->text_color);
+      this->generation_texture = SDL_CreateTextureFromSurface(this->render, generation_surface);
+      this->generation_shape = SDL_Rect{generation_text_shape.w+20, 50, generation_surface->w, generation_surface->h};
+      SDL_FreeSurface(generation_surface);
+    
+      if(this->generation_texture == nullptr){
+        cout << "Failed on adding generation texture!" << TTF_GetError() << endl;
+        exit(1);
+      }
+      
       this->population->next_generation();
       this->start_tick = SDL_GetTicks();
     }
@@ -118,21 +129,13 @@ namespace GameAIScreen {
     this->best_individual_texture = SDL_CreateTextureFromSurface(this->render, best_individual_surface);
     this->best_individual_shape = SDL_Rect{best_individual_text_shape.w+20, 80, best_individual_surface->w, best_individual_surface->h};
     
-    SDL_Surface* best_pontuation_text_surface = TTF_RenderText_Solid(this->font, "Best pon. ", this->text_color);
-    this->best_pontuation_text_texture = SDL_CreateTextureFromSurface(this->render, best_pontuation_text_surface);
-    this->best_pontuation_text_shape = SDL_Rect{20, 110, best_pontuation_text_surface->w, best_pontuation_text_surface->h};
-    
-    SDL_Surface* best_pontuation_surface = TTF_RenderText_Solid(this->font, "0", this->text_color);
-    this->best_pontuation_texture = SDL_CreateTextureFromSurface(this->render, best_pontuation_surface);
-    this->best_pontuation_shape = SDL_Rect{best_pontuation_text_shape.w+20, 110, best_pontuation_surface->w, best_pontuation_surface->h};
-    
     SDL_Surface* timer_text_surface = TTF_RenderText_Solid(this->font, "Timer ", this->text_color);
     this->timer_text_texture = SDL_CreateTextureFromSurface(this->render, timer_text_surface);
-    this->timer_text_shape = SDL_Rect{20, 140, timer_text_surface->w, timer_text_surface->h};
+    this->timer_text_shape = SDL_Rect{20, 110, timer_text_surface->w, timer_text_surface->h};
     
     SDL_Surface* timer_surface = TTF_RenderText_Solid(this->font, "0", this->text_color);
     this->timer_texture = SDL_CreateTextureFromSurface(this->render, timer_surface);
-    this->timer_shape = SDL_Rect{timer_text_shape.w+20, 140, timer_surface->w, timer_surface->h};
+    this->timer_shape = SDL_Rect{timer_text_shape.w+20, 110, timer_surface->w, timer_surface->h};
     
     SDL_FreeSurface(score_text_surface);
     SDL_FreeSurface(score_surface);
@@ -140,8 +143,6 @@ namespace GameAIScreen {
     SDL_FreeSurface(generation_surface);
     SDL_FreeSurface(best_individual_text_surface);
     SDL_FreeSurface(best_individual_surface);
-    SDL_FreeSurface(best_pontuation_text_surface);
-    SDL_FreeSurface(best_pontuation_surface);
     SDL_FreeSurface(timer_text_surface);
     SDL_FreeSurface(timer_surface);
 
@@ -151,8 +152,6 @@ namespace GameAIScreen {
        generation_texture == nullptr || 
        best_individual_text_surface == nullptr ||
        best_individual_texture == nullptr ||
-       best_pontuation_text_texture == nullptr ||
-       best_pontuation_texture == nullptr ||
        timer_text_texture == nullptr ||
        timer_texture == nullptr){
       cout << "Failed on adding textures!" << TTF_GetError() << endl;
@@ -173,8 +172,6 @@ namespace GameAIScreen {
     SDL_DestroyTexture(this->generation_text_texture);
     SDL_DestroyTexture(this->best_individual_texture);
     SDL_DestroyTexture(this->best_individual_text_texture);
-    SDL_DestroyTexture(this->best_pontuation_texture);
-    SDL_DestroyTexture(this->best_pontuation_text_texture);
     SDL_DestroyTexture(this->timer_texture);
     SDL_DestroyTexture(this->timer_text_texture);
   }
