@@ -31,7 +31,6 @@ namespace GameAIScreen {
     bool reset = this->population->run_population();
    
     uint8_t best_player_i = this->population->get_best_fitness_i()+1;
-    AIPlayer* best_player_alive = this->population->get_best_player_alive();
 
     SDL_DestroyTexture(this->score_texture);
     SDL_DestroyTexture(this->best_individual_texture);
@@ -72,10 +71,24 @@ namespace GameAIScreen {
     SDL_RenderCopy(render, this->best_individual_texture, NULL, &this->best_individual_shape);
     SDL_RenderCopy(render, this->timer_text_texture, NULL, &this->timer_text_shape);
     SDL_RenderCopy(render, this->timer_texture, NULL, &this->timer_shape);
+    SDL_RenderCopy(render, this->see_all_texture, NULL, &this->see_all_shape);
+    
+    if(!this->see_all){
+    
+      AIPlayer* best_player_alive = this->population->get_best_player_alive();
+      best_player_alive->render(render);
+      best_player_alive->get_food()->render(render);
 
-    best_player_alive->render(render);
-    best_player_alive->get_food()->render(render);
-  
+    }else{
+      
+      for(size_t i = 0; i < this->population_size; i++){
+        AIPlayer* player = this->population->get_player(i);
+        player->render(render);
+        player->get_food()->render(render);
+      }
+    
+    }
+
     if(reset || timer >= TOTAL_GENERATION_TIME){
       this->population->update_gen();
 
@@ -96,6 +109,9 @@ namespace GameAIScreen {
   }
 
   Screen* AIScreen::key_event(const SDL_Keycode& key){
+    if(key == SDLK_s)
+      this->see_all = !this->see_all;
+
     return nullptr;
   }
   
@@ -137,6 +153,10 @@ namespace GameAIScreen {
     this->timer_texture = SDL_CreateTextureFromSurface(this->render, timer_surface);
     this->timer_shape = SDL_Rect{timer_text_shape.w+20, 110, timer_surface->w, timer_surface->h};
     
+    SDL_Surface* see_all_surface = TTF_RenderText_Solid(this->font, "'S' to see all ", this->text_color);
+    this->see_all_texture = SDL_CreateTextureFromSurface(this->render, see_all_surface);
+    this->see_all_shape = SDL_Rect{10, 160, see_all_surface->w, see_all_surface->h};
+    
     SDL_FreeSurface(score_text_surface);
     SDL_FreeSurface(score_surface);
     SDL_FreeSurface(generation_text_surface);
@@ -145,6 +165,7 @@ namespace GameAIScreen {
     SDL_FreeSurface(best_individual_surface);
     SDL_FreeSurface(timer_text_surface);
     SDL_FreeSurface(timer_surface);
+    SDL_FreeSurface(see_all_surface);
 
     if(score_texture == nullptr ||
        score_text_texture == nullptr ||
@@ -153,7 +174,8 @@ namespace GameAIScreen {
        best_individual_text_surface == nullptr ||
        best_individual_texture == nullptr ||
        timer_text_texture == nullptr ||
-       timer_texture == nullptr){
+       timer_texture == nullptr ||
+       see_all_texture == nullptr){
       cout << "Failed on adding textures!" << TTF_GetError() << endl;
       exit(1);
       
@@ -174,5 +196,6 @@ namespace GameAIScreen {
     SDL_DestroyTexture(this->best_individual_text_texture);
     SDL_DestroyTexture(this->timer_texture);
     SDL_DestroyTexture(this->timer_text_texture);
+    SDL_DestroyTexture(this->see_all_texture);
   }
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
 #include <vector>
 #include "../machine/machine.h"
@@ -7,6 +8,7 @@
 #include "../matrix/matrix.h"
 #include "../game/players/ai_player.h"
 
+using std::size_t;
 using std::vector;
 using Machine::NN;
 using Layers::Layer;
@@ -27,6 +29,7 @@ namespace Populations {
       AIPlayer* get_best_player_alive();
       uint32_t get_generation();
       void update_gen();
+      AIPlayer* get_player(size_t i);
       ~Population();
 
     private:

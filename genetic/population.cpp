@@ -40,6 +40,10 @@ namespace Populations{
     return this->individuals;
   }
 
+  AIPlayer* Population::get_player(size_t i){
+    return &this->individuals[i];
+  } 
+
   bool Population::run_population(){
     uint8_t total_invalid = 0;
 
@@ -63,10 +67,10 @@ namespace Populations{
       int16_t px = individual->get_x();
       int16_t py = individual->get_y();
       
-      if((dir == LEFT && fx > px) || (dir == RIGHT && fx < px))
-        this->fitness.at(i) -= 1000;
-      if((dir == UP && fy > py) || (dir == DOWN && fy < py))
-        this->fitness.at(i) -= 1000;
+      // if((dir == LEFT && fx > px) || (dir == RIGHT && fx < px))
+      //   this->fitness.at(i) -= 1000;
+      // if((dir == UP && fy > py) || (dir == DOWN && fy < py))
+      //   this->fitness.at(i) -= 1000;
 
 
       // if(individual->is_trying_invalid_direction(dir))

@@ -30,7 +30,9 @@ namespace GameAIScreen{
 
       Population* population = new Population(population_size, 1, max_score);
       AIPlayer* player = nullptr;
-     
+
+      bool see_all = false;
+
       SDL_Renderer* render;
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
       SDL_Color text_color{ 255, 255, 255 };
@@ -54,6 +56,9 @@ namespace GameAIScreen{
       SDL_Rect timer_shape;
       SDL_Texture* timer_text_texture;
       SDL_Texture* timer_texture;
+      
+      SDL_Rect see_all_shape;
+      SDL_Texture* see_all_texture;
       
       SDL_Rect screen_separator{LEFT_WALL, 0, 1, HEIGHT};
       void create_text();
