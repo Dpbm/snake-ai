@@ -31,10 +31,13 @@ namespace Players{
       void update_direction(Directions dir);
       Food* get_food();
       Directions get_direction();
+      Directions get_last_player_dir();
+      void update_last_player_dir(Directions dir);
 
     private:
       Chromosome* chromosome = nullptr;
       Directions direction = UP;   
+      Directions last_direction = UP;
 
       NN* nn = new NN;   
       Layer* input_layer = new Layer(3, true);

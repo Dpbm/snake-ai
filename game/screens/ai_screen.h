@@ -24,7 +24,7 @@ namespace GameAIScreen{
       
     private:
       uint8_t max_score = 100;
-      uint8_t population_size = 200;
+      uint16_t population_size = 20;
 
       uint32_t start_tick = 0;
 

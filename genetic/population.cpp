@@ -20,7 +20,7 @@ using Players::Directions::LEFT;
 using Players::Directions::RIGHT;
 
 namespace Populations{
-  Population::Population(uint8_t total, uint8_t score_step, uint16_t max_score){
+  Population::Population(uint16_t total, uint8_t score_step, uint16_t max_score){
     this->individuals = new AIPlayer[total];
     this->total_individuals = total;
     this->score_step = score_step;
@@ -29,6 +29,7 @@ namespace Populations{
     for(size_t i = 0; i < total; i++){
       this->individuals[i].setup_agent(score_step, max_score);
       this->fitness.push_back(0);
+      this->same_mov_count.push_back(0);
     }
   }
 
@@ -55,7 +56,7 @@ namespace Populations{
   }
 
   bool Population::run_population(){
-    uint8_t total_invalid = 0;
+    uint16_t total_invalid = 0;
 
     for(size_t i = 0; i < this->total_individuals; i++){
       AIPlayer* individual = &this->individuals[i];
@@ -76,7 +77,16 @@ namespace Populations{
       individual->update_input_data();
       
       Directions dir = individual->get_new_direction();
-      
+  
+      if(dir == individual->get_last_player_dir())
+        this->same_mov_count.at(i)++;
+      else{
+        this->same_mov_count.at(i)=0;
+        individual->update_last_player_dir(dir);
+      }   
+
+      if(this->same_mov_count.at(i) >= 400)
+        this->fitness.at(i) -= 100;
 
       // if(distance <= 10)
       //   this->fitness.at(i) += 6000;
@@ -111,12 +121,18 @@ namespace Populations{
       // if(dir != individual->get_direction())
       //   this->fitness.at(i) += 200;
 
-      if(px == fx || py == fy)
-        this->fitness.at(i) += 10;
+      // if(px == fx || py == fy)
+      //   this->fitness.at(i) += 10;
+
+      // if((WIDTH - px <= 10 || px <= 10) && (dir == UP || dir == DOWN))
+      //   this->fitness.at(i) += 100;
+      // 
+      // if((HEIGHT - py <= 10 || py <= 10) && (dir == LEFT || dir == RIGHT))
+      //   this->fitness.at(i) += 100;
 
       individual->update_direction(dir); 
       individual->update_position();
-      
+
       if(individual->is_dead()){
         total_invalid++;
         this->fitness.at(i) -= 100;
@@ -126,7 +142,7 @@ namespace Populations{
       if(individual->collision(fx, fy)){
         individual->update_score();
         food->update_position();
-        this->fitness.at(i) += 80;
+        this->fitness.at(i) += 1000;
       }
     }
 
@@ -144,9 +160,9 @@ namespace Populations{
       std::cout << this->fitness.at(i) << " ";
     std::cout << std::endl;
   
-    uint8_t max_fitness_i = this->get_best_fitness_i();
+    uint16_t max_fitness_i = this->get_best_fitness_i();
     this->fitness.at(max_fitness_i) = this->fitness[max_fitness_i]-10000;
-    uint8_t max_fitness_2_i = this->get_best_fitness_i();
+    uint16_t max_fitness_2_i = this->get_best_fitness_i();
 
     AIPlayer* best = &this->individuals[max_fitness_i];
     AIPlayer* second_best = &this->individuals[max_fitness_2_i];
@@ -186,18 +202,20 @@ namespace Populations{
   void Population::reset_individuals(){
     delete[] this->individuals;
     this->fitness.clear();
+    this->same_mov_count.clear();
 
     this->individuals = new AIPlayer[this->total_individuals];
   
     for(size_t i = 0; i < this->total_individuals; i++){
       this->individuals[i].setup_agent(this->score_step, this->max_score);
       this->fitness.push_back(0);
+      this->same_mov_count.push_back(0);
     }
   }
 
-  uint8_t Population::get_best_fitness_i(){
+  uint16_t Population::get_best_fitness_i(){
     vector<int64_t>::iterator max_fitness = max_element(this->fitness.begin(), this->fitness.end()); 
-    uint8_t max_fitness_i = distance(this->fitness.begin(), max_fitness);
+    uint16_t max_fitness_i = distance(this->fitness.begin(), max_fitness);
     return max_fitness_i;
   }
 
@@ -215,7 +233,7 @@ namespace Populations{
       return best_player;
     
     int64_t max_fitness = -100000000;
-    uint8_t best_i = 0;
+    uint16_t best_i = 0;
     for(size_t i = 0; i < this->total_individuals; i ++){
       int64_t fitness = this->fitness[i];
       if(fitness > max_fitness && !this->individuals[i].is_dead()){

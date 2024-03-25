@@ -19,12 +19,12 @@ using Players::Directions;
 namespace Populations {
   class Population{
     public:
-      Population(uint8_t total, uint8_t score_step, uint16_t max_score);
+      Population(uint16_t total, uint8_t score_step, uint16_t max_score);
       bool run_population();
       AIPlayer* get_individuals();
       void next_generation();
       int64_t get_best_fitness();
-      uint8_t get_best_fitness_i();
+      uint16_t get_best_fitness_i();
       AIPlayer* get_best_player();
       AIPlayer* get_best_player_alive();
       uint32_t get_generation();
@@ -36,10 +36,11 @@ namespace Populations {
     private:
       uint32_t generation = 1;
       uint32_t max_generation = 1000;
-      uint8_t total_individuals = 0;
+      uint16_t total_individuals = 0;
       AIPlayer* individuals = nullptr;
 
       vector<int64_t> fitness;
+      vector<uint32_t> same_mov_count;
 
       uint8_t score_step;
       uint16_t max_score;

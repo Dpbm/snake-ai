@@ -55,6 +55,14 @@ namespace Players{
     }
   }
 
+  void AIPlayer::update_last_player_dir(Directions dir){
+    this->last_direction = dir;
+  }
+
+  Directions AIPlayer::get_last_player_dir(){
+    return this->last_direction;
+  }
+
   Directions AIPlayer::get_direction(){
     return this->direction;
   }
