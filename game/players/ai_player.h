@@ -37,8 +37,8 @@ namespace Players{
       Directions direction = UP;   
 
       NN* nn = new NN;   
-      Layer* input_layer = new Layer(11, true);
-      Matrix* input_data = new Matrix(11, 1);
+      Layer* input_layer = new Layer(3, true);
+      Matrix* input_data = new Matrix(3, 1);
   
       Food food;
   };

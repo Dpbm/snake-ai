@@ -170,7 +170,7 @@ namespace Players {
     return false;
   }
 
-  bool Player::is_die(){
+  bool Player::is_dead(){
     return this->died;
   }
   
@@ -178,11 +178,7 @@ namespace Players {
     Node* actual_bpart = this->head;
     while(actual_bpart != nullptr){
       
-      if(this->is_die())
-        SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
-      else
-        SDL_SetRenderDrawColor(render, 0, 0, 255, 255);
-      
+      SDL_SetRenderDrawColor(render, 0, 0, 255, 255);
       SDL_RenderFillRect(render, actual_bpart->value);
       SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
 

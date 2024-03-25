@@ -30,16 +30,15 @@ namespace GameAIScreen {
     
     bool reset = this->population->run_population();
    
-    uint8_t best_player_i = this->population->get_best_fitness_i()+1;
-
     SDL_DestroyTexture(this->score_texture);
     SDL_DestroyTexture(this->best_individual_texture);
     SDL_DestroyTexture(this->timer_texture);
     
-    SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(this->population->get_best_player()->get_score()).c_str(), this->text_color);
+    SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(this->population->get_best_score()).c_str(), this->text_color);
     this->score_texture = SDL_CreateTextureFromSurface(this->render, score_surface);
     this->score_shape = SDL_Rect{score_text_shape.w+20, 20, score_surface->w, score_surface->h};
-    
+
+    uint8_t best_player_i = this->population->get_best_fitness_i()+1;
     SDL_Surface* best_individual_surface = TTF_RenderText_Solid(this->font, to_string(best_player_i).c_str(), this->text_color);
     this->best_individual_texture = SDL_CreateTextureFromSurface(this->render, best_individual_surface);
     this->best_individual_shape = SDL_Rect{best_individual_text_shape.w+20, 80, best_individual_surface->w, best_individual_surface->h};
@@ -83,8 +82,10 @@ namespace GameAIScreen {
       
       for(size_t i = 0; i < this->population_size; i++){
         AIPlayer* player = this->population->get_player(i);
-        player->render(render);
-        player->get_food()->render(render);
+        if(!player->is_dead()){
+          player->render(render);
+          player->get_food()->render(render);
+        }
       }
     
     }

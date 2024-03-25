@@ -29,6 +29,7 @@ namespace Populations {
       AIPlayer* get_best_player_alive();
       uint32_t get_generation();
       void update_gen();
+      uint16_t get_best_score();
       AIPlayer* get_player(size_t i);
       ~Population();
 

@@ -63,7 +63,7 @@ namespace GamePlayerScreen{
   void PlayerScreen::execute(SDL_Renderer* render, bool& game_loop){
     this->player->update_position();
 
-    if(this->player->is_die()){
+    if(this->player->is_dead()){
       cout << "GAME OVER!" << endl;
       game_loop = false;
       return;

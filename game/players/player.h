@@ -31,7 +31,7 @@ namespace Players {
       int8_t get_mov_x();
       int8_t get_mov_y();
       void update_position();
-      bool is_die();
+      bool is_dead();
       ~Player(); 
       void render(SDL_Renderer* render);
       void randomize_position();

@@ -42,21 +42,34 @@ namespace Populations{
 
   AIPlayer* Population::get_player(size_t i){
     return &this->individuals[i];
-  } 
+  }
+
+  uint16_t Population::get_best_score(){
+    uint16_t best = 0;
+    for(size_t i = 0; i < this->total_individuals; i++){
+      uint16_t score = this->individuals[i].get_score();
+      if(score > best)
+        best = score;
+    }
+    return best;
+  }
 
   bool Population::run_population(){
     uint8_t total_invalid = 0;
 
     for(size_t i = 0; i < this->total_individuals; i++){
       AIPlayer* individual = &this->individuals[i];
+      if(individual->is_dead()){
+        total_invalid++;
+        continue;
+      } 
+
       Food* food = individual->get_food();
       int16_t fx = food->get_x();
       int16_t fy = food->get_y();
+      int16_t px = individual->get_x();
+      int16_t py = individual->get_y();
 
-      if(individual->is_die()){
-        total_invalid++;
-        continue;
-      }
         
       // this->fitness.at(i) += 100;
 
@@ -64,9 +77,28 @@ namespace Populations{
       
       Directions dir = individual->get_new_direction();
       
-      int16_t px = individual->get_x();
-      int16_t py = individual->get_y();
-      
+
+      // if(distance <= 10)
+      //   this->fitness.at(i) += 6000;
+
+      // if( fx > px && fy < py  && (dir == UP || dir == RIGHT)) // top right corner
+      //   this->fitness.at(i) += 20;
+      // else if( fx < px && fy < py && (dir == UP || dir == LEFT))
+      //   this->fitness.at(i) += 20;
+      // else if( fx < px && fy > py && (dir == DOWN || dir == LEFT))
+      //   this->fitness.at(i) += 20;
+      // else if( fx > px && fy > py && (dir == DOWN || dir == RIGHT))
+      //   this->fitness.at(i) += 20;
+      // else if(px == fx && fy < py && dir == UP)
+      //   this->fitness.at(i) += 100;
+      // else if(px == fx && fy > py && dir == DOWN)
+      //   this->fitness.at(i) += 100;
+      // else if(py == fy && fx < px && dir == LEFT)
+      //   this->fitness.at(i) += 100;
+      // else if(py == fy && fx > px && dir == RIGHT)
+      //   this->fitness.at(i) += 100;
+        
+
       // if((dir == LEFT && fx > px) || (dir == RIGHT && fx < px))
       //   this->fitness.at(i) -= 1000;
       // if((dir == UP && fy > py) || (dir == DOWN && fy < py))
@@ -79,13 +111,22 @@ namespace Populations{
       // if(dir != individual->get_direction())
       //   this->fitness.at(i) += 200;
 
+      if(px == fx || py == fy)
+        this->fitness.at(i) += 10;
+
       individual->update_direction(dir); 
       individual->update_position();
+      
+      if(individual->is_dead()){
+        total_invalid++;
+        this->fitness.at(i) -= 100;
+        continue;
+      }
 
       if(individual->collision(fx, fy)){
         individual->update_score();
         food->update_position();
-        this->fitness.at(i) += 10000;
+        this->fitness.at(i) += 80;
       }
     }
 
@@ -99,12 +140,17 @@ namespace Populations{
   }
 
   void Population::next_generation(){
+    for(size_t i = 0; i < this->total_individuals; i++)
+      std::cout << this->fitness.at(i) << " ";
+    std::cout << std::endl;
+  
     uint8_t max_fitness_i = this->get_best_fitness_i();
     this->fitness.at(max_fitness_i) = this->fitness[max_fitness_i]-10000;
     uint8_t max_fitness_2_i = this->get_best_fitness_i();
 
     AIPlayer* best = &this->individuals[max_fitness_i];
     AIPlayer* second_best = &this->individuals[max_fitness_2_i];
+      
     
     Chromosome* best_chromosome = best->get_chromosome();
     Chromosome* second_best_chromosome = second_best->get_chromosome();
@@ -127,7 +173,7 @@ namespace Populations{
    for(size_t i = 0; i < this->total_individuals; i++){
       Chromosome* individual = this->individuals[i].get_chromosome();
       individual->copy_genes(offspring_genes);
-      individual->mutate(0.3);
+      individual->mutate(0.1);
   
       // individual->show();
     }
@@ -165,14 +211,14 @@ namespace Populations{
 
   AIPlayer* Population::get_best_player_alive(){
     AIPlayer* best_player = this->get_best_player();
-    if(!best_player->is_die())
+    if(!best_player->is_dead())
       return best_player;
     
     int64_t max_fitness = -100000000;
     uint8_t best_i = 0;
     for(size_t i = 0; i < this->total_individuals; i ++){
       int64_t fitness = this->fitness[i];
-      if(fitness > max_fitness && !this->individuals[i].is_die()){
+      if(fitness > max_fitness && !this->individuals[i].is_dead()){
         max_fitness = fitness;
         best_i = i;
       }

@@ -28,9 +28,9 @@ namespace Players{
     this->set_max_score(max_score);
     
     this->nn->add_layer(this->input_layer);
-    this->nn->add_layer(7);
     this->nn->add_layer(4);
-    
+    this->nn->add_layer(4);
+   
     this->nn->get_layer(1)->set_activation_function(Machine::tanh);
     this->nn->get_layer(2)->set_activation_function(Machine::softmax);
     this->input_layer->set_values(this->input_data);
@@ -120,17 +120,17 @@ namespace Players{
       angle = (3*PI)/2;
     
     
-    this->input_data->update_value(0, 0, abs((LEFT_WALL-this->get_x())/(double)WIDTH));
-    this->input_data->update_value(0, 1, (WIDTH-this->get_x())/(double)PLAY_WIDTH);
-    this->input_data->update_value(0, 2, (this->get_y())/(double)HEIGHT);
-    this->input_data->update_value(0, 3, (HEIGHT-this->get_y())/(double)HEIGHT);
-    this->input_data->update_value(0, 4, abs((this->get_x()-fx)/(double)PLAY_WIDTH));
-    this->input_data->update_value(0, 5, abs((this->get_y()-fy)/(double)HEIGHT));
-    this->input_data->update_value(0, 6, angle/(2*PI));
-    this->input_data->update_value(0, 7, (uint8_t)(this->direction != DOWN));
-    this->input_data->update_value(0, 8, (uint8_t)(this->direction != UP));
-    this->input_data->update_value(0, 9, (uint8_t)(this->direction != RIGHT));
-    this->input_data->update_value(0, 10, (uint8_t)(this->direction != LEFT));
+    // this->input_data->update_value(0, 0, abs((LEFT_WALL-this->get_x())/(double)WIDTH));
+    // this->input_data->update_value(0, 1, (WIDTH-this->get_x())/(double)PLAY_WIDTH);
+    // this->input_data->update_value(0, 2, (this->get_y())/(double)HEIGHT);
+    // this->input_data->update_value(0, 3, (HEIGHT-this->get_y())/(double)HEIGHT);
+    this->input_data->update_value(0, 0, abs((this->get_x()-fx)/(double)PLAY_WIDTH));
+    this->input_data->update_value(0, 1, abs((this->get_y()-fy)/(double)HEIGHT));
+    this->input_data->update_value(0, 2, angle/(2*PI));
+    // this->input_data->update_value(0, 3, (uint8_t)(this->direction != DOWN));
+    // this->input_data->update_value(0, 4, (uint8_t)(this->direction != UP));
+    // this->input_data->update_value(0, 5, (uint8_t)(this->direction != RIGHT));
+    // this->input_data->update_value(0, 6, (uint8_t)(this->direction != LEFT));
   }
  
 
@@ -138,7 +138,7 @@ namespace Players{
   Directions AIPlayer::get_new_direction(){
     this->nn->feedforward();
     Matrix* result = this->nn->get_output_layer()->get_values();
-    this->nn->get_layer(0)->get_values()->show(); 
+    // this->nn->get_layer(0)->get_values()->show(); 
     double biggest = 0;
     Directions direction = UP;
     for(size_t i = 0; i < 4; i++){
