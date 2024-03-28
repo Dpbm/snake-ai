@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <iostream>
 #include <random>
 #include <fstream>
@@ -26,13 +27,13 @@ namespace Utils {
     return distr(eng);
   }
 
-  unsigned int get_random_x(unsigned int factor){
-    unsigned int rand = random_int(LEFT_WALL, WIDTH-factor);
+  uint16_t get_random_x(uint16_t factor){
+    uint16_t rand = random_int(LEFT_WALL, WIDTH-factor);
     return rand-(rand%factor);
   }
   
-  unsigned int get_random_y(unsigned int factor){
-    unsigned int rand = random_int(0, HEIGHT-factor);
+  uint16_t get_random_y(uint16_t factor){
+    uint16_t rand = random_int(0, HEIGHT-factor);
     return rand-(rand%factor);
   }
 

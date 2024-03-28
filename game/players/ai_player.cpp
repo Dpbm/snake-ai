@@ -55,6 +55,10 @@ namespace Players{
     }
   }
 
+  void AIPlayer::save_weights(string filename){
+    this->nn->save_weights(filename);
+  }
+
   void AIPlayer::update_last_player_dir(Directions dir){
     this->last_direction = dir;
   }

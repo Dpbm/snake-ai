@@ -37,6 +37,8 @@ namespace GamePlayerScreen{
     }
   }
 
+  void PlayerScreen::close_event(){}
+
   Screen* PlayerScreen::key_event(const SDL_Keycode& key){
     switch (key) {
       case SDLK_w:

@@ -154,7 +154,7 @@ namespace Players {
   bool Player::border_head_collision(){
     int16_t head_x = this->head->value->x; 
     int16_t head_y = this->head->value->y;
-    return head_x < LEFT_WALL+3 || head_x > WIDTH || head_y < 0 || head_y > HEIGHT;
+    return head_x < LEFT_WALL || head_x > WIDTH || head_y < 0 || head_y > HEIGHT;
   }
 
   bool Player::head_tail_collision(){

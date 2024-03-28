@@ -1,23 +1,24 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <ctime>
 #include <iterator>
+#include <sstream>
 #include <unistd.h>
 #include "population.h"
 #include "gene.h"
 #include "../game/players/ai_player.h"
 #include "../helpers/utils.h"
 
+using std::stringstream;
 using std::max_element;
 using std::distance;
 using std::size_t;
 using Players::AIPlayer;
 using Utils::random_int;
+using Utils::get_random_x;
+using Utils::get_random_y;
 using Genes::Gene;
-using Players::Directions::UP;
-using Players::Directions::DOWN;
-using Players::Directions::LEFT;
-using Players::Directions::RIGHT;
 
 namespace Populations{
   Population::Population(uint16_t total, uint8_t score_step, uint16_t max_score){
@@ -30,6 +31,8 @@ namespace Populations{
       this->individuals[i].setup_agent(score_step, max_score);
       this->fitness.push_back(0);
       this->same_mov_count.push_back(0);
+      this->food_positions.push_back(vec2{get_random_x(FOOD_W), get_random_y(FOOD_H)});
+      this->individuals[i].get_food()->set_position(this->food_positions[0].x, this->food_positions[0].y);
     }
   }
 
@@ -57,6 +60,7 @@ namespace Populations{
 
   bool Population::run_population(){
     uint16_t total_invalid = 0;
+    bool caught_the_food = false;
 
     for(size_t i = 0; i < this->total_individuals; i++){
       AIPlayer* individual = &this->individuals[i];
@@ -85,8 +89,8 @@ namespace Populations{
         individual->update_last_player_dir(dir);
       }   
 
-      if(this->same_mov_count.at(i) >= 400)
-        this->fitness.at(i) -= 100;
+      if(this->same_mov_count.at(i) >= 40)
+        this->fitness.at(i) -= 1;
 
       // if(distance <= 10)
       //   this->fitness.at(i) += 6000;
@@ -135,20 +139,20 @@ namespace Populations{
 
       if(individual->is_dead()){
         total_invalid++;
-        this->fitness.at(i) -= 100;
+        this->fitness.at(i)--;
         continue;
       }
 
       if(individual->collision(fx, fy)){
         individual->update_score();
-        food->update_position();
-        this->fitness.at(i) += 1000;
+        this->fitness.at(i) += 10000;
+        caught_the_food = true;
       }
     }
 
     bool finished_gen = total_invalid == this->total_individuals;
 
-    return finished_gen;
+    return finished_gen || caught_the_food;
   }
 
   void Population::update_gen(){
@@ -156,9 +160,9 @@ namespace Populations{
   }
 
   void Population::next_generation(){
-    for(size_t i = 0; i < this->total_individuals; i++)
-      std::cout << this->fitness.at(i) << " ";
-    std::cout << std::endl;
+    // for(size_t i = 0; i < this->total_individuals; i++)
+    //   std::cout << this->fitness.at(i) << " ";
+    // std::cout << std::endl;
   
     uint16_t max_fitness_i = this->get_best_fitness_i();
     this->fitness.at(max_fitness_i) = this->fitness[max_fitness_i]-10000;
@@ -189,12 +193,11 @@ namespace Populations{
    for(size_t i = 0; i < this->total_individuals; i++){
       Chromosome* individual = this->individuals[i].get_chromosome();
       individual->copy_genes(offspring_genes);
-      individual->mutate(0.1);
-  
+      individual->mutate(0.1); 
       // individual->show();
     }
 
-
+    this->food_i++;
 
     delete[] offspring_genes;
   }  
@@ -244,7 +247,13 @@ namespace Populations{
     
     return &this->individuals[best_i];
   }
-  
+
+  void Population::save_weights(){
+    stringstream string;
+    string << time(0) << "-weights.wg";
+    this->get_best_player()->save_weights(string.str());
+  }
+
   Population::~Population(){
     delete[] this->individuals;
   }

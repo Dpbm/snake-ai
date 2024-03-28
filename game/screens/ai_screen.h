@@ -21,10 +21,11 @@ namespace GameAIScreen{
       ~AIScreen();
       void execute(SDL_Renderer* render, bool& game_loop);
       Screen* key_event(const SDL_Keycode& key);
-      
+      void close_event();     
+
     private:
       uint8_t max_score = 100;
-      uint16_t population_size = 20;
+      uint16_t population_size = 2000;
 
       uint32_t start_tick = 0;
 

@@ -115,7 +115,11 @@ namespace GameAIScreen {
 
     return nullptr;
   }
-  
+ 
+  void AIScreen::close_event(){
+    cout << "Saving weights..." << endl;
+    this->population->save_weights();
+  }
 
   void AIScreen::create_text(){
     if(!this->font){

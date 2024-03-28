@@ -65,11 +65,12 @@ int main(){
         }
       }
     }
-    
     SDL_RenderClear(render);
     screen->execute(render, game_loop);
     SDL_RenderPresent(render);
   }
+
+  screen->close_event();
   SDL_DestroyWindow(window);
   SDL_DestroyRenderer(render);
   SDL_Quit();

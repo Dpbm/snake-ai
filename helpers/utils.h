@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <iostream>
 #include <vector>
 
@@ -7,8 +8,8 @@ using std::vector;
 using std::string;
 
 namespace Utils {
-  unsigned int get_random_x(unsigned int factor);
-  unsigned int get_random_y(unsigned int factor);
+  uint16_t get_random_x(uint16_t factor);
+  uint16_t get_random_y(uint16_t factor);
   double random(double start, double end);
   unsigned int random_int(int start, int end);
   bool passed_debounce_time(int last_tick);

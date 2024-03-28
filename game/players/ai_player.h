@@ -33,6 +33,7 @@ namespace Players{
       Directions get_direction();
       Directions get_last_player_dir();
       void update_last_player_dir(Directions dir);
+      void save_weights(string filename);
 
     private:
       Chromosome* chromosome = nullptr;

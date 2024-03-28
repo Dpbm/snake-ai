@@ -17,6 +17,11 @@ using Players::AIPlayer;
 using Players::Directions;
 
 namespace Populations {
+  typedef struct vec2{
+    uint16_t x;
+    uint16_t y;
+  } vec2;
+
   class Population{
     public:
       Population(uint16_t total, uint8_t score_step, uint16_t max_score);
@@ -32,6 +37,7 @@ namespace Populations {
       uint16_t get_best_score();
       AIPlayer* get_player(size_t i);
       ~Population();
+      void save_weights();
 
     private:
       uint32_t generation = 1;
@@ -41,6 +47,8 @@ namespace Populations {
 
       vector<int64_t> fitness;
       vector<uint32_t> same_mov_count;
+      vector<vec2> food_positions;
+      uint32_t food_i = 0;
 
       uint8_t score_step;
       uint16_t max_score;
