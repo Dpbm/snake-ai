@@ -9,7 +9,7 @@ using ::testing::AllOf;
 using ::testing::Ge;
 using ::testing::Le;
 using std::ifstream;
-using NNWeights::Weights;
+using Machine::Weights;
 using Matrices::Matrix;
 
 namespace {

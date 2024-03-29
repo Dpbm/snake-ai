@@ -7,7 +7,7 @@
 using std::invalid_argument;
 using std::ifstream;
 using Machine::NN;
-using Layers::Layer;
+using Machine::Layer;
 
 namespace {
   TEST(CreationTest, CreateEmptyNNTest){

@@ -5,7 +5,7 @@
 
 using Matrices::Matrix;
 
-namespace Layers{
+namespace Machine{
   class Layer{
     public:
       Layer(unsigned int size, bool input);

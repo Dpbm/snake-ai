@@ -6,7 +6,7 @@
 
 using std::invalid_argument;
 using Matrices::Matrix;
-using Layers::Layer;
+using Machine::Layer;
 using Machine::relu;
 
 namespace {

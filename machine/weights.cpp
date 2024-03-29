@@ -8,7 +8,7 @@ using std::string;
 using std::stringstream;
 using Utils::append_to_file;
 
-namespace NNWeights {
+namespace Machine{
   unsigned int width, height;
   Matrix *weights;
 

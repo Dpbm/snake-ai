@@ -6,8 +6,8 @@
 #include "weights.h"
 #include "../matrix/matrix.h"
 
-using Layers::Layer;
-using NNWeights::Weights;
+using Machine::Layer;
+using Machine::Weights;
 using std::vector;
 using std::string;
 

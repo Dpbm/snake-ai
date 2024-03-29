@@ -4,8 +4,6 @@
 #include "weights.h"
 #include "machine.h"
 
-using Layers::Layer;
-using NNWeights::Weights;
 using std::vector;
 using std::string;
 using std::invalid_argument;

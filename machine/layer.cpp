@@ -4,7 +4,7 @@
 using Matrices::Matrix;
 using std::invalid_argument;
 
-namespace Layers {
+namespace Machine{
   Layer::Layer(unsigned int size, bool input){
     this->size = size;
     this->values = new Matrix(size, 1);

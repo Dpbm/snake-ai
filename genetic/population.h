@@ -11,7 +11,7 @@
 using std::size_t;
 using std::vector;
 using Machine::NN;
-using Layers::Layer;
+using Machine::Layer;
 using Matrices::Matrix;
 using Players::AIPlayer;
 using Players::Directions;

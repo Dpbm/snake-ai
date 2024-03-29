@@ -11,7 +11,7 @@
 using Chromosomes::Chromosome;
 using Matrices::Matrix;
 using Machine::NN;
-using Layers::Layer;
+using Machine::Layer;
 using Foods::Food;
 
 namespace Players{

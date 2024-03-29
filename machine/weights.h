@@ -6,7 +6,7 @@
 using std::string;
 using Matrices::Matrix;
 
-namespace NNWeights {
+namespace Machine{
   
   class Weights{
     public:
