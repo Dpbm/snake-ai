@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <vector>
 #include <iostream>
 #include "./genetic/gene.h"
 #include "./genetic/chromosome.h"
@@ -8,6 +9,7 @@
 #include "./machine/machine.h"
 #include "./helpers/utils.h"
 
+using std::vector;
 using std::size_t;
 using std::cout;
 using std::endl;
@@ -15,11 +17,11 @@ using Genes::Gene;
 using Chromosomes::Chromosome;
 using Layers::Layer;
 using Machine::NN;
+using Machine::relu;
+using Machine::sigmoid;
 using Matrices::Matrix;
-using Activations::relu;
-using Activations::sigmoid;
 using Utils::random;
-
+using Utils::parse_weigths_file;
 
 int main(){
   cout << "---GENES---" << endl;
@@ -84,4 +86,15 @@ int main(){
   cout << endl;
   nn->get_layer(2)->get_values()->show();
   //up down left right  
+
+  delete nn;
+
+
+  cout << endl << "---HELPERS---" << endl;
+  cout << "!!!!Testing parsing weights file!!!!" << endl;
+  vector<Matrix*> result = parse_weigths_file("test.wg");
+  for(Matrix* m : result){
+    cout << endl;
+    m->show();
+  } 
 }

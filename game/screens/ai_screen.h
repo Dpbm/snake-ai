@@ -66,5 +66,6 @@ namespace GameAIScreen{
       void start_new_game();
       void randomize_player_direction();
       void clear_textures();
+      void save_weights();
   };
 };

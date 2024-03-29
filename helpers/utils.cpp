@@ -1,28 +1,40 @@
 #include <cstdint>
+#include <vector>
 #include <iostream>
 #include <random>
 #include <fstream>
 #include <SDL2/SDL_timer.h>
 #include "utils.h"
 #include "constants.h"
+#include "../matrix/matrix.h"
+#include "exceptions.h"
 
+using std::stoi;
+using std::stod;
+using std::vector;
 using std::ofstream;
+using std::ifstream;
 using std::string;
 using std::ios;
+using std::random_device;
+using std::mt19937;
+using std::uniform_real_distribution;
+using std::uniform_int_distribution;
+using Matrices::Matrix;
 
 namespace Utils {
   double random(double start, double end){
-    std::random_device device;
-    std::mt19937 eng(device());
-    std::uniform_real_distribution<> distr(start, end);
+    random_device device;
+    mt19937 eng(device());
+    uniform_real_distribution<> distr(start, end);
     
     return distr(eng);
   }
   
-  unsigned int random_int(int start, int end){
-    std::random_device device;
-    std::mt19937 eng(device());
-    std::uniform_int_distribution<> distr(start, end);
+  uint64_t random_int(uint64_t start, uint64_t end){
+    random_device device;
+    mt19937 eng(device());
+    uniform_int_distribution<> distr(start, end);
     
     return distr(eng);
   }
@@ -42,10 +54,9 @@ namespace Utils {
     file.open(filename, ios::app);
 
     if(!file){
-      Utils::create_file(filename, data);
+      create_file(filename, data);
       return;
     }
-
     file << data;
     file.close();
   }
@@ -59,8 +70,84 @@ namespace Utils {
     }
   }
 
-  bool passed_debounce_time(int last_tick){
+  bool passed_debounce_time(uint32_t last_tick){
     return SDL_GetTicks() - last_tick >= DEBOUNCE_TIME;
+  }
+
+  vector<Matrix*> parse_weigths_file(string filename){
+    ifstream file;
+    file.open(filename, ios::app);
+    
+    if(!file)
+      throw FileNotFound(); 
+
+    vector<Matrix*> matrices;
+
+    uint8_t w,h; 
+    string w_str = "";
+    string h_str = "";
+
+    uint16_t i = 0;
+    uint8_t last_matrix = 0;
+    
+    for(string line; getline(file, line);){
+      std::cout << line << std::endl;
+
+      bool get_w = false;
+      bool get_h = false;
+      
+      string weight = "";
+      bool getting_weight = false;
+      uint16_t j = 0;
+
+      for(char a : line){
+        if(a == 'w'){
+          get_w = true;
+          continue;
+        }else if(a == 'h'){
+          get_h = true;
+          continue;
+        }else if(a == '-' || (a >= '0' and a <= '9')){
+          getting_weight = true;
+        }
+        
+        if((get_w || get_h) && a == ';'){
+          get_w = false;
+          get_h = false;
+          continue;
+        }else if(getting_weight && a == ','){
+          getting_weight = false;
+          matrices.at(last_matrix)->update_value(i, j, stod(weight));
+          weight = "";
+          j++;
+        }else if(get_w){
+          w_str += a;
+        }else if(get_h){
+          h_str += a;
+        }else if(getting_weight){
+          weight += a;    
+        }
+      }
+
+
+      if(!weight.empty())
+        matrices.at(last_matrix)->update_value(i, j, stod(weight));
+
+      if(!w_str.empty() && !h_str.empty()){
+        if(matrices.size() > 0)
+          last_matrix++;
+        
+        uint8_t w = stoi(w_str);
+        uint8_t h = stoi(h_str);
+        matrices.push_back(new Matrix(w,h));
+        w_str = "";
+        h_str = "";
+        i = 0;
+      }else{
+        i++;
+      }
+    }
+    return matrices;
   }
 
 }

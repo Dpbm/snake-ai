@@ -28,7 +28,7 @@ namespace NNWeights {
 
   void Weights::save_weights(string filename){
     stringstream header;
-    header << "w:" << this->width << ";h:" << this->height  << "\n"; 
+    header << "w" << this->width << ";h" << this->height  << "\n"; 
     
     append_to_file(filename, header.str());
 

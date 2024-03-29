@@ -110,15 +110,25 @@ namespace GameAIScreen {
   }
 
   Screen* AIScreen::key_event(const SDL_Keycode& key){
-    if(key == SDLK_s)
-      this->see_all = !this->see_all;
-
+    switch (key) {
+      case SDLK_s:
+        this->see_all = !this->see_all;
+        break;
+      case SDLK_w:
+        this->save_weights();
+        break;
+      default: break;
+    }
     return nullptr;
   }
- 
-  void AIScreen::close_event(){
+
+  void AIScreen::save_weights(){
     cout << "Saving weights..." << endl;
     this->population->save_weights();
+  }
+
+  void AIScreen::close_event(){
+    this->save_weights();
   }
 
   void AIScreen::create_text(){
