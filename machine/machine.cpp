@@ -11,20 +11,14 @@ using std::string;
 using std::invalid_argument;
 
 namespace Machine {
-  vector<Layer*>* layers;
-  vector<Weights*>* weights;
-  unsigned int total_layers;
-
-   
   void NN::add_layer(unsigned int size){
-    layers->push_back(new Layer(size, this->total_layers==0));
+    this->layers.push_back(new Layer(size, this->total_layers==0));
     this->total_layers++;
     this->add_weight();
   }
-  
    
   void NN::add_layer(Layer* layer){
-    layers->push_back(layer);
+    this->layers.push_back(layer);
     this->total_layers++;
     this->add_weight();
   } 
@@ -34,20 +28,20 @@ namespace Machine {
     if(this->total_layers <= 1)
       return;
    
-    unsigned int first_layer_size = layers->at(this->total_layers-2)->get_size(); 
-    unsigned int second_layer_size = layers->at(this->total_layers-1)->get_size();
-    this->weights->push_back(new Weights(second_layer_size, first_layer_size));
+    unsigned int first_layer_size = this->layers.at(this->total_layers-2)->get_size(); 
+    unsigned int second_layer_size = this->layers.at(this->total_layers-1)->get_size();
+    this->weights.push_back(new Weights(second_layer_size, first_layer_size));
     this->total_weights++;
   }
 
    
-  vector<Layer*>* NN::get_layers(){
+  vector<Layer*> NN::get_layers(){
     return this->layers;
   }
 
    
   void NN::save_weights(string filename){
-    for(Weights* weight: (*this->weights))
+    for(Weights* weight: this->weights)
       weight->save_weights(filename);
   }
 
@@ -56,18 +50,18 @@ namespace Machine {
     if(this->total_layers == 0 || i > this->total_layers-1)
       throw invalid_argument("invalid layer position");
 
-    return this->layers->at(i);
+    return this->layers.at(i);
   }
   
    
   Weights* NN::get_weight(unsigned int i){
     if(this->total_weights == 0 || i > this->total_weights-1)
       throw invalid_argument("invalid weights position");
-    return this->weights->at(i);
+    return this->weights.at(i);
   }
   
    
-  vector<Weights*>* NN::get_weights(){
+  vector<Weights*> NN::get_weights(){
     return this->weights;
   }
   
@@ -84,9 +78,9 @@ namespace Machine {
 
    
   NN::~NN(){
-    for(Layer *layer: (*this->layers))
+    for(Layer *layer: this->layers)
       delete layer;
-    for(Weights *weight: (*this->weights))
+    for(Weights *weight: this->weights)
       delete weight;
   }
 
@@ -105,7 +99,14 @@ namespace Machine {
     }
   }
 
+
+  void NN::load_weights(vector<Matrix*> new_weights){
+    for(size_t i = 0; i < this->total_weights; i++){
+      this->weights[i]->load_weights(new_weights.at(i));
+    }
+  }
+
   Layer* NN::get_output_layer(){
-    return this->layers->at(this->total_layers-1);
+    return this->layers.at(this->total_layers-1);
   }
 }

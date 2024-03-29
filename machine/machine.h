@@ -16,8 +16,8 @@ namespace Machine {
     public:
       void add_layer(unsigned int size);
       void add_layer(Layer* layer);
-      vector<Layer*>* get_layers();
-      vector<Weights*>* get_weights();
+      vector<Layer*> get_layers();
+      vector<Weights*> get_weights();
       Layer* get_layer(unsigned int i);
       Weights* get_weight(unsigned int i);
       unsigned int get_total_layers();
@@ -26,10 +26,11 @@ namespace Machine {
       ~NN();
       void feedforward();
       Layer* get_output_layer();
+      void load_weights(vector<Matrix*> new_weights);
 
     private:
-      vector<Layer*>* layers = new vector<Layer*>;
-      vector<Weights*>* weights = new vector<Weights*>;
+      vector<Layer*> layers;
+      vector<Weights*> weights;
       unsigned int total_layers = 0;
       unsigned int total_weights = 0;
       void add_weight();

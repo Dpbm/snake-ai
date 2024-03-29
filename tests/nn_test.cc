@@ -12,7 +12,7 @@ using Layers::Layer;
 namespace {
   TEST(CreationTest, CreateEmptyNNTest){
     NN* nn = new NN;
-    ASSERT_EQ(nn->get_layers()->size(), 0);
+    ASSERT_EQ(nn->get_layers().size(), 0);
     ASSERT_EQ(nn->get_total_layers(), 0);
     delete nn;
   }
@@ -24,7 +24,7 @@ namespace {
     nn->add_layer(3);
     nn->add_layer(3);
     ASSERT_EQ(nn->get_total_layers(), 3);
-    ASSERT_EQ(nn->get_layers()->size(), 3);
+    ASSERT_EQ(nn->get_layers().size(), 3);
     ASSERT_EQ(nn->get_layer(0)->get_size(), 3); 
     
     delete nn;
@@ -36,7 +36,7 @@ namespace {
     nn->add_layer(layer);
 
     ASSERT_EQ(nn->get_total_layers(), 1);
-    ASSERT_EQ(nn->get_layers()->size(), 1);
+    ASSERT_EQ(nn->get_layers().size(), 1);
     ASSERT_EQ(nn->get_layer(0)->get_size(), 3); 
     delete nn;
   }
@@ -48,7 +48,7 @@ namespace {
     nn->add_layer(10);
 
     ASSERT_EQ(nn->get_total_layers(), 2);
-    ASSERT_EQ(nn->get_layers()->size(), 2);
+    ASSERT_EQ(nn->get_layers().size(), 2);
     ASSERT_EQ(nn->get_layer(0)->get_size(), 3); 
     ASSERT_EQ(nn->get_layer(1)->get_size(), 10); 
     delete nn;
@@ -60,7 +60,7 @@ namespace {
     nn->add_layer(3);
     nn->add_layer(3);
 
-    ASSERT_EQ(nn->get_layers()->size(), 3);
+    ASSERT_EQ(nn->get_layers().size(), 3);
 
     delete nn; 
   }
@@ -95,7 +95,7 @@ namespace {
   TEST(ValuesTest, NoWeightsAddedTest){
     NN* nn = new NN;
     ASSERT_EQ(nn->get_total_weights(), 0);
-    ASSERT_EQ(nn->get_weights()->size(), 0);
+    ASSERT_EQ(nn->get_weights().size(), 0);
     delete nn;
   }
   
@@ -103,7 +103,7 @@ namespace {
     NN* nn = new NN;
     nn->add_layer(3);
     ASSERT_EQ(nn->get_total_weights(), 0);
-    ASSERT_EQ(nn->get_weights()->size(), 0);
+    ASSERT_EQ(nn->get_weights().size(), 0);
     delete nn;
   }
 
@@ -113,7 +113,7 @@ namespace {
     nn->add_layer(3);
     nn->add_layer(3);
     ASSERT_EQ(nn->get_total_weights(), 2);
-    ASSERT_EQ(nn->get_weights()->size(), 2);
+    ASSERT_EQ(nn->get_weights().size(), 2);
     delete nn;
   }
 
