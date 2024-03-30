@@ -1,15 +1,13 @@
 #pragma once
 
-#include "screens.h"
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
+#include "screens.h"
 
-using Screens::Screen;
-
-namespace GameStartScreen {
+namespace Screens {
 
   class StartScreen : public Screen{
     public:

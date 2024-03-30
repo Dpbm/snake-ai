@@ -75,16 +75,16 @@ namespace GameAIScreen {
     if(!this->see_all){
     
       AIPlayer* best_player_alive = this->population->get_best_player_alive();
-      best_player_alive->render(render);
-      best_player_alive->get_food()->render(render);
+      // best_player_alive->render(render);
+      // best_player_alive->get_food()->render(render);
 
     }else{
       
       for(size_t i = 0; i < this->population_size; i++){
         AIPlayer* player = this->population->get_player(i);
         if(!player->is_dead()){
-          player->render(render);
-          player->get_food()->render(render);
+          // player->render(render);
+          // player->get_food()->render(render);
         }
       }
     

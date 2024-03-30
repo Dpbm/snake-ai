@@ -16,8 +16,6 @@ using std::distance;
 using std::size_t;
 using Players::AIPlayer;
 using Utils::random_int;
-using Utils::get_random_x;
-using Utils::get_random_y;
 using Genes::Gene;
 
 namespace Populations{
@@ -31,8 +29,8 @@ namespace Populations{
       this->individuals[i].setup_agent(score_step, max_score);
       this->fitness.push_back(0);
       this->same_mov_count.push_back(0);
-      this->food_positions.push_back(vec2{get_random_x(FOOD_W), get_random_y(FOOD_H)});
-      this->individuals[i].get_food()->set_position(this->food_positions[0].x, this->food_positions[0].y);
+      // this->food_positions.push_back(vec2{get_random_x(FOOD_W), get_random_y(FOOD_H)});
+      // this->individuals[i].get_food()->set_position(this->food_positions[0].x, this->food_positions[0].y);
     }
   }
 
@@ -69,11 +67,11 @@ namespace Populations{
         continue;
       } 
 
-      Food* food = individual->get_food();
-      int16_t fx = food->get_x();
-      int16_t fy = food->get_y();
-      int16_t px = individual->get_x();
-      int16_t py = individual->get_y();
+      // Food* food = individual->get_food();
+      // int16_t fx = food->get_x();
+      // int16_t fy = food->get_y();
+      // int16_t px = individual->get_x();
+      // int16_t py = individual->get_y();
 
         
       // this->fitness.at(i) += 100;
@@ -135,7 +133,7 @@ namespace Populations{
       //   this->fitness.at(i) += 100;
 
       individual->update_direction(dir); 
-      individual->update_position();
+      individual->update_pos();
 
       if(individual->is_dead()){
         total_invalid++;
@@ -143,11 +141,11 @@ namespace Populations{
         continue;
       }
 
-      if(individual->collision(fx, fy)){
-        individual->update_score();
-        this->fitness.at(i) += 10000;
-        caught_the_food = true;
-      }
+      // if(individual->collision(fx, fy)){
+      //   individual->update_score();
+      //   this->fitness.at(i) += 10000;
+      //   caught_the_food = true;
+      // }
     }
 
     bool finished_gen = total_invalid == this->total_individuals;

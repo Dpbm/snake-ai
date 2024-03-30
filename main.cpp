@@ -14,7 +14,7 @@
 using std::cout;
 using std::endl;
 using Screens::Screen;
-using GameStartScreen::StartScreen;
+using Screens::StartScreen;
 
 int main(){
   if(SDL_Init(SDL_INIT_EVERYTHING) < 0){

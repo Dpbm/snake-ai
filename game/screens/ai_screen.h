@@ -8,6 +8,7 @@
 #include "screens.h"
 #include "../players/ai_player.h"
 #include "../../genetic/population.h"
+#include "../../helpers/constants.h"
 
 using std::vector;
 using Screens::Screen;

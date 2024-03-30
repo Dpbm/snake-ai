@@ -1,12 +1,15 @@
 #pragma once
 
-#include <SDL2/SDL_rect.h>
-#include <SDL2/SDL_render.h>
 #include <cstdint>
+#include "../../helpers/utils.h"
+
+using Utils::vec2;
 
 namespace Players {
+  enum Directions{UP=0, DOWN=1, LEFT=2, RIGHT=3};
+  
   struct Node{
-    SDL_Rect *value;
+    vec2 value;
     Node* next;
   };
 
@@ -16,47 +19,53 @@ namespace Players {
   class Player{
     public:
       Player();
-      Player(unsigned int score_step, unsigned int max_score);
+      Player(uint8_t score_step, uint16_t max_score, uint8_t board_w, uint8_t board_h);
+      void random_pos(uint8_t w, uint8_t h);
+      void random_dir();
+      void update_pos();
       void direction_up();
       void direction_down();
       void direction_left();
       void direction_right();
-      bool collision(int16_t food_x, int16_t food_y);
       void update_score();
-      int16_t get_x();
-      int16_t get_y();
       unsigned int get_score();
       void reset_score();
       unsigned int get_size();
       int8_t get_mov_x();
       int8_t get_mov_y();
-      void update_position();
+      void update_position(uint8_t w, uint8_t h);
       bool is_dead();
       ~Player(); 
-      void render(SDL_Renderer* render);
-      void randomize_position();
       void set_score_step(uint8_t score_step);
       void set_max_score(uint16_t max_score);
+      LinkedList* get_player();
+      void set_died();
+
+      uint32_t last_tick = 0;
+      int16_t get_x();
+      int16_t get_y();
+      void head_tail_collision();
 
     private:
-      int16_t x, y;
       unsigned int score=0;
       unsigned int score_step=100;
       unsigned int max_score=10000;
       unsigned int size = 1;
+     
+      Directions dir;
       int8_t mov_x=0;
       int8_t mov_y=0;
-      int last_tick;
+      
       LinkedList* player = new LinkedList;
       Node* head = nullptr;
       Node* tail = nullptr;
+      
       bool died=false;
       void update_size();
-      Node* create_body_part(int16_t x, int16_t y);
+      
       void add_body_part(int16_t x, int16_t y);
-      void check_died();
-      bool border_head_collision();
-      bool head_tail_collision();
+      Node* create_body_part(int16_t x, int16_t y);
+      
   };
   
 };

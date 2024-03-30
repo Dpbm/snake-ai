@@ -15,10 +15,9 @@
 using std::exit;
 using std::cout;
 using std::endl;
-using GamePlayerScreen::PlayerScreen;
 using GameAIScreen::AIScreen;
 
-namespace GameStartScreen {  
+namespace Screens {  
   StartScreen::StartScreen(SDL_Renderer* render){
     this->render = render;
     if(!this->font){

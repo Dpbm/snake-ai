@@ -6,16 +6,13 @@
 #include "../../machine/machine.h"
 #include "../../machine/layer.h"
 #include "player.h"
-#include "../food.h"
 
 using Chromosomes::Chromosome;
 using Matrices::Matrix;
 using Machine::NN;
 using Machine::Layer;
-using Foods::Food;
 
 namespace Players{
-  enum Directions{UP=0, DOWN=1, LEFT=2, RIGHT=3};
   
   class AIPlayer : public Player {
     public:
@@ -29,7 +26,6 @@ namespace Players{
       void randomize_direction();
       bool is_trying_invalid_direction(Directions dir);
       void update_direction(Directions dir);
-      Food* get_food();
       Directions get_direction();
       Directions get_last_player_dir();
       void update_last_player_dir(Directions dir);
@@ -44,6 +40,5 @@ namespace Players{
       Layer* input_layer = new Layer(3, true);
       Matrix* input_data = new Matrix(3, 1);
   
-      Food food;
   };
 };

@@ -26,28 +26,27 @@ namespace Utils {
   double random(double start, double end){
     random_device device;
     mt19937 eng(device());
-    uniform_real_distribution<> distr(start, end);
-    
+    uniform_real_distribution<double> distr(start, end);
     return distr(eng);
   }
   
-  uint64_t random_int(uint64_t start, uint64_t end){
+  int16_t random_int(uint8_t start, uint8_t end){
     random_device device;
     mt19937 eng(device());
-    uniform_int_distribution<> distr(start, end);
-    
-    return distr(eng);
+    uniform_int_distribution<int16_t> distr(start, end);
+    int16_t result = distr(eng);
+    return result;
   }
 
-  uint16_t get_random_x(uint16_t factor){
-    uint16_t rand = random_int(LEFT_WALL, WIDTH-factor);
-    return rand-(rand%factor);
-  }
-  
-  uint16_t get_random_y(uint16_t factor){
-    uint16_t rand = random_int(0, HEIGHT-factor);
-    return rand-(rand%factor);
-  }
+  // uint16_t get_random_x(uint16_t factor){
+  //   uint16_t rand = random_int(LEFT_WALL, WIDTH-factor);
+  //   return rand-(rand%factor);
+  // }
+  // 
+  // uint16_t get_random_y(uint16_t factor){
+  //   uint16_t rand = random_int(0, HEIGHT-factor);
+  //   return rand-(rand%factor);
+  // }
 
   void append_to_file(string filename, string data){
     ofstream file;

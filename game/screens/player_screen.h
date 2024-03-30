@@ -4,15 +4,17 @@
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
+#include <cstdint>
 #include "screens.h"
-#include "../food.h"
 #include "../players/player.h"
+#include "../board.h"
+#include "../../helpers/constants.h"
 
-using Screens::Screen;
-using Foods::Food;
 using Players::Player;
+using Game::Board;
 
-namespace GamePlayerScreen{
+
+namespace Screens{
 
   class PlayerScreen : public Screen{
     public:
@@ -21,15 +23,19 @@ namespace GamePlayerScreen{
       Screen* key_event(const SDL_Keycode& key);
       ~PlayerScreen();
       void close_event();
+    
     private:
-      Food food;
-      unsigned int max_score = 1000;
-      Player* player = new Player(10, max_score);
+      uint16_t left_padding = 10 * SQUARE_SIDE;
+      uint8_t board_w = 45;
+      uint8_t board_h = 30;
+      Board board{board_w, board_h};  
+
+      uint16_t max_score = 1000;
+      Player player{10, max_score, board_w, board_h};
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
       SDL_Color text_color{ 255, 255, 255 };
       SDL_Rect score_text_shape;
       SDL_Rect score_shape;
-      SDL_Rect screen_separator{LEFT_WALL, 0, 1, HEIGHT};
       SDL_Texture* score_text_texture;
       SDL_Texture* score_texture;
   };
