@@ -25,6 +25,8 @@ namespace Screens{
       void close_event();
     
     private:
+      SDL_Renderer *render = nullptr;
+    
       uint16_t left_padding = 10 * SQUARE_SIDE;
       uint8_t board_w = 45;
       uint8_t board_h = 30;

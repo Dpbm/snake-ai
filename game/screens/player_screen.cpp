@@ -7,6 +7,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "player_screen.h"
 #include "screens.h"
+#include "start_screen.h"
 
 using std::cout;
 using std::endl;
@@ -17,6 +18,7 @@ namespace Screens{
       cout << "Failed on getting font!" << TTF_GetError() << endl;
       exit(1);
     }
+    this->render = render;
 
     SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "Score ", this->text_color);
     this->score_text_texture = SDL_CreateTextureFromSurface(render, score_text_surface);
@@ -53,6 +55,11 @@ namespace Screens{
       
       case SDLK_d:
         this->player.direction_right();
+        break;
+
+      case SDLK_g:
+        if(this->player.is_dead()) 
+          return new StartScreen(this->render);
     }
     return nullptr;
   }
