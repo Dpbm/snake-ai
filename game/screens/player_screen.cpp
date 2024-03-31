@@ -55,11 +55,11 @@ namespace Screens{
         break;
 
       case SDLK_g:
-        if(this->player->is_dead()) 
+        if(this->finished_game) 
           return new StartScreen(this->render);
 
       case SDLK_r:
-        if(this->player->is_dead()) 
+        if(this->finished_game) 
           this->reset();
 
       default:
@@ -69,8 +69,10 @@ namespace Screens{
   }
 
   void PlayerScreen::execute(SDL_Renderer* render, bool& game_loop){
-    if(this->player->is_dead()){
-      SDL_Surface* game_over_surface = TTF_RenderText_Solid(this->title_font, "Game Over", this->text_color);
+    bool won = this->player->get_score() >= this->max_score; 
+    this->finished_game = won || this->player->is_dead();
+    if(this->finished_game){
+      SDL_Surface* game_over_surface = TTF_RenderText_Solid(this->title_font, won ? "Player Wins!!!" : "Game Over", this->text_color);
       SDL_Texture* game_over_texture = SDL_CreateTextureFromSurface(render, game_over_surface);
       SDL_Rect game_over_shape = SDL_Rect{(WIDTH/2)-(game_over_surface->w/2), (HEIGHT/2)-(game_over_surface->h), game_over_surface->w, game_over_surface->h};
       SDL_FreeSurface(game_over_surface);
@@ -137,6 +139,7 @@ namespace Screens{
   void PlayerScreen::close_event(){}
  
   void PlayerScreen::reset(){
+    this->finished_game = false;
     delete this->player;
     this->player = new Player{this->score_step, this->max_score, this->board_w, this->board_h};
     this->board.add_player(this->player);
