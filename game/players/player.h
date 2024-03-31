@@ -30,7 +30,6 @@ namespace Players {
       void update_score();
       unsigned int get_score();
       void reset_score();
-      unsigned int get_size();
       int8_t get_mov_x();
       int8_t get_mov_y();
       void update_position(uint8_t w, uint8_t h);
@@ -50,7 +49,6 @@ namespace Players {
       unsigned int score=0;
       unsigned int score_step=100;
       unsigned int max_score=10000;
-      unsigned int size = 1;
      
       Directions dir;
       int8_t mov_x=0;
@@ -59,12 +57,14 @@ namespace Players {
       LinkedList* player = new LinkedList;
       Node* head = nullptr;
       Node* tail = nullptr;
-      
+      vec2 old_tail_pos;  
+
       bool died=false;
       void update_size();
       
       void add_body_part(int16_t x, int16_t y);
       Node* create_body_part(int16_t x, int16_t y);
+      void mov_body();
       
   };
   

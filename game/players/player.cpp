@@ -7,6 +7,7 @@ using Utils::random_int;
 using Utils::passed_debounce_time;
 
 namespace Players {
+  //TODO: perhaps, remove it later
   Player::Player(){}
 
   Player::Player(uint8_t score_step, uint16_t max_score, uint8_t board_w, uint8_t board_h){
@@ -23,13 +24,9 @@ namespace Players {
   }
   
   void Player::add_body_part(int16_t x, int16_t y){
-    if(head != nullptr){
-    std::cout << " x " << this->head->value.x << " y " << this->head->value.y << std::endl;
-    std::cout << " ax " << this->tail->value.x << " y " << this->tail->value.y << std::endl;
-      }
-
     Node* node = this->create_body_part(x, y);
-    
+   
+
     if(this->head == nullptr){
       this->head = node;
       this->tail = node;
@@ -114,29 +111,37 @@ namespace Players {
 
   void Player::update_pos(){
     if(passed_debounce_time(this->last_tick) and !this->died){
-      int16_t old_pos_x = this->head->value.x; 
-      int16_t old_pos_y = this->head->value.y;
-    
-      int16_t new_head_x = old_pos_x + this->mov_x;
-      int16_t new_head_y = old_pos_y + this->mov_y;
-
-      this->head->value.x = new_head_x;
-      this->head->value.y = new_head_y;
-
-      Node* actual_part = this->head->next;
-      while(actual_part != nullptr){ 
-        int16_t tmp_x = actual_part->value.x;
-        int16_t tmp_y = actual_part->value.y;
-
-        actual_part->value.x = old_pos_x;
-        actual_part->value.y = old_pos_y;
-      
-        old_pos_x = tmp_x;
-        old_pos_y = tmp_y;
-        actual_part = actual_part->next;
-      }
+      this->mov_body();
       this->last_tick = SDL_GetTicks();
     }
+  }
+
+  void Player::mov_body(){
+    int16_t old_pos_x = this->head->value.x; 
+    int16_t old_pos_y = this->head->value.y;
+    
+    vec2 old_tail = this->tail->value; 
+   
+    int16_t new_head_x = old_pos_x + this->mov_x;
+    int16_t new_head_y = old_pos_y + this->mov_y;
+
+    this->head->value.x = new_head_x;
+    this->head->value.y = new_head_y;
+
+    Node* actual_part = this->head->next;
+    while(actual_part != nullptr){ 
+      int16_t tmp_x = actual_part->value.x;
+      int16_t tmp_y = actual_part->value.y;
+
+      actual_part->value.x = old_pos_x;
+      actual_part->value.y = old_pos_y;
+    
+      old_pos_x = tmp_x;
+      old_pos_y = tmp_y;
+      actual_part = actual_part->next;
+    }
+
+    this->old_tail_pos = old_tail;
   }
 
   void Player::set_died(){
@@ -149,16 +154,11 @@ namespace Players {
 
   void Player::update_score(){
     this->score += this->score_step;
-    this->size ++;
-    this->add_body_part(this->tail->value.x, this->tail->value.y);
+    this->add_body_part(this->old_tail_pos.x, this->old_tail_pos.y);
   }
 
   unsigned int Player::get_score(){
     return this->score;
-  }
-
-  unsigned int Player::get_size(){
-    return this->size;
   }
 
   int8_t Player::get_mov_x(){

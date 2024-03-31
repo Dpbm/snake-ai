@@ -22,8 +22,8 @@ namespace Game {
   }
 
   void Board::random_food(){
-    this->food.x = random_int(0, h);
-    this->food.y = random_int(0, w);
+    this->food.x = random_int(0, h-1);
+    this->food.y = random_int(0, w-1);
   }
 
   void Board::clear_board(){
