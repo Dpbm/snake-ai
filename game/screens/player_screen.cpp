@@ -5,12 +5,14 @@
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
+#include <string>
 #include "player_screen.h"
 #include "screens.h"
 #include "start_screen.h"
 
 using std::cout;
 using std::endl;
+using std::to_string;
 
 namespace Screens{
   PlayerScreen::PlayerScreen(SDL_Renderer* render){
@@ -23,16 +25,10 @@ namespace Screens{
     SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "Score ", this->text_color);
     this->score_text_texture = SDL_CreateTextureFromSurface(render, score_text_surface);
     this->score_text_shape = SDL_Rect{20, 20, score_text_surface->w, score_text_surface->h};
-    
-    SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, "0", this->text_color);
-    this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
-    this->score_shape = SDL_Rect{score_text_shape.w+20, 20, score_surface->w, score_surface->h};
-    
     SDL_FreeSurface(score_text_surface);
-    SDL_FreeSurface(score_surface);
 
-    if(this->score_texture == nullptr || this->score_text_texture == nullptr){
-      cout << "Failed on creating textures!" << SDL_GetError() << endl;
+    if(this->score_text_texture == nullptr){
+      cout << "Failed on creating score text texture!" << SDL_GetError() << endl;
       exit(1);
     }
     this->board.add_player(&this->player);
@@ -60,6 +56,9 @@ namespace Screens{
       case SDLK_g:
         if(this->player.is_dead()) 
           return new StartScreen(this->render);
+
+      default:
+        break;
     }
     return nullptr;
   }
@@ -122,6 +121,13 @@ namespace Screens{
 
     SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
     SDL_RenderCopy(render, this->score_text_texture, NULL, &this->score_text_shape);
+    if(this->score_texture != nullptr)
+      SDL_DestroyTexture(this->score_texture);
+    SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(this->player.get_score()).c_str(), this->text_color);
+    this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
+    this->score_shape = SDL_Rect{20, 60, score_surface->w, score_surface->h};
+    SDL_FreeSurface(score_surface);
+
     SDL_RenderCopy(render, this->score_texture, NULL, &this->score_shape);
   } 
   
