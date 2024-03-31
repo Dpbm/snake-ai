@@ -25,7 +25,6 @@ namespace Players {
   
   void Player::add_body_part(int16_t x, int16_t y){
     Node* node = this->create_body_part(x, y);
-   
 
     if(this->head == nullptr){
       this->head = node;
@@ -186,7 +185,6 @@ namespace Players {
     return this->died;
   }
   
-
   void Player::set_score_step(uint8_t score_step){
     this->score_step = score_step;
   }

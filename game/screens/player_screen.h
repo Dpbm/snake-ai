@@ -33,6 +33,7 @@ namespace Screens{
       uint16_t max_score = 1000;
       Player player{10, max_score, board_w, board_h};
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
+      TTF_Font* title_font = TTF_OpenFont("./assets/pressstart.ttf", 40);
       SDL_Color text_color{ 255, 255, 255 };
       SDL_Rect score_text_shape;
       SDL_Rect score_shape;

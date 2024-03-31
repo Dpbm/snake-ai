@@ -58,9 +58,34 @@ namespace Screens{
   }
 
   void PlayerScreen::execute(SDL_Renderer* render, bool& game_loop){
-    this->player.update_pos();
-    this->board.update_player_pos();
     
+    if(this->player.is_dead()){
+      SDL_Surface* game_over_surface = TTF_RenderText_Solid(this->title_font, "Game Over", this->text_color);
+      SDL_Texture* game_over_texture = SDL_CreateTextureFromSurface(render, game_over_surface);
+      SDL_Rect game_over_shape = SDL_Rect{(WIDTH/2)-(game_over_surface->w/2), (HEIGHT/2)-(game_over_surface->h), game_over_surface->w, game_over_surface->h};
+      SDL_FreeSurface(game_over_surface);
+      
+      SDL_Surface* reset_surface = TTF_RenderText_Solid(this->font, "Press 'r' to reset", this->text_color);
+      SDL_Texture* reset_texture = SDL_CreateTextureFromSurface(render, reset_surface);
+      SDL_Rect reset_shape = SDL_Rect{(WIDTH/2)-(reset_surface->w/2), (HEIGHT/2)+(reset_surface->h)+20, reset_surface->w, reset_surface->h};
+      SDL_FreeSurface(reset_surface);
+      
+      SDL_Surface* back_surface = TTF_RenderText_Solid(this->font, "Press 'g' to back to the start screen", this->text_color);
+      SDL_Texture* back_texture = SDL_CreateTextureFromSurface(render, back_surface);
+      SDL_Rect back_shape = SDL_Rect{(WIDTH/2)-(back_surface->w/2), (HEIGHT/2)+(back_surface->h)+50, back_surface->w, back_surface->h};
+      SDL_FreeSurface(back_surface);
+
+      SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
+      SDL_RenderCopy(render, game_over_texture, NULL, &game_over_shape);
+      SDL_RenderCopy(render, reset_texture, NULL, &reset_shape);
+      SDL_RenderCopy(render, back_texture, NULL, &back_shape);
+      SDL_DestroyTexture(game_over_texture); 
+      SDL_DestroyTexture(back_texture); 
+      SDL_DestroyTexture(reset_texture); 
+      return;
+    }
+
+    this->board.update_player_pos();
     uint8_t** board = this->board.get_board();
     for(size_t i = 0; i < this->board_h; i++)
       for(size_t j = 0; j < this->board_w; j++){
@@ -91,7 +116,6 @@ namespace Screens{
     SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
     SDL_RenderCopy(render, this->score_text_texture, NULL, &this->score_text_shape);
     SDL_RenderCopy(render, this->score_texture, NULL, &this->score_shape);
-
   } 
   
   void PlayerScreen::close_event(){}
