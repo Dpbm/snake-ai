@@ -22,6 +22,7 @@ namespace Players {
       Player(uint8_t score_step, uint8_t board_w, uint8_t board_h);
       void random_pos(uint8_t w, uint8_t h);
       void random_dir();
+      
       void update_pos();
       void direction_up();
       void direction_down();
@@ -35,22 +36,27 @@ namespace Players {
       void update_position(uint8_t w, uint8_t h);
       bool is_dead();
       ~Player(); 
-   
       LinkedList* get_player();
-      Node* get_head();
-      Node* get_tail();
-      
       void set_died();
-
-      uint8_t get_score_step();
-      Directions get_dir();
-
-      uint32_t last_tick = 0;
       int16_t get_x();
       int16_t get_y();
       void head_tail_collision();
+      void set_dir(Directions dir);
+      void set_pos(int16_t x, int16_t y);    
 
-    private:
+      // for tests
+      Node* get_head();
+      Node* get_tail();
+      uint8_t get_score_step();
+      Directions get_dir();
+      vec2 get_old_tail_pos();
+      void mov_body();
+      void update_last_tick();
+      uint32_t get_last_tick();
+
+    protected:
+      uint32_t last_tick = 0;
+      
       uint16_t score=0;
       uint8_t score_step=100;
      
@@ -68,7 +74,6 @@ namespace Players {
       
       void add_body_part(int16_t x, int16_t y);
       Node* create_body_part(int16_t x, int16_t y);
-      void mov_body();
   };
   
 };

@@ -69,8 +69,13 @@ namespace Utils {
     }
   }
 
+
   bool passed_debounce_time(uint32_t last_tick){
-    return SDL_GetTicks() - last_tick >= DEBOUNCE_TIME;
+    #if TEST_STAGE
+      return last_tick >= DEBOUNCE_TIME;
+    #else
+      return SDL_GetTicks() - last_tick >= DEBOUNCE_TIME;
+    #endif // TEST_STAGE
   }
 
   vector<Matrix*> parse_weigths_file(string filename){

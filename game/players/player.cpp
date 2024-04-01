@@ -2,6 +2,7 @@
 #include <cstdint>
 #include "player.h"
 #include "../../helpers/utils.h"
+#include "../../helpers/constants.h"
 
 using Utils::random_int;
 using Utils::passed_debounce_time;
@@ -52,9 +53,8 @@ namespace Players {
     return node;
   }
 
-  void Player::random_dir(){
-    this->dir = (Directions)random_int(0, 3);
-    
+  void Player::set_dir(Directions dir){
+    this->dir = dir;
     switch ((int)this->dir) {
       case UP:
         this->direction_up();
@@ -68,6 +68,19 @@ namespace Players {
       default:
         this->direction_right();
     }
+  }
+
+  void Player::update_last_tick(){
+    this->last_tick = DEBOUNCE_TIME;
+  }
+
+  void Player::set_pos(int16_t x, int16_t y){
+    this->head->value.x = x;
+    this->head->value.y = y;
+  }
+
+  void Player::random_dir(){
+    this->set_dir((Directions)random_int(0, 3)); 
   }
   
   void Player::direction_up(){
@@ -107,10 +120,19 @@ namespace Players {
     this->mov_y = 1;
   }
 
+  uint32_t Player::get_last_tick(){
+    return this->last_tick;
+  }
+
   void Player::update_pos(){
     if(passed_debounce_time(this->last_tick) and !this->died){
       this->mov_body();
-      this->last_tick = SDL_GetTicks();
+
+      #if TEST_STAGE
+        this->last_tick = 0;
+      #else
+        this->last_tick = SDL_GetTicks();
+      #endif
     }
   }
 
@@ -161,6 +183,10 @@ namespace Players {
   void Player::update_score(){
     this->score += this->score_step;
     this->add_body_part(this->old_tail_pos.x, this->old_tail_pos.y);
+  }
+
+  vec2 Player::get_old_tail_pos(){
+    return this->old_tail_pos;
   }
 
   uint16_t Player::get_score(){
