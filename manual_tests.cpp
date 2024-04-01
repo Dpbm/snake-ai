@@ -15,7 +15,7 @@ using std::cout;
 using std::endl;
 using Genes::Gene;
 using Chromosomes::Chromosome;
-using Layers::Layer;
+using Machine::Layer;
 using Machine::NN;
 using Machine::relu;
 using Machine::sigmoid;

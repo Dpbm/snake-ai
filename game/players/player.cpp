@@ -10,9 +10,8 @@ namespace Players {
   //TODO: perhaps, remove it later
   Player::Player(){}
 
-  Player::Player(uint8_t score_step, uint16_t max_score, uint8_t board_w, uint8_t board_h){
+  Player::Player(uint8_t score_step, uint8_t board_w, uint8_t board_h){
     this->score_step = score_step;
-    this->max_score = max_score;
     this->random_pos(board_w, board_h);
     this->random_dir();
   }
@@ -150,14 +149,29 @@ namespace Players {
   LinkedList* Player::get_player(){
     return this->player;
   }
+  
+  Node* Player::get_head(){
+    return this->head;
+  }
+  
+  Node* Player::get_tail(){
+    return this->tail;
+  }
 
   void Player::update_score(){
     this->score += this->score_step;
     this->add_body_part(this->old_tail_pos.x, this->old_tail_pos.y);
   }
 
-  unsigned int Player::get_score(){
+  uint16_t Player::get_score(){
     return this->score;
+  }
+  Directions Player::get_dir(){
+    return this->dir;
+  }
+
+  uint8_t Player::get_score_step(){
+    return this->score_step;
   }
 
   int8_t Player::get_mov_x(){
@@ -183,14 +197,6 @@ namespace Players {
 
   bool Player::is_dead(){
     return this->died;
-  }
-  
-  void Player::set_score_step(uint8_t score_step){
-    this->score_step = score_step;
-  }
-
-  void Player::set_max_score(uint16_t max_score){
-    this->max_score = max_score;
   }
 
   Player::~Player(){

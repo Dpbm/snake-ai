@@ -19,7 +19,7 @@ namespace Players {
   class Player{
     public:
       Player();
-      Player(uint8_t score_step, uint16_t max_score, uint8_t board_w, uint8_t board_h);
+      Player(uint8_t score_step, uint8_t board_w, uint8_t board_h);
       void random_pos(uint8_t w, uint8_t h);
       void random_dir();
       void update_pos();
@@ -28,17 +28,22 @@ namespace Players {
       void direction_left();
       void direction_right();
       void update_score();
-      unsigned int get_score();
+      uint16_t get_score();
       void reset_score();
       int8_t get_mov_x();
       int8_t get_mov_y();
       void update_position(uint8_t w, uint8_t h);
       bool is_dead();
       ~Player(); 
-      void set_score_step(uint8_t score_step);
-      void set_max_score(uint16_t max_score);
+   
       LinkedList* get_player();
+      Node* get_head();
+      Node* get_tail();
+      
       void set_died();
+
+      uint8_t get_score_step();
+      Directions get_dir();
 
       uint32_t last_tick = 0;
       int16_t get_x();
@@ -46,11 +51,10 @@ namespace Players {
       void head_tail_collision();
 
     private:
-      unsigned int score=0;
-      unsigned int score_step=100;
-      unsigned int max_score=10000;
+      uint16_t score=0;
+      uint8_t score_step=100;
      
-      Directions dir;
+      Directions dir = UP;
       int8_t mov_x=0;
       int8_t mov_y=0;
       
@@ -65,7 +69,6 @@ namespace Players {
       void add_body_part(int16_t x, int16_t y);
       Node* create_body_part(int16_t x, int16_t y);
       void mov_body();
-      
   };
   
 };

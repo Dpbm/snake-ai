@@ -141,7 +141,7 @@ namespace Screens{
   void PlayerScreen::reset(){
     this->finished_game = false;
     delete this->player;
-    this->player = new Player{this->score_step, this->max_score, this->board_w, this->board_h};
+    this->player = new Player{this->score_step, this->board_w, this->board_h};
     this->board.add_player(this->player);
     this->board.random_food(); 
   }

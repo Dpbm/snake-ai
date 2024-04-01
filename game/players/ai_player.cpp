@@ -24,8 +24,8 @@ namespace Players{
   void AIPlayer::setup_agent(uint8_t score_step, uint16_t max_score){ 
     // this->randomize_position();
     this->randomize_direction();
-    this->set_score_step(score_step);
-    this->set_max_score(max_score);
+    // this->set_score_step(score_step);
+    // this->set_max_score(max_score);
     
     this->nn->add_layer(this->input_layer);
     this->nn->add_layer(4);
