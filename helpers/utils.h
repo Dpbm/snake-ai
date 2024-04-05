@@ -16,7 +16,6 @@ namespace Utils {
 
   double random(double start, double end);
   int16_t random_int(uint8_t start, uint8_t end);
-  bool passed_debounce_time(uint32_t last_tick);
   void append_to_file(string filename, string data);
   void create_file(string filename, string data);
   vector<Matrix*> parse_weigths_file(string filename);

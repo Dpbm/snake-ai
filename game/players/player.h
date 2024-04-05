@@ -51,8 +51,6 @@ namespace Players {
       Directions get_dir();
       vec2 get_old_tail_pos();
       void mov_body();
-      void update_last_tick();
-      uint32_t get_last_tick();
 
     protected:
       uint32_t last_tick = 0;
@@ -74,6 +72,7 @@ namespace Players {
       
       void add_body_part(int16_t x, int16_t y);
       Node* create_body_part(int16_t x, int16_t y);
+      bool passed_debounce_time();
   };
   
 };

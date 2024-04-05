@@ -5,7 +5,6 @@
 #include "../../helpers/constants.h"
 
 using Utils::random_int;
-using Utils::passed_debounce_time;
 
 namespace Players {
   //TODO: perhaps, remove it later
@@ -16,7 +15,7 @@ namespace Players {
     this->random_pos(board_w, board_h);
     this->random_dir();
   }
-
+  
   void Player::random_pos(uint8_t w, uint8_t h){
     int16_t x = random_int(0,h);
     int16_t y = random_int(0,w);
@@ -54,29 +53,37 @@ namespace Players {
   }
 
   void Player::set_dir(Directions dir){
-    this->dir = dir;
-    switch ((int)this->dir) {
+    switch (dir) {
       case UP:
         this->direction_up();
         break;
-      case DOWN:
+      case DOWN: 
         this->direction_down();
         break;
       case LEFT:
         this->direction_left();
         break;
-      default:
+      case RIGHT:
         this->direction_right();
+        break;
+      default:
+        break;
     }
   }
 
-  void Player::update_last_tick(){
-    this->last_tick = DEBOUNCE_TIME;
+
+  bool Player::passed_debounce_time(){
+    return TEST_STAGE || SDL_GetTicks() - this->last_tick >= DEBOUNCE_TIME;
   }
 
   void Player::set_pos(int16_t x, int16_t y){
-    this->head->value.x = x;
-    this->head->value.y = y;
+    if(this->head == nullptr)
+      this->add_body_part(x, y);
+    else{
+      this->head->value.x = x;
+      this->head->value.y = y;
+      this->old_tail_pos = this->head->value;
+    }  
   }
 
   void Player::random_dir(){
@@ -120,30 +127,22 @@ namespace Players {
     this->mov_y = 1;
   }
 
-  uint32_t Player::get_last_tick(){
-    return this->last_tick;
-  }
-
   void Player::update_pos(){
-    if(passed_debounce_time(this->last_tick) and !this->died){
+    if(this->passed_debounce_time() and !this->died){
       this->mov_body();
-
-      #if TEST_STAGE
-        this->last_tick = 0;
-      #else
-        this->last_tick = SDL_GetTicks();
-      #endif
+      this->last_tick = SDL_GetTicks();
     }
   }
 
   void Player::mov_body(){
     int16_t old_pos_x = this->head->value.x; 
     int16_t old_pos_y = this->head->value.y;
-    
+     
     vec2 old_tail = this->tail->value; 
-   
-    int16_t new_head_x = old_pos_x + this->mov_x;
-    int16_t new_head_y = old_pos_y + this->mov_y;
+  
+    int16_t new_head_x = old_pos_x + (int)this->mov_x;
+    int16_t new_head_y = old_pos_y + (int)this->mov_y;
+    
 
     this->head->value.x = new_head_x;
     this->head->value.y = new_head_y;

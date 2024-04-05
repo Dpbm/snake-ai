@@ -3,9 +3,7 @@
 #include <iostream>
 #include <random>
 #include <fstream>
-#include <SDL2/SDL_timer.h>
 #include "utils.h"
-#include "constants.h"
 #include "../matrix/matrix.h"
 #include "exceptions.h"
 
@@ -67,15 +65,6 @@ namespace Utils {
       file << data;
       file.close();
     }
-  }
-
-
-  bool passed_debounce_time(uint32_t last_tick){
-    #if TEST_STAGE
-      return last_tick >= DEBOUNCE_TIME;
-    #else
-      return SDL_GetTicks() - last_tick >= DEBOUNCE_TIME;
-    #endif // TEST_STAGE
   }
 
   vector<Matrix*> parse_weigths_file(string filename){

@@ -38,16 +38,18 @@ namespace {
     ASSERT_THAT((int)p.get_dir(), AllOf(Ge((int)Directions::UP), Le((int)Directions::RIGHT)));
   }
 
-  TEST(UpdateTest, UpdatePosNoTicksPassedTest){
-    Player p = Player(1, 10, 10);
+  TEST(UpdateTest, UpdatePosTicksPassedTest){
+    Player p;
     p.set_pos(0, 0);
     p.set_dir(Directions::RIGHT);
-    int16_t old_x = p.get_x();
-    int16_t old_y = p.get_y();
+    
+    ASSERT_EQ(p.get_x(),0);
+    ASSERT_EQ(p.get_y(),0);
+    ASSERT_FALSE(p.is_dead());
 
     p.update_pos();
-
-    ASSERT_EQ(old_x, p.get_x());
-    ASSERT_EQ(old_y, p.get_y());
+   
+    ASSERT_EQ(p.get_x(),0);
+    ASSERT_EQ(p.get_y(),1);
   }
 }

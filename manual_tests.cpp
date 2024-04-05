@@ -8,6 +8,7 @@
 #include "./machine/activation.h"
 #include "./machine/machine.h"
 #include "./helpers/utils.h"
+#include "./game/players/player.h"
 
 using std::vector;
 using std::size_t;
@@ -22,6 +23,8 @@ using Machine::sigmoid;
 using Matrices::Matrix;
 using Utils::random;
 using Utils::parse_weigths_file;
+using Players::Player;
+using Players::Directions;
 
 int main(){
   cout << "---GENES---" << endl;
@@ -97,4 +100,15 @@ int main(){
     cout << endl;
     m->show();
   } 
+
+
+  cout << endl << "---PLAYERS---" << endl;
+  for(size_t i = 0; i < 10; i++){
+    Player p;
+    p.set_pos(0, 0);
+    p.set_dir(Directions::RIGHT);
+    p.update_pos();
+    cout << "x: " << p.get_x() << " y: " << p.get_y() << endl;
+  }
 }
+
