@@ -6,6 +6,8 @@
 
 using Utils::random_int;
 
+extern bool TEST_STAGE;
+
 namespace Players {
   //TODO: perhaps, remove it later
   Player::Player(){}
@@ -71,9 +73,8 @@ namespace Players {
     }
   }
 
-
   bool Player::passed_debounce_time(){
-    return TEST_STAGE || SDL_GetTicks() - this->last_tick >= DEBOUNCE_TIME;
+    return  SDL_GetTicks() - this->last_tick >= DEBOUNCE_TIME;
   }
 
   void Player::set_pos(int16_t x, int16_t y){
@@ -84,6 +85,10 @@ namespace Players {
       this->head->value.y = y;
       this->old_tail_pos = this->head->value;
     }  
+  }
+
+  void Player::set_last_tick(){
+    this->last_tick = DEBOUNCE_TIME;
   }
 
   void Player::random_dir(){

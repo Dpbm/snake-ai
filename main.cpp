@@ -16,6 +16,7 @@ using std::endl;
 using Screens::Screen;
 using Screens::StartScreen;
 
+
 int main(){
   if(SDL_Init(SDL_INIT_EVERYTHING) < 0){
     cout << "SDL_Init Error: " << SDL_GetError() << endl;

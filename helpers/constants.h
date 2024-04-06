@@ -19,5 +19,3 @@
 #define DEBOUNCE_TIME 100
 
 #define PI 3.14159265358979323846
-
-#define TEST_STAGE true

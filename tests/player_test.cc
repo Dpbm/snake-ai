@@ -1,8 +1,6 @@
-#include <cstdint>
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "../game/players/player.h"
-#include "../helpers/constants.h"
 
 using ::testing::AllOf;
 using ::testing::Ge;
@@ -46,7 +44,8 @@ namespace {
     ASSERT_EQ(p.get_x(),0);
     ASSERT_EQ(p.get_y(),0);
     ASSERT_FALSE(p.is_dead());
-
+    
+    p.set_last_tick();
     p.update_pos();
    
     ASSERT_EQ(p.get_x(),0);
@@ -124,44 +123,51 @@ namespace {
     ASSERT_TRUE(p.is_dead());
   }
 
-  TEST(ValueTest, HeadTailCollisionTest){
+  TEST(UpdateTest, HeadTailCollisionTest){
     Player p;
     p.set_pos(0, 0);
     p.set_dir(Directions::RIGHT);
 
     ASSERT_FALSE(p.is_dead());
     //y = 1
+    p.set_last_tick();
     p.update_pos();
     p.update_score();
 
     //y = 2
+    p.set_last_tick();
     p.update_pos();
     p.update_score();
 
 
     //y = 3
+    p.set_last_tick();
     p.update_pos();
     p.update_score();
     
     //y = 4
+    p.set_last_tick();
     p.update_pos();
     p.update_score();
     
     //y = 5
+    p.set_last_tick();
     p.update_pos();
     p.update_score();
 
     //turn towards its tail
     p.direction_down();
+    p.set_last_tick();
     p.update_pos();
     p.direction_left();
+    p.set_last_tick();
     p.update_pos();
     p.direction_up();
+    p.set_last_tick();
     p.update_pos();
 
     p.head_tail_collision();
 
     ASSERT_TRUE(p.is_dead());
-    
   }
 }

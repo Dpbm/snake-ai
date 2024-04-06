@@ -34,7 +34,7 @@ namespace Screens{
 
       bool finished_game = false;
 
-      uint16_t max_score = 100;
+      uint16_t max_score = 1000;
       uint8_t score_step = 10;
       Player* player = new Player{score_step, board_w, board_h};
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);

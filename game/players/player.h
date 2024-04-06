@@ -55,6 +55,7 @@ namespace Players {
       Directions get_dir();
       vec2 get_old_tail_pos();
       void mov_body();
+      void set_last_tick();
 
     protected:
       uint32_t last_tick = 0;
