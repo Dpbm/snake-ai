@@ -1,11 +1,16 @@
 #include <stdexcept>
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <fstream>
+#include <string>
 #include "../machine/machine.h"
 #include "../machine/layer.h"
 
 using std::invalid_argument;
 using std::ifstream;
+using std::string;
+using std::getline;
+using ::testing::Ge;
 using Machine::NN;
 using Machine::Layer;
 
@@ -123,26 +128,46 @@ namespace {
     nn->add_layer(3);
     nn->save_weights("test_save_from_nn.wg");
     ifstream file("test_save_from_nn.wg");
-    ASSERT_EQ(file.good(), true);
+    
+    string line;
+    int lines;
+    for(lines = 0; getline(file,line); lines++);
+
+    ASSERT_NE(&file, nullptr);
+    ASSERT_THAT(lines, Ge(3));
+
     file.close();
     delete nn;
   }
   
-  TEST(ValuesTest, SaveNoWeightsTest){
+  TEST(ValuesTest, SaveArchOnlyTest){
     NN* nn = new NN;
     nn->save_weights("test_save_from_nn_2.wg");
     ifstream file("test_save_from_nn_2.wg");
-    ASSERT_EQ(file.good(), false);
+    
+    int lines;
+    string line;
+    for(lines = 0; getline(file,line); lines++);
+    
+    ASSERT_NE(&file, nullptr);
+    ASSERT_EQ(lines, 1);
+
     file.close();
     delete nn;
   }
     
-  TEST(ValuesTest, SaveNoWeightsForOneLayerTest){
+  TEST(ValuesTest, SaveArchOnlyForOneLayerTest){
     NN* nn = new NN;
     nn->add_layer(1);
     nn->save_weights("test_save_from_nn_3.wg");
     ifstream file("test_save_from_nn_3.wg");
-    ASSERT_EQ(file.good(), false);
+    
+    int lines;
+    string line;
+    for(lines = 0; getline(file,line); lines++);
+    
+    ASSERT_NE(&file, nullptr);
+    ASSERT_EQ(lines, 1);
     file.close();
     delete nn;
   }

@@ -26,17 +26,19 @@ namespace Screens{
     
     private:
       SDL_Renderer *render = nullptr;
+      
     
       uint16_t left_padding = 10 * SQUARE_SIDE;
       uint8_t board_w = 45;
       uint8_t board_h = 30;
       Board board{board_w, board_h};  
-
-      bool finished_game = false;
-
+      
       uint16_t max_score = 1000;
       uint8_t score_step = 10;
       Player* player = new Player{score_step, board_w, board_h};
+
+      bool finished_game = false;
+
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
       TTF_Font* title_font = TTF_OpenFont("./assets/pressstart.ttf", 40);
       SDL_Color text_color{ 255, 255, 255 };

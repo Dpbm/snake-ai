@@ -17,13 +17,19 @@ namespace Game {
 
     for(size_t i = 0; i < h; i++)
       this->board[i] = new uint8_t[w];
-    
+
+    this->clear_board(); 
     this->random_food();
   }
 
   void Board::random_food(){
     this->food.x = random_int(0, h-1);
     this->food.y = random_int(0, w-1);
+  }
+  
+  void Board::set_food_pos(int16_t x, int16_t y){
+    this->food.x = x;
+    this->food.y = y;
   }
 
   void Board::clear_board(){

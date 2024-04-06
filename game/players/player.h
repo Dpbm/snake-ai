@@ -20,6 +20,7 @@ namespace Players {
     public:
       Player();
       Player(uint8_t score_step, uint8_t board_w, uint8_t board_h);
+      Player(uint8_t score_step, int16_t x, int16_t y, Directions dir);
       
       void random_pos(uint8_t w, uint8_t h);
       void update_pos();
@@ -41,8 +42,6 @@ namespace Players {
       void set_died();
       
       LinkedList* get_player();
-      void set_dir(Directions dir);
-      void set_pos(int16_t x, int16_t y);    
       
       void head_tail_collision();
       
@@ -78,6 +77,9 @@ namespace Players {
       void add_body_part(int16_t x, int16_t y);
       Node* create_body_part(int16_t x, int16_t y);
       bool passed_debounce_time();
+      
+      void set_dir(Directions dir);
+      void set_pos(int16_t x, int16_t y);    
   };
   
 };

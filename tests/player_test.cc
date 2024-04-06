@@ -37,9 +37,7 @@ namespace {
   }
 
   TEST(UpdateTest, UpdatePosTicksPassedTest){
-    Player p;
-    p.set_pos(0, 0);
-    p.set_dir(Directions::RIGHT);
+    Player p{1, 0, 0, Directions::RIGHT};
     
     ASSERT_EQ(p.get_x(),0);
     ASSERT_EQ(p.get_y(),0);
@@ -62,7 +60,6 @@ namespace {
     ASSERT_EQ(p.get_mov_x(), -1);
     ASSERT_EQ(p.get_mov_y(), 0);
     ASSERT_EQ(p.get_dir(), Directions::UP);
-    
   }
   
   TEST(UpdateTest, SetDirectionDownTest){
@@ -103,10 +100,7 @@ namespace {
   }
 
   TEST(UpdateTest, UpdateScoreTest){
-    Player p{1, 10, 10};
-    p.set_dir(Directions::RIGHT);
-    p.set_pos(0, 0);
-  
+    Player p{1, 0, 0, Directions::RIGHT};
     ASSERT_EQ(p.get_score(), 0);
     ASSERT_EQ(p.get_head()->next, nullptr);
     ASSERT_EQ(p.get_head(), p.get_tail());
@@ -124,9 +118,7 @@ namespace {
   }
 
   TEST(UpdateTest, HeadTailCollisionTest){
-    Player p;
-    p.set_pos(0, 0);
-    p.set_dir(Directions::RIGHT);
+    Player p{1, 0, 0, Directions::RIGHT};
 
     ASSERT_FALSE(p.is_dead());
     //y = 1
