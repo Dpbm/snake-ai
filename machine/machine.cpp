@@ -1,12 +1,16 @@
+#include <sstream>
 #include <stdexcept>
 #include <vector>
 #include "layer.h"
 #include "weights.h"
 #include "machine.h"
+#include "../helpers/utils.h"
 
+using std::stringstream;
 using std::vector;
 using std::string;
 using std::invalid_argument;
+using Utils::append_to_file;
 
 namespace Machine {
   void NN::add_layer(unsigned int size){
@@ -39,10 +43,17 @@ namespace Machine {
 
    
   void NN::save_weights(string filename){
+    this->save_arch(filename);
     for(Weights* weight: this->weights)
       weight->save_weights(filename);
   }
 
+
+  void NN::save_arch(string filename){
+    stringstream arch;
+    arch << "a" << 1 << "," << this->total_layers-2 << "," << 1 << "\n";   
+    append_to_file(filename, arch.str());
+  }
    
   Layer* NN::get_layer(unsigned int i){
     if(this->total_layers == 0 || i > this->total_layers-1)

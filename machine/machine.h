@@ -34,5 +34,6 @@ namespace Machine {
       unsigned int total_layers = 0;
       unsigned int total_weights = 0;
       void add_weight();
+      void save_arch(string filename);
   };
 };

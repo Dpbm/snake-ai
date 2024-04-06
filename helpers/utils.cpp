@@ -36,16 +36,6 @@ namespace Utils {
     return result;
   }
 
-  // uint16_t get_random_x(uint16_t factor){
-  //   uint16_t rand = random_int(LEFT_WALL, WIDTH-factor);
-  //   return rand-(rand%factor);
-  // }
-  // 
-  // uint16_t get_random_y(uint16_t factor){
-  //   uint16_t rand = random_int(0, HEIGHT-factor);
-  //   return rand-(rand%factor);
-  // }
-
   void append_to_file(string filename, string data){
     ofstream file;
     file.open(filename, ios::app);
