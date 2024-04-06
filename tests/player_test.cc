@@ -52,4 +52,116 @@ namespace {
     ASSERT_EQ(p.get_x(),0);
     ASSERT_EQ(p.get_y(),1);
   }
+
+  TEST(UpdateTest, SetDirectionUpTest){
+    Player p;
+
+    ASSERT_EQ(p.get_mov_x(), 0);
+    ASSERT_EQ(p.get_mov_y(), 0);
+    ASSERT_EQ(p.get_dir(), Directions::UP);
+    p.direction_up();
+    ASSERT_EQ(p.get_mov_x(), -1);
+    ASSERT_EQ(p.get_mov_y(), 0);
+    ASSERT_EQ(p.get_dir(), Directions::UP);
+    
+  }
+  
+  TEST(UpdateTest, SetDirectionDownTest){
+    Player p;
+
+    ASSERT_EQ(p.get_mov_x(), 0);
+    ASSERT_EQ(p.get_mov_y(), 0);
+    ASSERT_EQ(p.get_dir(), Directions::UP);
+    p.direction_down();
+    ASSERT_EQ(p.get_mov_x(), 1);
+    ASSERT_EQ(p.get_mov_y(), 0);
+    ASSERT_EQ(p.get_dir(), Directions::DOWN);
+    
+  }
+  
+  TEST(UpdateTest, SetDirectionLeftTest){
+    Player p;
+
+    ASSERT_EQ(p.get_mov_x(), 0);
+    ASSERT_EQ(p.get_mov_y(), 0);
+    ASSERT_EQ(p.get_dir(), Directions::UP);
+    p.direction_left();
+    ASSERT_EQ(p.get_mov_x(), 0);
+    ASSERT_EQ(p.get_mov_y(), -1);
+    ASSERT_EQ(p.get_dir(), Directions::LEFT);
+  }
+  
+  TEST(UpdateTest, SetDirectionRightTest){
+    Player p;
+
+    ASSERT_EQ(p.get_mov_x(), 0);
+    ASSERT_EQ(p.get_mov_y(), 0);
+    ASSERT_EQ(p.get_dir(), Directions::UP);
+    p.direction_right();
+    ASSERT_EQ(p.get_mov_x(), 0);
+    ASSERT_EQ(p.get_mov_y(), 1);
+    ASSERT_EQ(p.get_dir(), Directions::RIGHT);
+  }
+
+  TEST(UpdateTest, UpdateScoreTest){
+    Player p{1, 10, 10};
+    p.set_dir(Directions::RIGHT);
+    p.set_pos(0, 0);
+  
+    ASSERT_EQ(p.get_score(), 0);
+    ASSERT_EQ(p.get_head()->next, nullptr);
+    ASSERT_EQ(p.get_head(), p.get_tail());
+    p.update_score();
+    ASSERT_EQ(p.get_score(), 1);
+    ASSERT_NE(p.get_head()->next, nullptr);
+    ASSERT_NE(p.get_head(), p.get_tail());
+  }
+
+  TEST(UpdateTest, DeadTest){
+    Player p;
+    ASSERT_FALSE(p.is_dead());
+    p.set_died();
+    ASSERT_TRUE(p.is_dead());
+  }
+
+  TEST(ValueTest, HeadTailCollisionTest){
+    Player p;
+    p.set_pos(0, 0);
+    p.set_dir(Directions::RIGHT);
+
+    ASSERT_FALSE(p.is_dead());
+    //y = 1
+    p.update_pos();
+    p.update_score();
+
+    //y = 2
+    p.update_pos();
+    p.update_score();
+
+
+    //y = 3
+    p.update_pos();
+    p.update_score();
+    
+    //y = 4
+    p.update_pos();
+    p.update_score();
+    
+    //y = 5
+    p.update_pos();
+    p.update_score();
+
+    //turn towards its tail
+    p.direction_down();
+    p.update_pos();
+    p.direction_left();
+    p.update_pos();
+    p.direction_up();
+    p.update_pos();
+
+    p.head_tail_collision();
+
+    ASSERT_TRUE(p.is_dead());
+    
+  }
 }
