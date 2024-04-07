@@ -132,7 +132,7 @@ namespace {
     for(lines = 0; getline(file,line); lines++);
 
     ASSERT_NE(&file, nullptr);
-    ASSERT_EQ(lines, 4);
+    ASSERT_EQ(lines, 5);
 
     file.close();
     delete nn;
@@ -154,7 +154,7 @@ namespace {
     for(lines = 0; getline(file,line); lines++);
 
     ASSERT_NE(&file, nullptr);
-    ASSERT_EQ(lines, 8);
+    ASSERT_EQ(lines, 9);
 
     file.close();
     delete nn;
@@ -187,7 +187,7 @@ namespace {
     for(lines = 0; getline(file,line); lines++);
     
     ASSERT_NE(&file, nullptr);
-    ASSERT_EQ(lines, 1);
+    ASSERT_EQ(lines, 2);
     file.close();
     delete nn;
   }
@@ -206,7 +206,7 @@ namespace {
     for(lines = 0; getline(file,line); lines++);
 
     ASSERT_NE(&file, nullptr);
-    ASSERT_EQ(lines, 8);
+    ASSERT_EQ(lines, 9);
 
     file.close();
     delete nn;

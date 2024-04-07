@@ -18,11 +18,10 @@ using Genes::Gene;
 using Chromosomes::Chromosome;
 using Machine::Layer;
 using Machine::NN;
-using Machine::relu;
-using Machine::sigmoid;
 using Matrices::Matrix;
 using Utils::random;
-using Utils::parse_weigths_file;
+using Utils::parse_weigths;
+using Utils::parse_nn;
 using Players::Player;
 using Players::Directions;
 
@@ -95,11 +94,12 @@ int main(){
 
   cout << endl << "---HELPERS---" << endl;
   cout << "!!!!Testing parsing weights file!!!!" << endl;
-  vector<Matrix*> result = parse_weigths_file("test.wg");
-  for(Matrix* m : result){
-    cout << endl;
-    m->show();
-  } 
+  // vector<Matrix*> result = parse_weigths("test.wg");
+  parse_nn("test.wg");
+  // for(Matrix* m : result){
+  //   cout << endl;
+  //   m->show();
+  //  } 
 
 
   cout << endl << "---PLAYERS---" << endl;

@@ -8,7 +8,6 @@
 #include "screens.h"
 
 namespace Screens {
-
   class StartScreen : public Screen{
     public:
       StartScreen(SDL_Renderer* render);

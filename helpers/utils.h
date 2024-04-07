@@ -4,10 +4,12 @@
 #include <iostream>
 #include <vector>
 #include "../matrix/matrix.h"
+#include "../machine/machine.h"
 
 using std::vector;
 using std::string;
 using Matrices::Matrix;
+using Machine::NN;
 
 namespace Utils {
   typedef struct vec2{
@@ -18,5 +20,9 @@ namespace Utils {
   int16_t random_int(uint8_t start, uint8_t end);
   void append_to_file(string filename, string data);
   void create_file(string filename, string data);
-  vector<Matrix*> parse_weigths_file(string filename);
+  vector<Matrix*> parse_weigths(string filename);
+  NN* parse_nn(string filename);
+  uint8_t* parse_nn_arch(string line);
+  uint8_t* parse_layers_sizes(string line, uint8_t total_layers);
+  uint8_t* parse_activations(string line, uint8_t total_layers);
 }

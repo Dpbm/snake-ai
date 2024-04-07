@@ -51,25 +51,36 @@ namespace Machine {
 
   void NN::save_arch(string filename){
     stringstream arch;
-    arch << "a" << 1 << "," << this->total_layers-2 << "," << 1 << "\n";   
-    append_to_file(filename, arch.str());
+ 
+    if(this->total_layers <= 1)
+      arch << this->total_layers << "," << 0 << "," << 0 << "\n";
+    else
+      arch << 1 << "," << this->total_layers-2 << "," << 1 << "\n";   
+    
 
-    stringstream act;
+    for(size_t i = 0; i < this->total_layers; i++){
+      arch << this->get_layer(i)->get_size();
+
+      if(i == this->total_layers-1)
+        arch << "\n";
+      else 
+        arch << ",";
+    }    
+    
+
+
     for(size_t i = 0; i < this->total_layers; i++){
       if(this->layers.at(i)->is_input())
         continue;
      
-      act << this->layers.at(i)->get_activation_name();
+      arch << this->layers.at(i)->get_activation_name();
       if(i == this->total_layers-1)
-        act << "\n";
+        arch << "\n";
       else
-        act << ",";
+        arch << ",";
     }
-
-    if(act.str().empty())
-      return;
   
-    append_to_file(filename, act.str());
+    append_to_file(filename, arch.str());
   }
    
   Layer* NN::get_layer(unsigned int i){

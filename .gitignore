@@ -27,3 +27,4 @@ _deps
 build/
 matrix_test
 *.wg
+!test.wg

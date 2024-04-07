@@ -27,7 +27,7 @@ add_subdirectory(matrix)
 add_subdirectory(machine)
 
 file(GLOB HELPERS_FILES "helpers/*.cpp")
-add_library(helpers matrix ${HELPERS_FILES})
+add_library(helpers matrix machine ${HELPERS_FILES})
 target_link_libraries(helpers)
 
 file(GLOB GENETIC_FILES "genetic/*.cpp")
@@ -48,16 +48,16 @@ add_library(board ${BOARD_FILE})
 add_library(screens ${SCREENS_FILES})
 add_library(players ${PLAYERS_FILES})
 target_link_libraries(players machine matrix genetic helpers ${SDL2_LIBRARIES})
-target_link_libraries(screens players game helpers genetic ${SDL2_LIBRARIES} SDL2_ttf)
+target_link_libraries(screens players board helpers genetic ${SDL2_LIBRARIES} SDL2_ttf)
 target_link_libraries(board helpers players)
 
-target_link_libraries(ga.out PRIVATE helpers board genetic matrix machine ${SDL2_LIBRARIES})
+target_link_libraries(ga.out PRIVATE helpers board screens players ${SDL2_LIBRARIES} SDL2_ttf)
 
 enable_testing()
 
 file(GLOB TESTS "tests/*_test.cc")
 add_executable(tests ${TESTS})
-target_link_libraries(tests matrix helpers genetic players board machine ${SDL2_LIBRARIES} GTest::gtest_main GTest::gmock)
+target_link_libraries(tests matrix helpers genetic players board machine GTest::gtest_main GTest::gmock)
 
 include(GoogleTest)
 gtest_discover_tests(tests)
