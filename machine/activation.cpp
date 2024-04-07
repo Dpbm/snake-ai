@@ -42,8 +42,4 @@ namespace Machine {
     for(size_t i = 0; i < values->get_width(); i++)
       values->update_value(0, i, exps[i]/total);
   }
-
-  void f_x(Matrix* values){
-    return;
-  }
 }

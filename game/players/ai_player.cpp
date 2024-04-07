@@ -31,8 +31,8 @@ namespace Players{
     this->nn->add_layer(4);
     this->nn->add_layer(4);
    
-    this->nn->get_layer(1)->set_activation_function(Machine::tanh);
-    this->nn->get_layer(2)->set_activation_function(Machine::softmax);
+    // this->nn->get_layer(1)->set_activation_function(Machine::tanh);
+    // this->nn->get_layer(2)->set_activation_function(Machine::softmax);
     this->input_layer->set_values(this->input_data);
     
     // get the chromosome_size based on the total weights

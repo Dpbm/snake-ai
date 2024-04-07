@@ -1,6 +1,5 @@
 #include <stdexcept>
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
 #include <fstream>
 #include <string>
 #include "../machine/machine.h"
@@ -10,7 +9,6 @@ using std::invalid_argument;
 using std::ifstream;
 using std::string;
 using std::getline;
-using ::testing::Ge;
 using Machine::NN;
 using Machine::Layer;
 
@@ -134,7 +132,29 @@ namespace {
     for(lines = 0; getline(file,line); lines++);
 
     ASSERT_NE(&file, nullptr);
-    ASSERT_THAT(lines, Ge(3));
+    ASSERT_EQ(lines, 4);
+
+    file.close();
+    delete nn;
+  }
+  
+  TEST(ValuesTest, SaveWeightsWithEntireArchTest){
+    NN* nn = new NN;
+    nn->add_layer(1);
+    nn->add_layer(3);
+    nn->add_layer(3);
+
+    nn->get_layer(1)->relu();
+    nn->get_layer(2)->relu();
+    nn->save_weights("test_save_from_nn_2.wg");
+    ifstream file("test_save_from_nn_2.wg");
+    
+    string line;
+    int lines;
+    for(lines = 0; getline(file,line); lines++);
+
+    ASSERT_NE(&file, nullptr);
+    ASSERT_EQ(lines, 8);
 
     file.close();
     delete nn;
@@ -142,8 +162,8 @@ namespace {
   
   TEST(ValuesTest, SaveArchOnlyTest){
     NN* nn = new NN;
-    nn->save_weights("test_save_from_nn_2.wg");
-    ifstream file("test_save_from_nn_2.wg");
+    nn->save_weights("test_save_from_nn_3.wg");
+    ifstream file("test_save_from_nn_3.wg");
     
     int lines;
     string line;
@@ -159,8 +179,8 @@ namespace {
   TEST(ValuesTest, SaveArchOnlyForOneLayerTest){
     NN* nn = new NN;
     nn->add_layer(1);
-    nn->save_weights("test_save_from_nn_3.wg");
-    ifstream file("test_save_from_nn_3.wg");
+    nn->save_weights("test_save_from_nn_4.wg");
+    ifstream file("test_save_from_nn_4.wg");
     
     int lines;
     string line;
@@ -168,6 +188,26 @@ namespace {
     
     ASSERT_NE(&file, nullptr);
     ASSERT_EQ(lines, 1);
+    file.close();
+    delete nn;
+  }
+  
+  TEST(ValuesTest, SaveWeightsWithEntireArchNoActivationTest){
+    NN* nn = new NN;
+    nn->add_layer(1);
+    nn->add_layer(3);
+    nn->add_layer(3);
+
+    nn->save_weights("test_save_from_nn_5.wg");
+    ifstream file("test_save_from_nn_5.wg");
+    
+    string line;
+    int lines;
+    for(lines = 0; getline(file,line); lines++);
+
+    ASSERT_NE(&file, nullptr);
+    ASSERT_EQ(lines, 8);
+
     file.close();
     delete nn;
   }

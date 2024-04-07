@@ -26,5 +26,5 @@ printf "\n\n"
 
 
 printf "${GREEN}Running tests${ENDCOLOR}\n"
-cd build && ctest -V
+cd build && rm -rf *.wg && ctest -V
 printf "\n\n"

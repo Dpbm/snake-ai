@@ -64,8 +64,8 @@ int main(){
   nn->add_layer(4);
   nn->add_layer(4);
 
-  nn->get_layer(1)->set_activation_function(relu);
-  nn->get_layer(2)->set_activation_function(sigmoid);
+  nn->get_layer(1)->relu();
+  nn->get_layer(2)->sigmoid();
 
   Matrix* w0 = nn->get_weight(0)->get_weights();
   for(size_t i = 0; i < w0->get_height(); i++)

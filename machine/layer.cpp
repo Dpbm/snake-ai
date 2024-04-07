@@ -1,11 +1,13 @@
+#include <cstdint>
 #include <stdexcept>
 #include "layer.h"
+#include "activation.h"
 
-using Matrices::Matrix;
 using std::invalid_argument;
+using Matrices::Matrix;
 
 namespace Machine{
-  Layer::Layer(unsigned int size, bool input){
+  Layer::Layer(uint16_t size, bool input){
     this->size = size;
     this->values = new Matrix(size, 1);
     this->input = input;
@@ -54,7 +56,31 @@ namespace Machine{
     this->activation = activation;
   }
 
+  void Layer::relu(){
+    this->set_activation_function(Machine::relu);
+    this->activation_name = "relu";
+  }
+  
+  void Layer::sigmoid(){
+    this->set_activation_function(Machine::sigmoid);
+    this->activation_name = "sigmoid";
+  }
+
+  void Layer::tanh(){
+    this->set_activation_function(Machine::tanh);
+    this->activation_name = "tanh";
+  }
+
+  void Layer::softmax(){
+    this->set_activation_function(Machine::softmax);
+    this->activation_name = "softmax";
+  }
+  
   void (*Layer::get_activation_function())(Matrix*){
     return this->activation;
+  }
+
+  string Layer::get_activation_name(){
+    return this->activation_name;
   }
 }

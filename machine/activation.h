@@ -9,5 +9,4 @@ namespace Machine {
   void tanh(Matrix* values);
   void sigmoid(Matrix* values);
   void softmax(Matrix* values);
-  void f_x(Matrix* values);
 }

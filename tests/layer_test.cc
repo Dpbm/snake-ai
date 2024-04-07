@@ -8,6 +8,9 @@ using std::invalid_argument;
 using Matrices::Matrix;
 using Machine::Layer;
 using Machine::relu;
+using Machine::sigmoid;
+using Machine::softmax;
+using Machine::tanh;
 
 namespace {
 
@@ -43,17 +46,41 @@ namespace {
     delete layer;
   }
 
-  TEST(UpdateTest, SetActivationFunctionTest){
+  TEST(UpdateTest, SetActivationFunctionReluTest){
     Layer*layer = new Layer(1, false);
-    layer->set_activation_function(relu);
+    layer->relu();
     void (*activation)(Matrix*) = layer->get_activation_function();
     ASSERT_EQ(activation, &relu);
     delete layer;
   }
   
+  TEST(UpdateTest, SetActivationFunctionSigmoidTest){
+    Layer*layer = new Layer(1, false);
+    layer->sigmoid();
+    void (*activation)(Matrix*) = layer->get_activation_function();
+    ASSERT_EQ(activation, &sigmoid);
+    delete layer;
+  }
+
+  TEST(UpdateTest, SetActivationFunctionTanhTest){
+    Layer*layer = new Layer(1, false);
+    layer->tanh();
+    void (*activation)(Matrix*) = layer->get_activation_function();
+    ASSERT_EQ(activation, &tanh);
+    delete layer;
+  }
+
+  TEST(UpdateTest, SetActivationFunctionSoftmaxTest){
+    Layer*layer = new Layer(1, false);
+    layer->softmax();
+    void (*activation)(Matrix*) = layer->get_activation_function();
+    ASSERT_EQ(activation, &softmax);
+    delete layer;
+  }
+  
   TEST(UpdateTest, InvaliActivationFunctionForInputLayerTest){
     Layer*layer = new Layer(1, true);
-    EXPECT_THROW({ layer->set_activation_function(&relu); }, invalid_argument);
+    EXPECT_THROW({ layer->relu(); }, invalid_argument);
     delete layer;
   }
 
@@ -63,7 +90,7 @@ namespace {
     values->update_value(0, 1, 12);
   
     Layer* layer = new Layer(values, false);
-    layer->set_activation_function(&relu);
+    layer->relu();
     
     layer->activate_neurons();
     ASSERT_EQ(layer->get_values()->get_position_value(0, 0), 0);

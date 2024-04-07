@@ -53,6 +53,23 @@ namespace Machine {
     stringstream arch;
     arch << "a" << 1 << "," << this->total_layers-2 << "," << 1 << "\n";   
     append_to_file(filename, arch.str());
+
+    stringstream act;
+    for(size_t i = 0; i < this->total_layers; i++){
+      if(this->layers.at(i)->is_input())
+        continue;
+     
+      act << this->layers.at(i)->get_activation_name();
+      if(i == this->total_layers-1)
+        act << "\n";
+      else
+        act << ",";
+    }
+
+    if(act.str().empty())
+      return;
+  
+    append_to_file(filename, act.str());
   }
    
   Layer* NN::get_layer(unsigned int i){
