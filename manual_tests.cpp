@@ -1,5 +1,4 @@
 #include <cstddef>
-#include <vector>
 #include <iostream>
 #include "./genetic/gene.h"
 #include "./genetic/chromosome.h"
@@ -10,7 +9,6 @@
 #include "./helpers/utils.h"
 #include "./game/players/player.h"
 
-using std::vector;
 using std::size_t;
 using std::cout;
 using std::endl;
@@ -20,7 +18,6 @@ using Machine::Layer;
 using Machine::NN;
 using Matrices::Matrix;
 using Utils::random;
-using Utils::parse_weigths;
 using Utils::parse_nn;
 using Players::Player;
 using Players::Directions;
@@ -94,13 +91,12 @@ int main(){
 
   cout << endl << "---HELPERS---" << endl;
   cout << "!!!!Testing parsing weights file!!!!" << endl;
-  // vector<Matrix*> result = parse_weigths("test.wg");
-  parse_nn("test.wg");
-  // for(Matrix* m : result){
-  //   cout << endl;
-  //   m->show();
-  //  } 
-
+  NN* nn2 = parse_nn("test.wg");
+  cout << "total layers: " << nn2->get_total_layers() << endl;
+  cout << "total weights: " << nn2->get_total_weights() << endl;
+  cout << "weights:" << endl; 
+  nn2->get_weight(0)->get_weights()->show();
+  delete nn2;
 
   cout << endl << "---PLAYERS---" << endl;
   for(size_t i = 0; i < 10; i++){

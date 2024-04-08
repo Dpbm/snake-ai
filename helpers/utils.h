@@ -25,4 +25,6 @@ namespace Utils {
   uint8_t* parse_nn_arch(string line);
   uint8_t* parse_layers_sizes(string line, uint8_t total_layers);
   uint8_t* parse_activations(string line, uint8_t total_layers);
+  Matrix* parse_weights_head(string line);
+  double* parse_row(string line, uint8_t width);  
 }

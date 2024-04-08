@@ -53,16 +53,16 @@ namespace Machine {
     stringstream arch;
  
     if(this->total_layers <= 1)
-      arch << this->total_layers << "," << 0 << "," << 0 << "\n";
+      arch << this->total_layers << "," << 0 << "," << 0 << "." << "\n";
     else
-      arch << 1 << "," << this->total_layers-2 << "," << 1 << "\n";   
+      arch << 1 << "," << this->total_layers-2 << "," << 1 << "." << "\n";   
     
 
     for(size_t i = 0; i < this->total_layers; i++){
       arch << this->get_layer(i)->get_size();
 
       if(i == this->total_layers-1)
-        arch << "\n";
+        arch << "." << "\n";
       else 
         arch << ",";
     }    
@@ -75,7 +75,7 @@ namespace Machine {
      
       arch << this->layers.at(i)->get_activation_name();
       if(i == this->total_layers-1)
-        arch << "\n";
+        arch << "." << "\n";
       else
         arch << ",";
     }

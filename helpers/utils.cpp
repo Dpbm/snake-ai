@@ -10,7 +10,6 @@
 #include "../matrix/matrix.h"
 #include "../machine/machine.h"
 
-using std::to_string;
 using std::stoi;
 using std::stod;
 using std::vector;
@@ -72,15 +71,18 @@ namespace Utils {
     NN* nn = new NN;
  
     size_t actual_line = 0;
-   
     uint8_t* layers_amount = nullptr;
     uint8_t total_layers = 0;
     uint8_t* layers_sizes = nullptr;
+   
+    vector<Matrix*> weights;
+    uint8_t weights_counter = 0;
+    uint8_t row_i = 0;
+    uint8_t row_width = 0;
+
 
     for(string line; getline(file, line);){
-
       switch(actual_line){
-
         case 0:
           layers_amount = parse_nn_arch(line);
           total_layers = layers_amount[0]+layers_amount[1]+layers_amount[2];
@@ -115,20 +117,42 @@ namespace Utils {
                   break;
               }
             }
-          } 
+          }
+
+          delete activations;
           break; 
         }
 
-        default:
+        default:{
+          if(line[0] == 'l'){
+          
+            weights.push_back(parse_weights_head(line));
+            row_width = weights.at(weights_counter)->get_width();
+            row_i = 0;
+            weights_counter++;
+          
+          } else{
+
+            double* row = parse_row(line, row_width);
+            for(size_t j = 0; j < row_width; j++)
+              weights.at(weights_counter-1)->update_value(row_i, j, row[j]);
+            row_i++;
+            delete row;
+          
+          }
           break;
+        }
 
       }
 
-      std::cout << line << std::endl;
-
       actual_line++;
     }
+    
+    nn->load_weights(weights);
 
+    delete layers_amount;
+    delete layers_sizes;
+    file.close();
     return nn;    
   }
 
@@ -138,7 +162,7 @@ namespace Utils {
 
     string value = "";
     for(char a: line){
-      if(a == ','){
+      if(a == ',' || a == '.'){
         
         sizes[actual_layer] = stoi(value);
         actual_layer ++;
@@ -158,7 +182,7 @@ namespace Utils {
 
     string value = "";
     for(char a: line){
-      if(a == ','){
+      if(a == ',' || a == '.'){
         
         sizes[actual_i] = stoi(value);
         actual_i ++;
@@ -178,9 +202,7 @@ namespace Utils {
 
     string value = "";
     for(char a: line){
-      if(a == ','){
-        
-
+      if(a == ',' || a == '.'){
         if(strcmp(value.c_str(), "relu") == 0)
           activations[actual_i] = 0;
         else if(strcmp(value.c_str(), "sigmoid") == 0)
@@ -204,80 +226,40 @@ namespace Utils {
   }
   
 
+  Matrix* parse_weights_head(string line){
+    uint8_t values[2];
+    uint8_t i = 0;
 
-  vector<Matrix*> parse_weigths(string filename){
-    ifstream file;
-    file.open(filename, ios::app);
-    
-    if(!file)
-      throw FileNotFound(); 
-
-    vector<Matrix*> matrices;
-
-    uint8_t w,h; 
-    string w_str = "";
-    string h_str = "";
-
-    uint16_t i = 0;
-    uint8_t last_matrix = 0;
-    
-    for(string line; getline(file, line);){
-      std::cout << line << std::endl;
-
-      bool get_w = false;
-      bool get_h = false;
-      
-      string weight = "";
-      bool getting_weight = false;
-      uint16_t j = 0;
-
-      for(char a : line){
-        if(a == 'w'){
-          get_w = true;
-          continue;
-        }else if(a == 'h'){
-          get_h = true;
-          continue;
-        }else if(a == '-' || (a >= '0' and a <= '9')){
-          getting_weight = true;
-        }
-        
-        if((get_w || get_h) && a == ';'){
-          get_w = false;
-          get_h = false;
-          continue;
-        }else if(getting_weight && a == ','){
-          getting_weight = false;
-          matrices.at(last_matrix)->update_value(i, j, stod(weight));
-          weight = "";
-          j++;
-        }else if(get_w){
-          w_str += a;
-        }else if(get_h){
-          h_str += a;
-        }else if(getting_weight){
-          weight += a;    
-        }
-      }
-
-
-      if(!weight.empty())
-        matrices.at(last_matrix)->update_value(i, j, stod(weight));
-
-      if(!w_str.empty() && !h_str.empty()){
-        if(matrices.size() > 0)
-          last_matrix++;
-        
-        uint8_t w = stoi(w_str);
-        uint8_t h = stoi(h_str);
-        matrices.push_back(new Matrix(w,h));
-        w_str = "";
-        h_str = "";
-        i = 0;
-      }else{
+    string value = "";
+    for(char a: line){
+      if(a == ',' || a == '.'){
+        values[i] = stoi(value);
         i++;
+        value = "";
+        continue;
       }
+
+      if(a != 'l')
+        value += a;
     }
-    return matrices;
+    return new Matrix(values[0], values[1]);
+  }
+
+  double* parse_row(string line, uint8_t width){  
+    double* row = new double[width];
+    uint8_t i = 0;
+    string weight = "";
+      
+    for(char a : line){
+      if(a == ',' || a == '.'){
+        row[i] = stod(weight);
+        i++;
+        weight = "";
+        continue;
+      }
+
+      weight += a;
+    }
+    return row;
   }
 }

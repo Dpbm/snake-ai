@@ -9,9 +9,6 @@ using std::stringstream;
 using Utils::append_to_file;
 
 namespace Machine{
-  unsigned int width, height;
-  Matrix *weights;
-
   Weights::Weights(unsigned int first_layer_size, unsigned int second_layer_size){
     this->width = first_layer_size;
     this->height = second_layer_size;
@@ -28,14 +25,14 @@ namespace Machine{
 
   void Weights::save_weights(string filename){
     stringstream header;
-    header << "w" << this->width << ";h" << this->height  << "\n"; 
+    header << this->width << "," << this->height << "." << "\n"; 
     
     append_to_file(filename, header.str());
 
     for(unsigned int i = 0; i < this->height; i++){
       for(unsigned int j = 0; j < this->width; j++){
         stringstream data;
-        data << this->weights->get_position_value(i, j) << (j+1 < this->width ? "," : "");
+        data << this->weights->get_position_value(i, j) << (j+1 < this->width ? "," : ".");
         append_to_file(filename, data.str());
       }
 
