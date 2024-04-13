@@ -45,6 +45,7 @@ namespace Players {
       
       void head_tail_collision();
       
+      void clear_pointers();
       ~Player(); 
 
       // for tests

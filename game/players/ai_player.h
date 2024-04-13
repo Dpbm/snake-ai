@@ -16,29 +16,21 @@ namespace Players{
   
   class AIPlayer : public Player {
     public:
-      AIPlayer();
+      AIPlayer(uint8_t score_step, uint8_t board_w, uint8_t board_h);
       ~AIPlayer();
-      Chromosome* get_chromosome();
-      Matrix* get_genes_matrix(unsigned int w, unsigned int h);
-      void update_input_data();
-      Directions get_new_direction();
-      void setup_agent(uint8_t score_step, uint16_t max_score); 
-      void randomize_direction();
-      bool is_trying_invalid_direction(Directions dir);
-      void update_direction(Directions dir);
-      Directions get_direction();
-      Directions get_last_player_dir();
-      void update_last_player_dir(Directions dir);
-      void save_weights(string filename);
 
     private:
       Chromosome* chromosome = nullptr;
-      Directions direction = UP;   
-      Directions last_direction = UP;
-
       NN* nn = new NN;   
       Layer* input_layer = new Layer(3, true);
       Matrix* input_data = new Matrix(3, 1);
+
+      void setup_nn();
+      void setup_chromosome();
+
+    
+
+
   
   };
 };

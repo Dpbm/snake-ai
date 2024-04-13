@@ -235,12 +235,16 @@ namespace Players {
     return this->died;
   }
 
-  Player::~Player(){
+  void Player::clear_pointers(){
     Node* actual_node = this->head;
     while(actual_node != nullptr){
       Node* next = actual_node->next;
       delete actual_node;
       actual_node = next;
     }
+  }
+
+  Player::~Player(){
+    this->clear_pointers();
   }
 }
