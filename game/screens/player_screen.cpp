@@ -22,7 +22,7 @@ namespace Screens{
     }
     this->render = render;
 
-    SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "Score ", this->text_color);
+    SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "Score", this->text_color);
     this->score_text_texture = SDL_CreateTextureFromSurface(render, score_text_surface);
     this->score_text_shape = SDL_Rect{20, 20, score_text_surface->w, score_text_surface->h};
     SDL_FreeSurface(score_text_surface);
@@ -100,7 +100,7 @@ namespace Screens{
     uint8_t** board = this->board.get_board();
     for(size_t i = 0; i < this->board_h; i++)
       for(size_t j = 0; j < this->board_w; j++){
-        SDL_Rect rect = SDL_Rect{(int)((j*SQUARE_SIDE)+left_padding), (int)i*SQUARE_SIDE, SQUARE_SIDE, SQUARE_SIDE};
+        SDL_Rect rect = SDL_Rect{(int)((j*SQUARE_SIDE)+this->left_padding), (int)i*SQUARE_SIDE, SQUARE_SIDE, SQUARE_SIDE};
         switch(board[i][j]){
           case 0: {
             SDL_SetRenderDrawColor(render, 100, 100, 100, 255);

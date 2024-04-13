@@ -27,8 +27,8 @@ add_subdirectory(matrix)
 add_subdirectory(machine)
 
 file(GLOB HELPERS_FILES "helpers/*.cpp")
-add_library(helpers matrix machine ${HELPERS_FILES})
-target_link_libraries(helpers)
+add_library(helpers ${HELPERS_FILES})
+target_link_libraries(helpers matrix machine)
 
 file(GLOB GENETIC_FILES "genetic/*.cpp")
 add_library(genetic ${GENETIC_FILES})

@@ -6,14 +6,11 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
 #include "screens.h"
-#include "../players/ai_player.h"
-#include "../../genetic/population.h"
+#include "../board.h"
 #include "../../helpers/constants.h"
 
-using std::vector;
 using Screens::Screen;
-using Players::AIPlayer;
-using Populations::Population;
+using Game::Board;
 
 namespace GameAIScreen{
   class AIScreen: public Screen{
@@ -25,48 +22,26 @@ namespace GameAIScreen{
       void close_event();     
 
     private:
-      uint8_t max_score = 100;
-      uint16_t population_size = 2000;
+      uint16_t left_padding = 12 * SQUARE_SIDE;
+      uint8_t board_w = 30;
+      uint8_t board_h = 30;
 
-      uint32_t start_tick = 0;
-
-      Population* population = new Population(population_size, 1, max_score);
-      AIPlayer* player = nullptr;
-
-      bool see_all = false;
+      Board board{board_w, board_h};
+      
+      Player* player = new Player{1, board_w, board_h};
 
       SDL_Renderer* render;
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
       SDL_Color text_color{ 255, 255, 255 };
-  
+     
       SDL_Rect score_text_shape;
       SDL_Rect score_shape;
-      SDL_Texture* score_text_texture;
-      SDL_Texture* score_texture;
+      SDL_Texture* score_text_texture = nullptr;
+      SDL_Texture* score_texture = nullptr;
 
-      SDL_Rect generation_text_shape;
-      SDL_Rect generation_shape;
-      SDL_Texture* generation_text_texture;
-      SDL_Texture* generation_texture;
-      
-      SDL_Rect best_individual_text_shape;
-      SDL_Rect best_individual_shape;
-      SDL_Texture* best_individual_text_texture;
-      SDL_Texture* best_individual_texture;
-      
-      SDL_Rect timer_text_shape;
-      SDL_Rect timer_shape;
-      SDL_Texture* timer_text_texture;
-      SDL_Texture* timer_texture;
-      
-      SDL_Rect see_all_shape;
-      SDL_Texture* see_all_texture;
-      
-      SDL_Rect screen_separator{LEFT_WALL, 0, 1, HEIGHT};
-      void create_text();
-      void start_new_game();
-      void randomize_player_direction();
-      void clear_textures();
-      void save_weights();
+      SDL_Rect gen_text_shape;
+      SDL_Rect gen_shape;
+      SDL_Texture* gen_text_texture = nullptr;
+      SDL_Texture* gen_texture = nullptr;
   };
 };
