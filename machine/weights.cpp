@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <sstream>
 #include "weights.h"
 #include "../matrix/matrix.h"
@@ -48,11 +49,15 @@ namespace Machine{
     delete this->weights;
   }
 
-  unsigned int Weights::get_height(){
+  uint64_t Weights::get_total_weights(){
+    return this->height * this->width;
+  }
+
+  uint16_t Weights::get_height(){
     return this->height;
   }
   
-  unsigned int Weights::get_width(){
+  uint16_t Weights::get_width(){
     return this->width;
   }
 }

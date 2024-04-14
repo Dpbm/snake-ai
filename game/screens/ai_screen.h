@@ -8,9 +8,11 @@
 #include "screens.h"
 #include "../board.h"
 #include "../../helpers/constants.h"
+#include "../players/ai_player.h"
 
 using Screens::Screen;
 using Game::Board;
+using Players::AIPlayer;
 
 namespace GameAIScreen{
   class AIScreen: public Screen{
@@ -28,7 +30,7 @@ namespace GameAIScreen{
 
       Board board{board_w, board_h};
       
-      Player* player = new Player{1, board_w, board_h};
+      Player* player = new AIPlayer{1, board_w, board_h};
 
       SDL_Renderer* render;
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);

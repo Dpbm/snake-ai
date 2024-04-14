@@ -20,18 +20,18 @@ using Genes::Gene;
 
 namespace Populations{
   Population::Population(uint16_t total, uint8_t score_step, uint16_t max_score){
-    this->individuals = new AIPlayer[total];
-    this->total_individuals = total;
-    this->score_step = score_step;
-    this->max_score = max_score;
+    // this->individuals = new AIPlayer[total];
+    // this->total_individuals = total;
+    // this->score_step = score_step;
+    // this->max_score = max_score;
 
-    for(size_t i = 0; i < total; i++){
-      this->individuals[i].setup_agent(score_step, max_score);
-      this->fitness.push_back(0);
-      this->same_mov_count.push_back(0);
-      // this->food_positions.push_back(vec2{get_random_x(FOOD_W), get_random_y(FOOD_H)});
-      // this->individuals[i].get_food()->set_position(this->food_positions[0].x, this->food_positions[0].y);
-    }
+    // for(size_t i = 0; i < total; i++){
+    //   this->individuals[i].setup_agent(score_step, max_score);
+    //   this->fitness.push_back(0);
+    //   this->same_mov_count.push_back(0);
+    //   // this->food_positions.push_back(vec2{get_random_x(FOOD_W), get_random_y(FOOD_H)});
+    //   // this->individuals[i].get_food()->set_position(this->food_positions[0].x, this->food_positions[0].y);
+    // }
   }
 
   uint32_t Population::get_generation(){
@@ -76,19 +76,19 @@ namespace Populations{
         
       // this->fitness.at(i) += 100;
 
-      individual->update_input_data();
-      
-      Directions dir = individual->get_new_direction();
-  
-      if(dir == individual->get_last_player_dir())
-        this->same_mov_count.at(i)++;
-      else{
-        this->same_mov_count.at(i)=0;
-        individual->update_last_player_dir(dir);
-      }   
+  //     individual->update_input_data();
+  //     
+  //     Directions dir = individual->get_new_direction();
+  // 
+  //     if(dir == individual->get_last_player_dir())
+  //       this->same_mov_count.at(i)++;
+  //     else{
+  //       this->same_mov_count.at(i)=0;
+  //       individual->update_last_player_dir(dir);
+  //     }   
 
-      if(this->same_mov_count.at(i) >= 40)
-        this->fitness.at(i) -= 1;
+  //     if(this->same_mov_count.at(i) >= 40)
+  //       this->fitness.at(i) -= 1;
 
       // if(distance <= 10)
       //   this->fitness.at(i) += 6000;
@@ -132,14 +132,14 @@ namespace Populations{
       // if((HEIGHT - py <= 10 || py <= 10) && (dir == LEFT || dir == RIGHT))
       //   this->fitness.at(i) += 100;
 
-      individual->update_direction(dir); 
-      individual->update_pos();
+      // individual->update_direction(dir); 
+      // individual->update_pos();
 
-      if(individual->is_dead()){
-        total_invalid++;
-        this->fitness.at(i)--;
-        continue;
-      }
+      // if(individual->is_dead()){
+      //   total_invalid++;
+      //   this->fitness.at(i)--;
+      //   continue;
+      // }
 
       // if(individual->collision(fx, fy)){
       //   individual->update_score();
@@ -169,49 +169,49 @@ namespace Populations{
     AIPlayer* best = &this->individuals[max_fitness_i];
     AIPlayer* second_best = &this->individuals[max_fitness_2_i];
       
-    
-    Chromosome* best_chromosome = best->get_chromosome();
-    Chromosome* second_best_chromosome = second_best->get_chromosome();
-    
-    uint16_t chromosome_size = best_chromosome->get_size();
-    uint16_t pivot = random_int(0, chromosome_size);
+    // 
+    // Chromosome* best_chromosome = best->get_chromosome();
+    // Chromosome* second_best_chromosome = second_best->get_chromosome();
+   //  
+   //  uint16_t chromosome_size = best_chromosome->get_size();
+   //  uint16_t pivot = random_int(0, chromosome_size);
 
-    Gene* best_genes = best_chromosome->get_genes();
-    Gene* second_best_genes = second_best_chromosome->get_genes();
-    Gene* offspring_genes = new Gene[chromosome_size];
-    for(size_t i = 0; i < chromosome_size; i++){
-      if(i <= pivot)
-        offspring_genes[i].set_gene_value(best_genes[i].get_gene_value());
-      else
-        offspring_genes[i].set_gene_value(second_best_genes[i].get_gene_value());
-    }
+   //  Gene* best_genes = best_chromosome->get_genes();
+   //  Gene* second_best_genes = second_best_chromosome->get_genes();
+   //  Gene* offspring_genes = new Gene[chromosome_size];
+   //  for(size_t i = 0; i < chromosome_size; i++){
+   //    if(i <= pivot)
+   //      offspring_genes[i].set_gene_value(best_genes[i].get_gene_value());
+   //    else
+   //      offspring_genes[i].set_gene_value(second_best_genes[i].get_gene_value());
+   //  }
 
-    this->reset_individuals();
-    
-   for(size_t i = 0; i < this->total_individuals; i++){
-      Chromosome* individual = this->individuals[i].get_chromosome();
-      individual->copy_genes(offspring_genes);
-      individual->mutate(0.1); 
-      // individual->show();
-    }
+   //  this->reset_individuals();
+   //  
+   // for(size_t i = 0; i < this->total_individuals; i++){
+   //    Chromosome* individual = this->individuals[i].get_chromosome();
+   //    individual->copy_genes(offspring_genes);
+   //    individual->mutate(0.1); 
+   //    // individual->show();
+   //  }
 
-    this->food_i++;
+   //  this->food_i++;
 
-    delete[] offspring_genes;
+   //  delete[] offspring_genes;
   }  
   
   void Population::reset_individuals(){
-    delete[] this->individuals;
-    this->fitness.clear();
-    this->same_mov_count.clear();
+  //   delete[] this->individuals;
+  //   this->fitness.clear();
+  //   this->same_mov_count.clear();
 
-    this->individuals = new AIPlayer[this->total_individuals];
-  
-    for(size_t i = 0; i < this->total_individuals; i++){
-      this->individuals[i].setup_agent(this->score_step, this->max_score);
-      this->fitness.push_back(0);
-      this->same_mov_count.push_back(0);
-    }
+  //   this->individuals = new AIPlayer[this->total_individuals];
+  // 
+  //   for(size_t i = 0; i < this->total_individuals; i++){
+  //     this->individuals[i].setup_agent(this->score_step, this->max_score);
+  //     this->fitness.push_back(0);
+  //     this->same_mov_count.push_back(0);
+  //   }
   }
 
   uint16_t Population::get_best_fitness_i(){
@@ -247,9 +247,9 @@ namespace Populations{
   }
 
   void Population::save_weights(){
-    stringstream string;
-    string << time(0) << "-weights.wg";
-    this->get_best_player()->save_weights(string.str());
+    // stringstream string;
+    // string << time(0) << "-weights.wg";
+    // this->get_best_player()->save_weights(string.str());
   }
 
   Population::~Population(){

@@ -34,6 +34,8 @@ namespace Players {
       void direction_right();
       int8_t get_mov_x();
       int8_t get_mov_y();
+  
+      void set_score_step(uint8_t score_step);
 
       void update_score();
       uint16_t get_score();

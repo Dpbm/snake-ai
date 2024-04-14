@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <iostream>
 #include "../matrix/matrix.h"
 
@@ -14,8 +15,11 @@ namespace Machine{
       void load_weights(Matrix* weights);
       Matrix* get_weights();
       ~Weights();
-      unsigned int get_width();
-      unsigned int get_height();
+
+      uint16_t get_width();
+      uint16_t get_height();
+      uint64_t get_total_weights();  
+
       void save_weights(string filename);
 
     private:
