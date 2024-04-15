@@ -7,15 +7,14 @@
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <cstdlib>
-#include "start_screen.h"
 #include "../../helpers/constants.h"
+#include "start_screen.h"
 #include "player_screen.h"
 #include "ai_screen.h"
 
 using std::exit;
 using std::cout;
 using std::endl;
-using GameAIScreen::AIScreen;
 
 namespace Screens {  
   StartScreen::StartScreen(SDL_Renderer* render){

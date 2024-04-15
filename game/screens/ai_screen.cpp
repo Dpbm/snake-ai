@@ -13,9 +13,8 @@
 using std::cout;
 using std::endl;
 using std::size_t;
-using Screens::Screen;
 
-namespace GameAIScreen {
+namespace Screens {
 
   AIScreen::AIScreen(SDL_Renderer* render){
     if(!this->font){
@@ -43,6 +42,10 @@ namespace GameAIScreen {
   }
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
+    this->player->update_input_data(this->board.get_food(), this->board_w, this->board_h);
+    this->player->compute_next_dir();
+    this->player->update_dir();
+
     uint8_t** board = this->board.get_board();
     for(size_t i = 0; i < this->board_h; i++)
       for(size_t j = 0; j < this->board_w; j++){

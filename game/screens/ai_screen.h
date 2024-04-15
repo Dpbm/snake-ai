@@ -14,7 +14,7 @@ using Screens::Screen;
 using Game::Board;
 using Players::AIPlayer;
 
-namespace GameAIScreen{
+namespace Screens{
   class AIScreen: public Screen{
     public:
       AIScreen(SDL_Renderer* render);
@@ -30,7 +30,7 @@ namespace GameAIScreen{
 
       Board board{board_w, board_h};
       
-      Player* player = new AIPlayer{1, board_w, board_h};
+      AIPlayer* player = new AIPlayer{1, board_w, board_h};
 
       SDL_Renderer* render;
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);

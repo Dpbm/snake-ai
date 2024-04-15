@@ -6,10 +6,7 @@
 
 using Utils::random_int;
 
-extern bool TEST_STAGE;
-
 namespace Players {
-  //TODO: perhaps, remove it later
   Player::Player(){}
 
   Player::Player(uint8_t score_step, uint8_t board_w, uint8_t board_h){

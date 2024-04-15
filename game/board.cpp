@@ -75,7 +75,11 @@ namespace Game {
     if(px < 0 || px >= this->h || py < 0 || py >= this->w)
       this->player->set_died();
   }
- 
+
+  vec2 Board::get_food(){
+    return this->food;
+  }
+
   Board::~Board(){
     for(size_t i = 0; i < this->h; i++)
       delete[] this->board[i];
