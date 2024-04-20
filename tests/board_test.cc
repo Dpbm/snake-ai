@@ -11,7 +11,7 @@ using Players::Directions;
 namespace {
   TEST(CreationTest, CreateDefaultBoardTest){
     Board b{2,2};
-    Player p{1, 0, 0, Directions::RIGHT};
+    Player p{0, 0, Directions::RIGHT};
 
     b.add_player(&p);
     b.set_food_pos(0, 1);
@@ -26,7 +26,7 @@ namespace {
   TEST(UpdateTest, UpdatedPlayerPosTest){
     Board b{2,2};
     
-    Player p{1, 0, 0, Directions::RIGHT};
+    Player p{0, 0, Directions::RIGHT};
     b.add_player(&p);
     
     b.set_food_pos(1, 0);
@@ -45,7 +45,7 @@ namespace {
   TEST(UpdateTest, CatchFoodTest){
     Board b{2,2};
     
-    Player p{1, 0, 0, Directions::RIGHT};
+    Player p{0, 0, Directions::RIGHT};
     b.add_player(&p);
     
     b.set_food_pos(0,1);
@@ -62,7 +62,7 @@ namespace {
   TEST(UpdateTest, DieTest){
     Board b{2,2};
     
-    Player p{1, 0, 1, Directions::RIGHT};
+    Player p{0, 1, Directions::RIGHT};
     b.add_player(&p);
     
     b.set_food_pos(0,1);
@@ -76,7 +76,7 @@ namespace {
  
   TEST(ValueTest, BorderCollisionFalseTest){
     Board b{2,2};
-    Player p{1, 0, 1, Directions::RIGHT};
+    Player p{0, 1, Directions::RIGHT};
     b.add_player(&p);
     b.set_food_pos(0,1);
     b.check_border_collision();
@@ -85,7 +85,7 @@ namespace {
   
   TEST(ValueTest, BorderCollisionRightTest){
     Board b{2,2};
-    Player p{1, 0, 2, Directions::RIGHT};
+    Player p{0, 2, Directions::RIGHT};
     b.add_player(&p);
     b.set_food_pos(0,1);
     b.check_border_collision();
@@ -94,7 +94,7 @@ namespace {
 
   TEST(ValueTest, BorderCollisionLeftTest){
     Board b{2,2};
-    Player p{1, 0, -1, Directions::RIGHT};
+    Player p{0, -1, Directions::RIGHT};
     b.add_player(&p);
     b.set_food_pos(0,1);
     b.check_border_collision();
@@ -103,7 +103,7 @@ namespace {
   
   TEST(ValueTest, BorderCollisionTopTest){
     Board b{2,2};
-    Player p{1, -1, 0, Directions::RIGHT};
+    Player p{-1, 0, Directions::RIGHT};
     b.add_player(&p);
     b.set_food_pos(0,1);
     b.check_border_collision();
@@ -112,7 +112,7 @@ namespace {
   
   TEST(ValueTest, BorderCollisionDownTest){
     Board b{2,2};
-    Player p{1, 2, 0, Directions::RIGHT};
+    Player p{2, 0, Directions::RIGHT};
     b.add_player(&p);
     b.set_food_pos(0,1);
     b.check_border_collision();

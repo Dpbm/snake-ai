@@ -18,6 +18,8 @@ namespace Game {
       void update_player_pos();
       void check_border_collision();
       ~Board();
+      uint16_t get_width();
+      uint16_t get_height();
       vec2 get_food();
 
     private:

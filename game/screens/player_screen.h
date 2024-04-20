@@ -34,8 +34,7 @@ namespace Screens{
       Board board{board_w, board_h};  
       
       uint16_t max_score = 1000;
-      uint8_t score_step = 10;
-      Player* player = new Player{score_step, board_w, board_h};
+      Player* player = new Player{board_w, board_h};
 
       bool finished_game = false;
 

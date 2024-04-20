@@ -9,14 +9,13 @@ using Utils::random_int;
 namespace Players {
   Player::Player(){}
 
-  Player::Player(uint8_t score_step, uint8_t board_w, uint8_t board_h){
-    this->set_score_step(score_step);
+  Player::Player(uint8_t board_w, uint8_t board_h){
     this->random_pos(board_w, board_h);
     this->random_dir();
   }
   
-  Player::Player(uint8_t score_step, int16_t x, int16_t y, Directions dir){
-    this->set_score_step(score_step);
+  Player::Player(int16_t x, int16_t y, Directions dir){
+    //FOR TESTS
     this->set_pos(x, y);
     this->set_dir(dir);
   }  
@@ -25,10 +24,6 @@ namespace Players {
     int16_t x = random_int(0,h);
     int16_t y = random_int(0,w);
     this->add_body_part(x, y); 
-  }
-
-  void Player::set_score_step(uint8_t score_step){
-    this->score_step = score_step;
   }
 
   void Player::add_body_part(int16_t x, int16_t y){
@@ -192,7 +187,7 @@ namespace Players {
   }
 
   void Player::update_score(){
-    this->score += this->score_step;
+    this->score ++;
     this->add_body_part(this->old_tail_pos.x, this->old_tail_pos.y);
   }
 
@@ -205,10 +200,6 @@ namespace Players {
   }
   Directions Player::get_dir(){
     return this->dir;
-  }
-
-  uint8_t Player::get_score_step(){
-    return this->score_step;
   }
 
   int8_t Player::get_mov_x(){

@@ -10,7 +10,7 @@ using Chromosomes::Chromosome;
 using Utils::vec2;
 
 namespace Players{
-  AIPlayer::AIPlayer(uint8_t score_step, uint8_t board_w, uint8_t board_h) : Player(score_step, board_w, board_h){
+  AIPlayer::AIPlayer(uint8_t board_w, uint8_t board_h) : Player(board_w, board_h){
     this->setup_nn();
   }
 

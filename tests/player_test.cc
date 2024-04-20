@@ -15,7 +15,6 @@ namespace {
     ASSERT_EQ(p.get_score(), 0);
     ASSERT_EQ(p.get_mov_x(), 0);
     ASSERT_EQ(p.get_mov_y(), 0);
-    ASSERT_EQ(p.get_score_step(), 100);
     ASSERT_NE(p.get_player(), nullptr);
     ASSERT_EQ(p.get_head(), nullptr);
     ASSERT_EQ(p.get_tail(), nullptr);
@@ -23,12 +22,11 @@ namespace {
   }
   
   TEST(CreationTest, CreatePlayerTest){
-    Player p = Player(2, 1, 1);
+    Player p = Player(1, 1);
 
     ASSERT_EQ(p.get_score(), 0);
     ASSERT_THAT(p.get_mov_x(), AllOf(Ge(-1), Le(1)));
     ASSERT_THAT(p.get_mov_y(), AllOf(Ge(-1), Le(1)));
-    ASSERT_EQ(p.get_score_step(), 2);
     ASSERT_NE(p.get_player(), nullptr);
     ASSERT_NE(p.get_head(), nullptr);
     ASSERT_NE(p.get_tail(), nullptr);
@@ -37,7 +35,7 @@ namespace {
   }
 
   TEST(UpdateTest, UpdatePosTicksPassedTest){
-    Player p{1, 0, 0, Directions::RIGHT};
+    Player p{0, 0, Directions::RIGHT};
     
     ASSERT_EQ(p.get_x(),0);
     ASSERT_EQ(p.get_y(),0);
@@ -100,7 +98,7 @@ namespace {
   }
 
   TEST(UpdateTest, UpdateScoreTest){
-    Player p{1, 0, 0, Directions::RIGHT};
+    Player p{0, 0, Directions::RIGHT};
     ASSERT_EQ(p.get_score(), 0);
     ASSERT_EQ(p.get_head()->next, nullptr);
     ASSERT_EQ(p.get_head(), p.get_tail());
@@ -118,7 +116,7 @@ namespace {
   }
 
   TEST(UpdateTest, HeadTailCollisionTest){
-    Player p{1, 0, 0, Directions::RIGHT};
+    Player p{0, 0, Directions::RIGHT};
 
     ASSERT_FALSE(p.is_dead());
     //y = 1

@@ -19,8 +19,8 @@ namespace Players {
   class Player{
     public:
       Player();
-      Player(uint8_t score_step, uint8_t board_w, uint8_t board_h);
-      Player(uint8_t score_step, int16_t x, int16_t y, Directions dir);
+      Player(uint8_t board_w, uint8_t board_h);
+      Player(int16_t x, int16_t y, Directions dir);
       
       void random_pos(uint8_t w, uint8_t h);
       void update_pos();
@@ -35,7 +35,6 @@ namespace Players {
       int8_t get_mov_x();
       int8_t get_mov_y();
   
-      void set_score_step(uint8_t score_step);
 
       void update_score();
       uint16_t get_score();
@@ -52,7 +51,6 @@ namespace Players {
       // for tests
       Node* get_head();
       Node* get_tail();
-      uint8_t get_score_step();
       Directions get_dir();
       vec2 get_old_tail_pos();
       void mov_body();
@@ -62,7 +60,6 @@ namespace Players {
       uint32_t last_tick = 0;
       
       uint16_t score=0;
-      uint8_t score_step=100;
      
       Directions dir = UP;
       int8_t mov_x=0;

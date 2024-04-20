@@ -80,6 +80,14 @@ namespace Game {
     return this->food;
   }
 
+  uint16_t Board::get_width(){
+    return this->w;
+  }
+  
+  uint16_t Board::get_height(){
+    return this->h;
+  }
+
   Board::~Board(){
     for(size_t i = 0; i < this->h; i++)
       delete[] this->board[i];

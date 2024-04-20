@@ -43,13 +43,11 @@ namespace Screens {
   }
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
+
+    this->population.run();
     Individual* best_ind = this->population.get_best_individual();
     AIPlayer* player = best_ind->player;
     Board* board = best_ind->board;
-
-    player->update_input_data(board->get_food(), this->board_w, this->board_h);
-    player->compute_next_dir();
-    player->update_dir();
 
     uint8_t** board_m = board->get_board();
     for(size_t i = 0; i < this->board_h; i++)

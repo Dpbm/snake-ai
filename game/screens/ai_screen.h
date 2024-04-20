@@ -30,7 +30,7 @@ namespace Screens{
       uint8_t board_w = 30;
       uint8_t board_h = 30;
 
-      Population population{100, 1, board_w, board_h, 20};
+      Population population{1000, board_w, board_h, 20};
 
       SDL_Renderer* render;
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
