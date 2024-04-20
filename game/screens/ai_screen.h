@@ -9,10 +9,12 @@
 #include "../board.h"
 #include "../../helpers/constants.h"
 #include "../players/ai_player.h"
+#include "../../genetic/population.h"
 
 using Screens::Screen;
 using Game::Board;
 using Players::AIPlayer;
+using Genetic::Population;
 
 namespace Screens{
   class AIScreen: public Screen{
@@ -28,9 +30,7 @@ namespace Screens{
       uint8_t board_w = 30;
       uint8_t board_h = 30;
 
-      Board board{board_w, board_h};
-      
-      AIPlayer* player = new AIPlayer{1, board_w, board_h};
+      Population population{100, 1, board_w, board_h, 20};
 
       SDL_Renderer* render;
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);

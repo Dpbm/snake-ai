@@ -84,8 +84,6 @@ namespace Players{
 
 
   AIPlayer::~AIPlayer(){
-    this->clear_pointers();
-   
     delete this->chromosome;
     delete this->nn;
   }   

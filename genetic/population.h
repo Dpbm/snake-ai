@@ -1,58 +1,34 @@
 #pragma once
 
-#include <cstddef>
-#include <cstdint>
 #include <vector>
-#include "../machine/machine.h"
-#include "../machine/layer.h"
-#include "../matrix/matrix.h"
+#include <cstdint>
 #include "../game/players/ai_player.h"
+#include "../game/board.h"
+#include "../helpers/utils.h"
 
-using std::size_t;
 using std::vector;
-using Machine::NN;
-using Machine::Layer;
-using Matrices::Matrix;
+using Game::Board;
 using Players::AIPlayer;
-using Players::Directions;
+using Utils::vec2;
 
-namespace Populations {
-  typedef struct vec2{
-    uint16_t x;
-    uint16_t y;
-  } vec2;
+namespace Genetic {
+  typedef struct Individual{
+    Board *board;
+    AIPlayer *player;
+    uint8_t actual_food = 0;
+  } Individual;
 
   class Population{
     public:
-      Population(uint16_t total, uint8_t score_step, uint16_t max_score);
-      bool run_population();
-      AIPlayer* get_individuals();
-      void next_generation();
-      int64_t get_best_fitness();
-      uint16_t get_best_fitness_i();
-      AIPlayer* get_best_player();
-      AIPlayer* get_best_player_alive();
-      uint32_t get_generation();
-      void update_gen();
-      uint16_t get_best_score();
-      AIPlayer* get_player(size_t i);
+      Population(uint16_t total, uint8_t score_step, uint8_t board_w, uint8_t board_h, uint8_t total_steps);
+      Individual* get_best_individual();
       ~Population();
-      void save_weights();
 
     private:
-      uint32_t generation = 1;
-      uint32_t max_generation = 1000;
-      uint16_t total_individuals = 0;
-      AIPlayer* individuals = nullptr;
-
-      vector<int64_t> fitness;
-      vector<uint32_t> same_mov_count;
-      vector<vec2> food_positions;
-      uint32_t food_i = 0;
-
-      uint8_t score_step;
-      uint16_t max_score;
-
-      void reset_individuals();
+      uint16_t total_ind = 0;
+      vector<Individual*> individuals;
+      vector<vec2> food_positions; 
+      
+      void generate_food_positions(uint8_t total, uint8_t w, uint8_t h);
   };
 };

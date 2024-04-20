@@ -9,10 +9,12 @@
 #include "screens.h"
 #include "ai_screen.h"
 #include "../../helpers/constants.h"
+#include "../../genetic/population.h"
 
 using std::cout;
 using std::endl;
 using std::size_t;
+using Genetic::Individual;
 
 namespace Screens {
 
@@ -38,19 +40,22 @@ namespace Screens {
       cout << "Failed on creating score text texture!" << SDL_GetError() << endl;
       exit(1);
     }
-    this->board.add_player(this->player);
   }
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
-    this->player->update_input_data(this->board.get_food(), this->board_w, this->board_h);
-    this->player->compute_next_dir();
-    this->player->update_dir();
+    Individual* best_ind = this->population.get_best_individual();
+    AIPlayer* player = best_ind->player;
+    Board* board = best_ind->board;
 
-    uint8_t** board = this->board.get_board();
+    player->update_input_data(board->get_food(), this->board_w, this->board_h);
+    player->compute_next_dir();
+    player->update_dir();
+
+    uint8_t** board_m = board->get_board();
     for(size_t i = 0; i < this->board_h; i++)
       for(size_t j = 0; j < this->board_w; j++){
         SDL_Rect rect = SDL_Rect{(int)((j*SQUARE_SIDE)+this->left_padding), (int)i*SQUARE_SIDE, SQUARE_SIDE, SQUARE_SIDE};
-        switch(board[i][j]){
+        switch(board_m[i][j]){
           case 0: {
             SDL_SetRenderDrawColor(render, 100, 100, 100, 255);
             SDL_RenderDrawRect(render, &rect);
