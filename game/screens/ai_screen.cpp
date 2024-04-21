@@ -6,11 +6,13 @@
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_stdinc.h>
 #include <iostream>
+#include <string>
 #include "screens.h"
 #include "ai_screen.h"
 #include "../../helpers/constants.h"
 #include "../../genetic/population.h"
 
+using std::to_string;
 using std::cout;
 using std::endl;
 using std::size_t;
@@ -34,7 +36,7 @@ namespace Screens {
     SDL_Surface* gen_text_surface = TTF_RenderText_Solid(this->font, "Generation", this->text_color);
     this->gen_text_texture = SDL_CreateTextureFromSurface(render, gen_text_surface);
     this->gen_text_shape = SDL_Rect{20, 90, gen_text_surface->w, gen_text_surface->h};
-    SDL_FreeSurface(score_text_surface);
+    SDL_FreeSurface(gen_text_surface);
 
     if(this->score_text_texture == nullptr){
       cout << "Failed on creating score text texture!" << SDL_GetError() << endl;
@@ -45,6 +47,7 @@ namespace Screens {
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
 
     this->population.run();
+
     Individual* best_ind = this->population.get_best_individual();
     AIPlayer* player = best_ind->player;
     Board* board = best_ind->board;
@@ -83,7 +86,7 @@ namespace Screens {
     if(this->score_texture != nullptr)
       SDL_DestroyTexture(this->score_texture);
     
-    SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, "0"/*CHANGE HERE*/, this->text_color);
+    SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(player->get_score()).c_str(), this->text_color);
     this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
     this->score_shape = SDL_Rect{this->score_text_shape.x, this->score_text_shape.y+30, score_surface->w, score_surface->h};
     SDL_FreeSurface(score_surface);

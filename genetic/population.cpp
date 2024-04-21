@@ -21,6 +21,9 @@ namespace Genetic{
 
       ind->board->set_food_pos(first_food_pos.x, first_food_pos.y); 
       ind->board->add_player(ind->player);
+      ind->fitness = 0;
+      ind->same_dir_counter = 0;
+      ind->las_dir = ind->player->get_dir();
 
       this->individuals.push_back(ind); 
     }
@@ -33,8 +36,19 @@ namespace Genetic{
   }
 
   Individual* Population::get_best_individual(){
-    //TODO: change that, for sure
-    return this->individuals.at(0); 
+  
+    uint16_t ind_i = 0;
+    int64_t best_fit = this->individuals.at(0)->fitness;
+    for(size_t i = 0; i < this->total_ind; i++){
+      Individual* ind = this->individuals.at(i);
+      if(ind->fitness > best_fit){
+        ind_i = i;
+        best_fit = ind->fitness;
+      }
+    }
+
+
+    return this->individuals.at(ind_i); 
   }
 
   void Population::update_individual_food_position(Individual *ind){
@@ -43,13 +57,28 @@ namespace Genetic{
   }
 
   void Population::run(){
+    uint16_t total_alive = 0;
+
     for(Individual* ind : this->individuals){
       AIPlayer* player = ind->player;
       Board* board = ind->board;
+
+      if(player->is_dead())
+        continue;
       
+      total_alive++;
+
       player->update_input_data(board->get_food(), board->get_width(), board->get_height());
       player->compute_next_dir();
       player->update_dir();
+      board->update_player_pos();
+
+      if(player->get_dir() == ind->las_dir){
+        ind->same_dir_counter++;
+      }else{
+        ind->same_dir_counter = 0;
+        ind->las_dir = player->get_dir();
+      }
 
       this->compute_fitness(ind);
       this->update_individual_food_position(ind);
@@ -58,6 +87,9 @@ namespace Genetic{
 
   void Population::compute_fitness(Individual* ind){
     ind->fitness += ind->player->get_score()*5000;
+  
+    if(ind->same_dir_counter >= 4)
+      ind->fitness += -100;
   }
 
   Population::~Population(){

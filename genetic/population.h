@@ -10,12 +10,15 @@ using std::vector;
 using Game::Board;
 using Players::AIPlayer;
 using Utils::vec2;
+using Players::Directions;
 
 namespace Genetic {
   typedef struct Individual{
     Board *board;
     AIPlayer *player;
     int64_t fitness;
+    uint8_t same_dir_counter;
+    Directions las_dir;
   } Individual;
 
   class Population{
