@@ -48,9 +48,9 @@ namespace Screens {
 
     this->population.run();
 
-    Individual* best_ind = this->population.get_best_individual();
-    AIPlayer* player = best_ind->player;
-    Board* board = best_ind->board;
+    Individual* best_ind_alive = this->population.get_best_alive_individual();
+    AIPlayer* player = best_ind_alive->player;
+    Board* board = best_ind_alive->board;
 
     uint8_t** board_m = board->get_board();
     for(size_t i = 0; i < this->board_h; i++)
@@ -85,8 +85,9 @@ namespace Screens {
     
     if(this->score_texture != nullptr)
       SDL_DestroyTexture(this->score_texture);
-    
-    SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(player->get_score()).c_str(), this->text_color);
+   
+    Individual* best_ind = this->population.get_best_individual();
+    SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(best_ind->player->get_score()).c_str(), this->text_color);
     this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
     this->score_shape = SDL_Rect{this->score_text_shape.x, this->score_text_shape.y+30, score_surface->w, score_surface->h};
     SDL_FreeSurface(score_surface);
@@ -94,7 +95,7 @@ namespace Screens {
     if(this->gen_texture != nullptr)
       SDL_DestroyTexture(this->gen_texture);
     
-    SDL_Surface* gen_surface = TTF_RenderText_Solid(this->font, "1"/*CHANGE HERE*/, this->text_color);
+    SDL_Surface* gen_surface = TTF_RenderText_Solid(this->font, to_string(this->population.get_gen()).c_str(), this->text_color);
     this->gen_texture = SDL_CreateTextureFromSurface(render, gen_surface);
     this->gen_shape = SDL_Rect{this->gen_text_shape.x, this->gen_text_shape.y+30, gen_surface->w, gen_surface->h};
     SDL_FreeSurface(gen_surface);

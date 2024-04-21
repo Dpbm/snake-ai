@@ -19,16 +19,20 @@ namespace Genetic {
     int64_t fitness;
     uint8_t same_dir_counter;
     Directions las_dir;
+    uint16_t index;
   } Individual;
 
   class Population{
     public:
       Population(uint16_t total, uint8_t board_w, uint8_t board_h, uint8_t total_steps);
       Individual* get_best_individual();
+      Individual* get_best_alive_individual();
       void run();
+      uint32_t get_gen();
       ~Population();
 
     private:
+      uint32_t gen = 1;
       uint16_t total_ind = 0;
       vector<Individual*> individuals;
       vector<vec2> food_positions; 
