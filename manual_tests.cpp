@@ -100,7 +100,7 @@ int main(){
 
   cout << endl << "---PLAYERS---" << endl;
   for(size_t i = 0; i < 10; i++){
-    Player p{1, 0, 0, Directions::RIGHT};
+    Player p{0, 0, Directions::RIGHT};
     p.update_pos();
     cout << "x: " << p.get_x() << " y: " << p.get_y() << endl;
   }
