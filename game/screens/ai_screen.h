@@ -30,6 +30,10 @@ namespace Screens{
       uint8_t board_w = 30;
       uint8_t board_h = 30;
 
+      uint8_t gen_time = 30; //in seconds
+      uint8_t actual_time = 0;
+      uint32_t last_tick = 0;
+
       Population population{2000, board_w, board_h, 20};
 
       SDL_Renderer* render;
@@ -45,5 +49,20 @@ namespace Screens{
       SDL_Rect gen_shape;
       SDL_Texture* gen_text_texture = nullptr;
       SDL_Texture* gen_texture = nullptr;
+      
+      SDL_Rect alive_text_shape;
+      SDL_Rect alive_shape;
+      SDL_Texture* alive_text_texture = nullptr;
+      SDL_Texture* alive_texture = nullptr;
+      
+      SDL_Rect fitness_text_shape;
+      SDL_Rect fitness_shape;
+      SDL_Texture* fitness_text_texture = nullptr;
+      SDL_Texture* fitness_texture = nullptr;
+      
+      SDL_Rect timer_text_shape;
+      SDL_Rect timer_shape;
+      SDL_Texture* timer_text_texture = nullptr;
+      SDL_Texture* timer_texture = nullptr;
   };
 };

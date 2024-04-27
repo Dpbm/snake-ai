@@ -50,15 +50,28 @@ namespace Genetic{
   }
   
   Individual* Population::get_best_alive_individual(){
-    Individual* best_ind = this->individuals.at(0);
-    int64_t best_fit = best_ind->fitness;
+    Individual* best_ind = nullptr;
+    int64_t best_fit = 0;
+
     for(Individual* ind: this->individuals){
-      if(ind->fitness > best_fit && !ind->player->is_dead()){
+      if(ind->player->is_dead())
+        continue;
+
+      if(best_ind == nullptr){
+        best_ind = ind;
+        best_fit = ind->fitness;
+        continue;
+      }
+
+      if(ind->fitness > best_fit){
         best_fit = ind->fitness;
         best_ind = ind;  
       }
     }
-  
+ 
+    if(best_ind == nullptr)
+      best_ind = this->get_best_individual();
+
     return best_ind;
   }
 
@@ -68,7 +81,7 @@ namespace Genetic{
   }
 
   void Population::run(){
-    uint16_t total_alive = 0;
+    this->total_alive = 0;
 
     for(Individual* ind : this->individuals){
       AIPlayer* player = ind->player;
@@ -77,7 +90,7 @@ namespace Genetic{
       if(player->is_dead())
         continue;
       
-      total_alive++;
+      this->total_alive++;
 
       player->update_input_data(board->get_food(), board->get_width(), board->get_height());
       player->compute_next_dir();
@@ -94,13 +107,30 @@ namespace Genetic{
       this->compute_fitness(ind);
       this->update_individual_food_position(ind);
     }
-  
-    if(total_alive == 0)
+    if(this->total_alive == 0)
       this->gen ++;
   }
 
   uint32_t Population::get_gen(){
     return this->gen;
+  }
+
+  uint16_t Population::get_best_score(){
+    uint16_t best_score = this->individuals.at(0)->player->get_score();
+    for(Individual* ind: this->individuals){
+      uint16_t ind_score = ind->player->get_score();
+      if(ind_score > best_score)
+        best_score = ind_score;
+    }
+    return best_score;
+  }
+  
+  uint16_t Population::get_total_alive(){
+    return this->total_alive;
+  }
+  
+  int64_t Population::get_best_fitness(){
+    return this->get_best_individual()->fitness;
   }
 
   void Population::compute_fitness(Individual* ind){
