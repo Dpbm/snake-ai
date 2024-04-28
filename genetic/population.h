@@ -24,20 +24,23 @@ namespace Genetic {
 
   class Population{
     public:
-      Population(uint16_t total, uint8_t board_w, uint8_t board_h, uint8_t total_steps);
+      Population(uint16_t total, uint8_t board_w, uint8_t board_h, uint8_t total_food);
       Individual* get_best_individual();
       Individual* get_best_alive_individual();
       void run();
       uint32_t get_gen();
       uint16_t get_total_alive();
+      uint8_t get_total_win();
       uint16_t get_best_score();
       int64_t get_best_fitness();
       ~Population();
 
     private:
       uint32_t gen = 1;
+      uint8_t total_food = 0;
       uint16_t total_ind = 0;
       uint16_t total_alive = 0;
+      uint16_t total_win = 0;
       vector<Individual*> individuals;
       vector<vec2> food_positions; 
       

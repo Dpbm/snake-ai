@@ -44,19 +44,25 @@ namespace Screens {
     this->alive_text_shape = SDL_Rect{20, 160, alive_text_surface->w, alive_text_surface->h};
     SDL_FreeSurface(alive_text_surface);
     
+    SDL_Surface* win_text_surface = TTF_RenderText_Solid(this->font, "Win", this->text_color);
+    this->win_text_texture = SDL_CreateTextureFromSurface(render, win_text_surface);
+    this->win_text_shape = SDL_Rect{20, 230, win_text_surface->w, win_text_surface->h};
+    SDL_FreeSurface(win_text_surface);
+    
     SDL_Surface* fitness_text_surface = TTF_RenderText_Solid(this->font, "Fitness", this->text_color);
     this->fitness_text_texture = SDL_CreateTextureFromSurface(render, fitness_text_surface);
-    this->fitness_text_shape = SDL_Rect{20, 230, fitness_text_surface->w, fitness_text_surface->h};
+    this->fitness_text_shape = SDL_Rect{20, 300, fitness_text_surface->w, fitness_text_surface->h};
     SDL_FreeSurface(fitness_text_surface);
     
     SDL_Surface* timer_text_surface = TTF_RenderText_Solid(this->font, "Timer", this->text_color);
     this->timer_text_texture = SDL_CreateTextureFromSurface(render, timer_text_surface);
-    this->timer_text_shape = SDL_Rect{20, 300, timer_text_surface->w, timer_text_surface->h};
+    this->timer_text_shape = SDL_Rect{20, 370, timer_text_surface->w, timer_text_surface->h};
     SDL_FreeSurface(timer_text_surface);
 
     if(this->score_text_texture == nullptr || 
        this->gen_text_texture == nullptr || 
        this->alive_text_texture == nullptr ||
+       this->win_text_texture == nullptr ||
        this->fitness_text_texture == nullptr ||
        this->timer_text_texture == nullptr){
       cout << "Failed on creating text textures!" << SDL_GetError() << endl;
@@ -107,6 +113,7 @@ namespace Screens {
     SDL_RenderCopy(render, this->score_text_texture, NULL, &this->score_text_shape);
     SDL_RenderCopy(render, this->gen_text_texture, NULL, &this->gen_text_shape);
     SDL_RenderCopy(render, this->alive_text_texture, NULL, &this->alive_text_shape);
+    SDL_RenderCopy(render, this->win_text_texture, NULL, &this->win_text_shape);
     SDL_RenderCopy(render, this->fitness_text_texture, NULL, &this->fitness_text_shape);
     SDL_RenderCopy(render, this->timer_text_texture, NULL, &this->timer_text_shape);
     
@@ -133,6 +140,14 @@ namespace Screens {
     this->alive_texture = SDL_CreateTextureFromSurface(render, alive_surface);
     this->alive_shape = SDL_Rect{this->alive_text_shape.x, this->alive_text_shape.y+30, alive_surface->w, alive_surface->h};
     SDL_FreeSurface(alive_surface);
+
+    if(this->win_texture != nullptr)
+      SDL_DestroyTexture(this->win_texture);
+    
+    SDL_Surface* win_surface = TTF_RenderText_Solid(this->font, to_string(this->population.get_total_win()).c_str(), this->text_color);
+    this->win_texture = SDL_CreateTextureFromSurface(render, win_surface);
+    this->win_shape = SDL_Rect{this->win_text_shape.x, this->win_text_shape.y+30, win_surface->w, win_surface->h};
+    SDL_FreeSurface(win_surface);
     
     if(this->fitness_texture != nullptr)
       SDL_DestroyTexture(this->fitness_texture);
@@ -153,6 +168,7 @@ namespace Screens {
     SDL_RenderCopy(render, this->score_texture, NULL, &this->score_shape);
     SDL_RenderCopy(render, this->gen_texture, NULL, &this->gen_shape);
     SDL_RenderCopy(render, this->alive_texture, NULL, &this->alive_shape);
+    SDL_RenderCopy(render, this->win_texture, NULL, &this->win_shape);
     SDL_RenderCopy(render, this->fitness_texture, NULL, &this->fitness_shape);
     SDL_RenderCopy(render, this->timer_texture, NULL, &this->timer_shape);
     
@@ -175,6 +191,8 @@ namespace Screens {
     SDL_DestroyTexture(this->gen_text_texture);
     SDL_DestroyTexture(this->alive_texture);
     SDL_DestroyTexture(this->alive_text_texture);
+    SDL_DestroyTexture(this->win_texture);
+    SDL_DestroyTexture(this->win_text_texture);
     SDL_DestroyTexture(this->fitness_texture);
     SDL_DestroyTexture(this->fitness_text_texture);
     SDL_DestroyTexture(this->timer_texture);

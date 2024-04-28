@@ -54,6 +54,11 @@ namespace Screens{
       SDL_Texture* alive_text_texture = nullptr;
       SDL_Texture* alive_texture = nullptr;
       
+      SDL_Rect win_text_shape;
+      SDL_Rect win_shape;
+      SDL_Texture* win_text_texture = nullptr;
+      SDL_Texture* win_texture = nullptr;
+      
       SDL_Rect fitness_text_shape;
       SDL_Rect fitness_shape;
       SDL_Texture* fitness_text_texture = nullptr;

@@ -8,9 +8,10 @@ using Game::Board;
 using Utils::random_int;
 
 namespace Genetic{
-  Population::Population(uint16_t total, uint8_t board_w, uint8_t board_h, uint8_t total_steps){
+  Population::Population(uint16_t total, uint8_t board_w, uint8_t board_h, uint8_t total_food){
     this->total_ind = total;
-    this->generate_food_positions(total_steps, board_w, board_h);
+    this->total_food = total_food;
+    this->generate_food_positions(total_food, board_w, board_h);
 
     vec2 first_food_pos = this->food_positions.at(0);
 
@@ -111,7 +112,15 @@ namespace Genetic{
       // fitness for catching the food
       if(board->get_caught_the_food())
         ind->fitness += 5000;
- 
+    
+      if(player->get_score() >= this->total_food){
+        player->set_died();
+        this->total_win++;
+        this->total_alive--;
+        ind->fitness += 20000;
+        continue;
+      }
+
       this->update_individual_food_position(ind);
     }
     if(this->total_alive == 0)
@@ -134,6 +143,10 @@ namespace Genetic{
   
   uint16_t Population::get_total_alive(){
     return this->total_alive;
+  }
+  
+  uint8_t Population::get_total_win(){
+    return this->total_win;
   }
   
   int64_t Population::get_best_fitness(){
