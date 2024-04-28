@@ -1,10 +1,16 @@
+#include <cmath>
 #include <cstdint>
 #include "ai_player.h"
 #include "../../machine/weights.h"
 #include "../../genetic/chromosome.h"
 #include "../../helpers/utils.h"
+#include "../../helpers/constants.h"
 #include "player.h"
 
+using std::asin;
+using std::pow;
+using std::sqrt;
+using std::abs;
 using Machine::Weights;
 using Chromosomes::Chromosome;
 using Utils::vec2;
@@ -57,8 +63,30 @@ namespace Players{
   }
 
   void AIPlayer::update_input_data(const vec2& food, uint16_t w, uint16_t h){
-    this->input_data->update_value(0, 0, (double)(this->get_x()-food.x)/w);  
-    this->input_data->update_value(0, 1, (double)(this->get_y()-food.y)/h);  
+    int16_t px = this->get_x();
+    int16_t py = this->get_y();
+    int16_t fx = food.x;
+    int16_t fy = food.y;
+
+    this->input_data->update_value(0, 0, (double)(px-fx)/w);  
+    this->input_data->update_value(0, 1, (double)(py-fy)/h);
+
+    int8_t sector = 0;
+    
+    if(fx < px && py >= fy)
+      sector = 1;
+    else if(fx < px && fy > py)
+      sector = 2;
+    else if(fx >= px && fy > py)
+      sector = 3;
+   
+    double dy = (double)(py-fy);   
+    double dx = (double)(fx-px);
+    double hip = (double)(sqrt(pow(dx,2)+pow(dy,2)));
+
+    double angle = abs(asin(dy/hip)) * (sector*(PI/2));
+    double angle_norm = angle / (2*PI);
+    this->input_data->update_value(0, 2, angle_norm);
   }
 
   void AIPlayer::compute_next_dir(){
