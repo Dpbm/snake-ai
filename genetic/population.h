@@ -43,6 +43,5 @@ namespace Genetic {
       
       void generate_food_positions(uint8_t total, uint8_t w, uint8_t h);
       void update_individual_food_position(Individual *ind);
-      void compute_fitness(Individual* ind);
   };
 };

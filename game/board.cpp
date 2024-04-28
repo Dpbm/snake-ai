@@ -57,8 +57,11 @@ namespace Game {
       return;
  
     if(this->food.x == this->player->get_x() && this->food.y == this->player->get_y()){
+      this->caught_the_food = true;
       this->player->update_score();
       this->random_food();
+    }else{
+      this->caught_the_food = false;
     }
 
     Node* part = this->player->get_player();
@@ -78,6 +81,10 @@ namespace Game {
 
   vec2 Board::get_food(){
     return this->food;
+  }
+
+  bool Board::get_caught_the_food(){
+    return this->caught_the_food;
   }
 
   uint16_t Board::get_width(){

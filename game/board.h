@@ -21,6 +21,7 @@ namespace Game {
       uint16_t get_width();
       uint16_t get_height();
       vec2 get_food();
+      bool get_caught_the_food();
 
     private:
       uint8_t w, h;
@@ -28,5 +29,6 @@ namespace Game {
       vec2 food;
       Player* player;
       void clear_board();
+      bool caught_the_food = false;
   };
 }

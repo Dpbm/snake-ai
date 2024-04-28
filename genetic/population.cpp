@@ -104,7 +104,14 @@ namespace Genetic{
         ind->las_dir = player->get_dir();
       }
 
-      this->compute_fitness(ind);
+      // fitness for going in the same direction a bunch of times
+      if(ind->same_dir_counter >= 10)
+        ind->fitness += -1;
+
+      // fitness for catching the food
+      if(board->get_caught_the_food())
+        ind->fitness += 5000;
+ 
       this->update_individual_food_position(ind);
     }
     if(this->total_alive == 0)
@@ -131,13 +138,6 @@ namespace Genetic{
   
   int64_t Population::get_best_fitness(){
     return this->get_best_individual()->fitness;
-  }
-
-  void Population::compute_fitness(Individual* ind){
-    ind->fitness += ind->player->get_score()*5000;
-  
-    if(ind->same_dir_counter >= 4)
-      ind->fitness += -100;
   }
 
   Population::~Population(){
