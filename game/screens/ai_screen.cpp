@@ -5,6 +5,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_stdinc.h>
+#include <cstdint>
 #include <iostream>
 #include <string>
 #include "screens.h"
@@ -61,11 +62,12 @@ namespace Screens {
       cout << "Failed on creating text textures!" << SDL_GetError() << endl;
       exit(1);
     }
+
+    this->control_tick = SDL_GetTicks();
   }
 
   void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
-    this->last_tick = SDL_GetTicks();
-    this->actual_time = this->last_tick/1000;
+    uint8_t actual_time = (SDL_GetTicks() - this->control_tick)/1000;
 
     this->population.run();
 
@@ -99,6 +101,7 @@ namespace Screens {
           default: break;
         }
       }
+
 
     SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
     SDL_RenderCopy(render, this->score_text_texture, NULL, &this->score_text_shape);
@@ -142,7 +145,7 @@ namespace Screens {
     if(this->timer_texture != nullptr)
       SDL_DestroyTexture(this->timer_texture);
     
-    SDL_Surface* timer_surface = TTF_RenderText_Solid(this->font, to_string(this->actual_time).c_str(), this->text_color);
+    SDL_Surface* timer_surface = TTF_RenderText_Solid(this->font, to_string(actual_time).c_str(), this->text_color);
     this->timer_texture = SDL_CreateTextureFromSurface(render, timer_surface);
     this->timer_shape = SDL_Rect{this->timer_text_shape.x, this->timer_text_shape.y+30, timer_surface->w, timer_surface->h};
     SDL_FreeSurface(timer_surface);
@@ -152,6 +155,10 @@ namespace Screens {
     SDL_RenderCopy(render, this->alive_texture, NULL, &this->alive_shape);
     SDL_RenderCopy(render, this->fitness_texture, NULL, &this->fitness_shape);
     SDL_RenderCopy(render, this->timer_texture, NULL, &this->timer_shape);
+    
+    if(actual_time > this->gen_time){
+      this->control_tick = SDL_GetTicks();
+    }
   }
 
   Screen* AIScreen::key_event(const SDL_Keycode& key){
