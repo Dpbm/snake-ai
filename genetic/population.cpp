@@ -8,11 +8,16 @@ using Game::Board;
 using Utils::random_int;
 
 namespace Genetic{
+  //for tests
+  Population::Population(uint16_t total){
+    this->total_ind = total;
+  }
+
   Population::Population(uint16_t total, uint8_t board_w, uint8_t board_h, uint8_t total_food){
     this->total_ind = total;
     this->total_food = total_food;
     this->generate_food_positions(total_food, board_w, board_h);
-
+  
     vec2 first_food_pos = this->food_positions.at(0);
 
     for(size_t i = 0; i < total; i++){
@@ -128,7 +133,7 @@ namespace Genetic{
   }
 
   void Population::next_gen(){
-    Chromosome** parents = this->select_parents();
+    Individual** parents = this->select_parents();
     //generate the offspring
     //reset individuals
     //replicate
@@ -138,29 +143,36 @@ namespace Genetic{
     delete parents;
   }
 
-  Chromosome** Population::select_parents(){
+  Individual** Population::select_parents(){
     uint16_t pa = 0;
     uint16_t pb = 1;
-
+    
     for(size_t i = 1; i < this->total_ind; i++){
       Individual* ind = this->individuals.at(i);
-        
-      int64_t last_big = this->individuals.at(pa)->fitness; 
 
-      if(ind->fitness > last_big){
+      int64_t first_big = this->individuals.at(pa)->fitness; 
+      int64_t second_big = this->individuals.at(pb)->fitness; 
+
+      if(ind->fitness > first_big){
         int16_t last_pa = pa;
         pa = i;
         pb = last_pa;
+      }else if(ind->fitness > second_big){
+        pb = i;
       }
     }
   
-    Chromosome** parents = new Chromosome*[2]{
-      this->individuals.at(pa)->player->get_chromossome(),
-      this->individuals.at(pb)->player->get_chromossome(),
+    Individual** parents = new Individual*[2]{
+      this->individuals.at(pa),
+      this->individuals.at(pb),
     };
 
     return parents;
-  } 
+  }
+
+  void Population::append_individual(Individual* ind){
+    this->individuals.push_back(ind);
+  }
 
   uint32_t Population::get_gen(){
     return this->gen;

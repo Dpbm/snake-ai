@@ -34,6 +34,12 @@ namespace Genetic {
       uint16_t get_best_score();
       int64_t get_best_fitness();
       ~Population();
+      
+      //for tests (these ones could be private)
+      Individual** select_parents();
+      void append_individual(Individual* ind);
+      Population(uint16_t total);
+      
 
     private:
       uint32_t gen = 1;
@@ -45,7 +51,6 @@ namespace Genetic {
       vector<vec2> food_positions; 
       
       Individual* get_best_individual();
-      Chromosome** select_parents();
       void generate_food_positions(uint8_t total, uint8_t w, uint8_t h);
       void update_individual_food_position(Individual *ind);
   };

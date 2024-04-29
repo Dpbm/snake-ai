@@ -8,6 +8,7 @@
 #include "./machine/machine.h"
 #include "./helpers/utils.h"
 #include "./game/players/player.h"
+#include "genetic/population.h"
 
 using std::size_t;
 using std::cout;
@@ -21,6 +22,8 @@ using Utils::random;
 using Utils::parse_nn;
 using Players::Player;
 using Players::Directions;
+using Genetic::Population;
+using Genetic::Individual;
 
 int main(){
   cout << "---GENES---" << endl;
@@ -104,5 +107,25 @@ int main(){
     p.update_pos();
     cout << "x: " << p.get_x() << " y: " << p.get_y() << endl;
   }
+
+  cout << endl << "---POPULATION---" << endl;
+  cout << "!!!!testig select parents!!!!" << endl;
+  Population p(3);
+  Individual* ind1 = new Individual{nullptr, nullptr, 0, 0, Directions::LEFT, 0};
+  Individual* ind2 = new Individual{nullptr, nullptr, 0, 0, Directions::LEFT, 0};
+  Individual* ind3 = new Individual{nullptr, nullptr, 100, 0, Directions::LEFT, 0};
+
+  p.append_individual(ind1);
+  p.append_individual(ind2);
+  p.append_individual(ind3);
+
+  Individual** parents = p.select_parents();
+  
+  cout << "ind1 " << ind1 << endl;
+  cout << "ind2 " << ind2 << endl;
+  cout << "ind3 " << ind3 << endl;
+
+  cout << "parent 1 " << parents[0] << endl;
+  cout << "parent 2 " << parents[1] << endl;
 }
 
