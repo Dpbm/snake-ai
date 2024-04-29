@@ -27,4 +27,5 @@ namespace Utils {
   uint8_t* parse_activations(string line, uint8_t total_layers);
   Matrix* parse_weights_head(string line);
   double* parse_row(string line, uint8_t width);  
+  double get_angle(int16_t px, int16_t py, int16_t fx, int16_t fy);
 }

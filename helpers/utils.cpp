@@ -1,3 +1,4 @@
+#include <cmath>
 #include <cstdint>
 #include <cstring>
 #include <string>
@@ -9,7 +10,12 @@
 #include "exceptions.h"
 #include "../matrix/matrix.h"
 #include "../machine/machine.h"
+#include "constants.h"
 
+using std::asin;
+using std::pow;
+using std::sqrt;
+using std::abs;
 using std::stoi;
 using std::stod;
 using std::vector;
@@ -261,5 +267,35 @@ namespace Utils {
       weight += a;
     }
     return row;
+  }
+  
+  double get_angle(int16_t px, int16_t py, int16_t fx, int16_t fy){
+    int8_t sector = 0;
+
+    //fx-px diffenrece of height
+    //fy-py difference of width
+
+    if(px == fx && py <= fy) //0
+      return 0;
+    else if(px == fx && py > fy) //180
+      return PI;
+    else if(px < fx && py == fy) //270
+      return (3*PI)/2;
+    else if(px > fx && py > fy) // second sector
+      sector = 1;
+    else if(px < fx && py > fy) // third sector
+      sector = 2;
+    else if(px < fx && py < fy) // fourth sector
+      sector = 3;
+
+    double dh = (double)(abs(px-fx));   
+    double dw = (double)(abs(fy-py));
+    double hip = (double)(sqrt(pow(dw,2)+pow(dh,2)));
+
+    if(hip == 0)
+      return 0;
+
+    double angle = abs(asin(dh/hip)) + (sector*(PI/2));
+    return angle;
   }
 }

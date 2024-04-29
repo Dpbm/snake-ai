@@ -11,6 +11,7 @@ namespace Chromosomes {
 
   class Chromosome{
     public:
+      Chromosome();
       Chromosome(uint64_t size); 
       Chromosome(Gene* genes, uint64_t size);
       Gene* get_genes();

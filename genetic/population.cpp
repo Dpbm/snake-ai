@@ -127,6 +127,41 @@ namespace Genetic{
       this->gen ++;
   }
 
+  void Population::next_gen(){
+    Chromosome** parents = this->select_parents();
+    //generate the offspring
+    //reset individuals
+    //replicate
+    //mutate
+    //reset foods
+    //clear pointers
+    delete parents;
+  }
+
+  Chromosome** Population::select_parents(){
+    uint16_t pa = 0;
+    uint16_t pb = 1;
+
+    for(size_t i = 1; i < this->total_ind; i++){
+      Individual* ind = this->individuals.at(i);
+        
+      int64_t last_big = this->individuals.at(pa)->fitness; 
+
+      if(ind->fitness > last_big){
+        int16_t last_pa = pa;
+        pa = i;
+        pb = last_pa;
+      }
+    }
+  
+    Chromosome** parents = new Chromosome*[2]{
+      this->individuals.at(pa)->player->get_chromossome(),
+      this->individuals.at(pb)->player->get_chromossome(),
+    };
+
+    return parents;
+  } 
+
   uint32_t Population::get_gen(){
     return this->gen;
   }

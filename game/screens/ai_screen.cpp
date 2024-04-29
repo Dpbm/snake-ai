@@ -108,7 +108,6 @@ namespace Screens {
         }
       }
 
-
     SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
     SDL_RenderCopy(render, this->score_text_texture, NULL, &this->score_text_shape);
     SDL_RenderCopy(render, this->gen_text_texture, NULL, &this->gen_text_shape);
@@ -172,8 +171,9 @@ namespace Screens {
     SDL_RenderCopy(render, this->fitness_texture, NULL, &this->fitness_shape);
     SDL_RenderCopy(render, this->timer_texture, NULL, &this->timer_shape);
     
-    if(actual_time > this->gen_time){
+    if(actual_time > this->gen_time || this->population.get_total_alive() == 0){
       this->control_tick = SDL_GetTicks();
+      this->population.next_gen();
     }
   }
 

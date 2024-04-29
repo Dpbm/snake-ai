@@ -12,6 +12,8 @@ using std::endl;
 using Genes::Gene;
 
 namespace Chromosomes {
+  Chromosome::Chromosome(){}
+
   Chromosome::Chromosome(uint64_t size){
     this->genes = new Gene[size];
     this->total_genes = size;

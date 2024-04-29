@@ -15,7 +15,6 @@ using Machine::Layer;
 using Utils::vec2;
 
 namespace Players{
-  
   class AIPlayer : public Player {
     public:
       AIPlayer(uint8_t board_w, uint8_t board_h);
@@ -24,6 +23,7 @@ namespace Players{
       void load_genes_into_weights();
       void update_input_data(const vec2& food, uint16_t w, uint16_t h);
       void compute_next_dir();
+      Chromosome* get_chromossome();
       void update_dir();
 
     private:

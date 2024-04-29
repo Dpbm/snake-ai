@@ -25,8 +25,8 @@ namespace Genetic {
   class Population{
     public:
       Population(uint16_t total, uint8_t board_w, uint8_t board_h, uint8_t total_food);
-      Individual* get_best_individual();
       Individual* get_best_alive_individual();
+      void next_gen();
       void run();
       uint32_t get_gen();
       uint16_t get_total_alive();
@@ -44,6 +44,8 @@ namespace Genetic {
       vector<Individual*> individuals;
       vector<vec2> food_positions; 
       
+      Individual* get_best_individual();
+      Chromosome** select_parents();
       void generate_food_positions(uint8_t total, uint8_t w, uint8_t h);
       void update_individual_food_position(Individual *ind);
   };
