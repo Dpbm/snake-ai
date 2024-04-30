@@ -14,6 +14,14 @@ using Utils::get_angle;
 namespace Players{
   AIPlayer::AIPlayer(uint8_t board_w, uint8_t board_h) : Player(board_w, board_h){
     this->setup_nn();
+    this->setup_chromosome(); 
+    this->load_genes_into_weights();
+  }
+  
+  AIPlayer::AIPlayer(uint8_t board_w, uint8_t board_h, Chromosome* chromosome) : Player(board_w, board_h){
+    this->setup_nn();
+    this->chromosome = chromosome;
+    this->load_genes_into_weights();
   }
 
   void AIPlayer::setup_nn(){
@@ -25,9 +33,6 @@ namespace Players{
 
     this->nn->get_layer(1)->relu(); 
     this->nn->get_output_layer()->softmax();
-    
-    this->setup_chromosome(); 
-    this->load_genes_into_weights();
   }
 
   void AIPlayer::setup_chromosome(){

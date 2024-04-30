@@ -38,6 +38,7 @@ namespace Genetic {
       int64_t get_best_fitness();
       ~Population();
       
+      
       //for tests (these ones could be private)
       Individual** select_parents();
       void append_individual(Individual* ind);
@@ -50,11 +51,14 @@ namespace Genetic {
       uint16_t total_ind = 0;
       uint16_t total_alive = 0;
       uint16_t total_win = 0;
+      uint8_t board_w = 0;
+      uint8_t board_h = 0;
       vector<Individual*> individuals;
       vector<vec2> food_positions; 
       
       Individual* get_best_individual();
       void generate_food_positions(uint8_t total, uint8_t w, uint8_t h);
       void update_individual_food_position(Individual *ind);
+      void clear();
   };
 };

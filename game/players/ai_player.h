@@ -18,6 +18,7 @@ namespace Players{
   class AIPlayer : public Player {
     public:
       AIPlayer(uint8_t board_w, uint8_t board_h);
+      AIPlayer(uint8_t board_w, uint8_t board_h, Chromosome* chromosome);
       ~AIPlayer();
   
       void load_genes_into_weights();

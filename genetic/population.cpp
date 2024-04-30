@@ -22,11 +22,13 @@ namespace Genetic{
   Population::Population(uint16_t total, uint8_t board_w, uint8_t board_h, uint8_t total_food){
     this->total_ind = total;
     this->total_food = total_food;
+    this->board_h = board_h;
+    this->board_w = board_w;
+    
     this->generate_food_positions(total_food, board_w, board_h);
-  
     vec2 first_food_pos = this->food_positions.at(0);
-
-    for(size_t i = 0; i < total; i++){
+    
+    for(size_t i = 0; i < this->total_ind; i++){
       Individual* ind = new Individual;
       ind->board = new Board(board_w, board_h);
       ind->player = new AIPlayer(board_w, board_h);
@@ -134,19 +136,45 @@ namespace Genetic{
 
       this->update_individual_food_position(ind);
     }
-    if(this->total_alive == 0)
-      this->gen ++;
   }
 
   void Population::next_gen(){
+    this->gen++;
     Individual** parents = this->select_parents();
     Chromosome* offspring = this->generate_offspring(parents[0]->player->get_chromossome(), parents[1]->player->get_chromossome());
-  
-    //reset individuals
-    //replicate
-    //mutate
-    //reset foods
-    //clear pointers
+    Gene* offspring_genes = offspring->get_genes();
+
+    uint64_t offspring_ch_size = offspring->get_size();
+
+    this->clear();
+    this->food_positions.clear();
+    this->generate_food_positions(total_food, board_w, board_h);
+    vec2 first_food_pos = this->food_positions.at(0);
+    
+    this->individuals.clear();
+    for(size_t i = 0; i < this->total_ind; i++){
+      Individual* ind = new Individual;
+      ind->board = new Board(board_w, board_h);
+      
+      if(i == 0)
+        ind->player = new AIPlayer(board_w, board_h, offspring);
+      else{
+        Chromosome* player_chromosome = new Chromosome(offspring_ch_size);
+        player_chromosome->copy_genes(offspring_genes);
+        player_chromosome->mutate(0.02);
+
+        ind->player = new AIPlayer(board_w, board_h, player_chromosome);
+      }
+
+      ind->board->set_food_pos(first_food_pos.x, first_food_pos.y); 
+      ind->board->add_player(ind->player);
+      ind->fitness = 0;
+      ind->same_dir_counter = 0;
+      ind->index = i;
+      ind->las_dir = ind->player->get_dir();
+
+      this->individuals.push_back(ind); 
+    }
     delete parents;
   }
 
@@ -231,11 +259,15 @@ namespace Genetic{
     return this->get_best_individual()->fitness;
   }
 
-  Population::~Population(){
+  void Population::clear(){
     for(Individual* ind : this->individuals){
       delete ind->board;
       delete ind->player;
       delete ind;
     }   
+  }
+
+  Population::~Population(){
+    this->clear();
   }
 };
