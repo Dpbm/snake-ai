@@ -1,10 +1,16 @@
 #include <gtest/gtest.h>
+#include <stdexcept>
 #include "../genetic/population.h"
 #include "../game/players/player.h"
+#include "../genetic/chromosome.h"
+#include "../genetic/gene.h"
 
+using std::invalid_argument;
 using Genetic::Population;
 using Genetic::Individual;
 using Players::Directions;
+using Chromosomes::Chromosome;
+using Genes::Gene;
 
 namespace {
   TEST(ValueTest, OnlyTwoIndividualsSelectParentsTest){
@@ -90,5 +96,19 @@ namespace {
     ASSERT_EQ(parents[1], ind2);
     delete[] parents;
   }
+
+
+  TEST(ValuesTest, GenerateOffSpringChromosomesWithDifferentSizesTest){
+    Population p(0);
+    Chromosome ch1(10);
+    Chromosome ch2(3);
+    ASSERT_THROW({ p.generate_offspring(&ch1, &ch2); }, invalid_argument);
+  }
   
+  TEST(ValuesTest, GenerateOffSpringChromosomesWithSameSizesTest){
+    Population p(0);
+    Chromosome ch1(10);
+    Chromosome ch2(10);
+    ASSERT_NO_THROW({ p.generate_offspring(&ch1, &ch2); });
+  }
 }

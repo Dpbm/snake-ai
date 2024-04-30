@@ -1,10 +1,16 @@
 #include <cstdint>
+#include <stdexcept>
 #include <unistd.h>
 #include "population.h"
 #include "../game/board.h"
 #include "../helpers/utils.h"
+#include "chromosome.h"
+#include "gene.h"
 
+using std::invalid_argument;
 using Game::Board;
+using Chromosomes::Chromosome;
+using Genes::Gene;
 using Utils::random_int;
 
 namespace Genetic{
@@ -38,7 +44,7 @@ namespace Genetic{
 
   void Population::generate_food_positions(uint8_t total, uint8_t w, uint8_t h){
     for(size_t _ = 0; _ < total; _++)
-      this->food_positions.push_back(vec2{random_int(0, h-1), random_int(0, w-1)});
+      this->food_positions.push_back(vec2{(int16_t)random_int(0, h-1), (int16_t)random_int(0, w-1)});
       // TODO: refactor this random position to a especialist class or something like this
   }
 
@@ -134,7 +140,8 @@ namespace Genetic{
 
   void Population::next_gen(){
     Individual** parents = this->select_parents();
-    //generate the offspring
+    Chromosome* offspring = this->generate_offspring(parents[0]->player->get_chromossome(), parents[1]->player->get_chromossome());
+  
     //reset individuals
     //replicate
     //mutate
@@ -168,6 +175,30 @@ namespace Genetic{
     };
 
     return parents;
+  }
+
+  Chromosome* Population::generate_offspring(Chromosome* ch1, Chromosome* ch2){
+    if(ch1->get_size() != ch2->get_size())
+      throw invalid_argument("Both Chromosomes must have the same size!");
+
+    uint64_t ch_size = ch1->get_size();
+
+    Chromosome* offspring = new Chromosome(ch_size);
+    Gene* offspring_genes = new Gene[ch_size];
+
+    Gene* ch1_genes = ch1->get_genes();
+    Gene* ch2_genes = ch2->get_genes();
+
+    uint64_t pivot = random_int(0, ch_size);
+    for(size_t i = 0; i < ch_size; i++){
+      if(i < pivot)
+        offspring_genes[i].set_gene_value(ch1_genes[i].get_gene_value());
+      else
+        offspring_genes[i].set_gene_value(ch2_genes[i].get_gene_value());
+    }
+    offspring->copy_genes(offspring_genes);
+
+    return offspring;
   }
 
   void Population::append_individual(Individual* ind){

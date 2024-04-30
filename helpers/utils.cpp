@@ -38,11 +38,11 @@ namespace Utils {
     return distr(eng);
   }
   
-  int16_t random_int(uint8_t start, uint8_t end){
+  int64_t random_int(uint64_t start, uint64_t end){
     random_device device;
     mt19937 eng(device());
-    uniform_int_distribution<int16_t> distr(start, end);
-    int16_t result = distr(eng);
+    uniform_int_distribution<int64_t> distr(start, end);
+    int64_t result = distr(eng);
     return result;
   }
 

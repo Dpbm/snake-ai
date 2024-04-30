@@ -5,12 +5,14 @@
 #include "../game/players/ai_player.h"
 #include "../game/board.h"
 #include "../helpers/utils.h"
+#include "../genetic/chromosome.h"
 
 using std::vector;
 using Game::Board;
 using Players::AIPlayer;
 using Utils::vec2;
 using Players::Directions;
+using Chromosomes::Chromosome;
 
 namespace Genetic {
   typedef struct Individual{
@@ -29,6 +31,7 @@ namespace Genetic {
       void next_gen();
       void run();
       uint32_t get_gen();
+      Chromosome* generate_offspring(Chromosome* ch1, Chromosome* ch2);
       uint16_t get_total_alive();
       uint8_t get_total_win();
       uint16_t get_best_score();

@@ -127,5 +127,20 @@ int main(){
 
   cout << "parent 1 " << parents[0] << endl;
   cout << "parent 2 " << parents[1] << endl;
+  
+  cout << endl << "!!!!testig generate offsping!!!!" << endl;
+  Population p2(0);
+  Chromosome chromosome1(10);
+  Chromosome chromosome2(10);
+
+  cout << "Chromosome 1: ";
+  chromosome1.show();
+  cout << "Chromosome 2: ";
+  chromosome2.show();
+  
+  Chromosome* offsping = p2.generate_offspring(&chromosome1, &chromosome2);
+  cout << "offsping: ";
+  offsping->show();
+  delete offsping;
 }
 

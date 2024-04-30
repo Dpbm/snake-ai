@@ -70,7 +70,7 @@ namespace Players{
 
     this->input_data->update_value(0, 0, (double)(px-fx)/w);  
     this->input_data->update_value(0, 1, (double)(py-fy)/h);
-    this->input_data->update_value(0, 2, get_angle(px, py, fx, fy) / (2*PI));
+    // this->input_data->update_value(0, 2, get_angle(px, py, fx, fy) / (2*PI));
   }
 
 

@@ -29,8 +29,8 @@ namespace Players{
     private:
       Chromosome* chromosome = nullptr;
       NN* nn = new NN;   
-      Layer* input_layer = new Layer(3, true);
-      Matrix* input_data = new Matrix(3, 1);
+      Layer* input_layer = new Layer(2, true);
+      Matrix* input_data = new Matrix(2, 1);
 
       void setup_nn();
       void setup_chromosome();

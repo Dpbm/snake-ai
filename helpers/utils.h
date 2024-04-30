@@ -17,7 +17,7 @@ namespace Utils {
   }vec2;
 
   double random(double start, double end);
-  int16_t random_int(uint8_t start, uint8_t end);
+  int64_t random_int(uint64_t start, uint64_t end);
   void append_to_file(string filename, string data);
   void create_file(string filename, string data);
   vector<Matrix*> parse_weigths(string filename);
