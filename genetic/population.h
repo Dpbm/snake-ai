@@ -63,7 +63,7 @@ namespace Genetic {
       vector<Individual*> individuals;
       vector<vec2> food_positions; 
       
-      void generate_food_positions(uint8_t total, uint8_t w, uint8_t h);
+      void generate_food_positions();
       void update_individual_food_position(Individual *ind);
       void clear();
   };

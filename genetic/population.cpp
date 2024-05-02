@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <iostream>
 #include <stdexcept>
 #include <unistd.h>
 #include "population.h"
@@ -7,6 +8,8 @@
 #include "chromosome.h"
 #include "gene.h"
 
+using std::cout;
+using std::endl;
 using std::invalid_argument;
 using Game::Board;
 using Chromosomes::Chromosome;
@@ -25,7 +28,7 @@ namespace Genetic{
     this->board_h = board_h;
     this->board_w = board_w;
     
-    this->generate_food_positions(total_food, board_w, board_h);
+    this->generate_food_positions();
     vec2 first_food_pos = this->food_positions.at(0);
     
     for(size_t i = 0; i < this->total_ind; i++){
@@ -44,9 +47,9 @@ namespace Genetic{
     }
   }
 
-  void Population::generate_food_positions(uint8_t total, uint8_t w, uint8_t h){
-    for(size_t _ = 0; _ < total; _++)
-      this->food_positions.push_back(vec2{(int16_t)random_int(0, h-1), (int16_t)random_int(0, w-1)});
+  void Population::generate_food_positions(){
+    for(size_t _ = 0; _ < this->total_food; _++)
+      this->food_positions.push_back(vec2{(int16_t)random_int(0, this->board_h-1), (int16_t)random_int(0, this->board_w-1)});
       // TODO: refactor this random position to a especialist class or something like this
   }
 
@@ -156,9 +159,13 @@ namespace Genetic{
   }
 
   void Population::next_gen(){
+    cout << "gen: " << this->gen << endl;  
+    cout << "best fit: " << this->best_fitness << endl;  
+    cout << "best score: " << this->best_score << endl << endl;  
+    
     this->gen++;
     this->best_score = 0;
-    std::cout << "next gen: " << this->gen << "\n";  
+    
     Individual** parents = this->select_parents();
     Chromosome* offspring = this->generate_offspring(parents[0]->player->get_chromossome(), parents[1]->player->get_chromossome());
     delete parents;
@@ -167,10 +174,9 @@ namespace Genetic{
     uint64_t offspring_ch_size = offspring->get_size();
 
     this->clear();
-    std::cout << "no segmentaion fault\n";  
     this->individuals.clear();
     this->food_positions.clear();
-    this->generate_food_positions(total_food, board_w, board_h);
+    this->generate_food_positions();
     vec2 first_food_pos = this->food_positions.at(0);
     
     this->individuals.clear();
