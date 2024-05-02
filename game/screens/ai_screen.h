@@ -33,10 +33,11 @@ namespace Screens{
       uint8_t gen_time = 30; //in seconds
       uint32_t control_tick = 0;
 
-      Population population{2000, board_w, board_h, 20};
+      Population population{3000, board_w, board_h, 20};
 
       SDL_Renderer* render;
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
+      TTF_Font* tiny_font = TTF_OpenFont("./assets/pressstart.ttf", 12);
       SDL_Color text_color{ 255, 255, 255 };
      
       SDL_Rect score_text_shape;
@@ -68,5 +69,10 @@ namespace Screens{
       SDL_Rect timer_shape;
       SDL_Texture* timer_text_texture = nullptr;
       SDL_Texture* timer_texture = nullptr;
+ 
+      SDL_Rect weights_text_shape;
+      SDL_Texture* weights_text_texture = nullptr;
+
+      void save_weights();
   };
 };

@@ -125,28 +125,50 @@ namespace Genetic{
       // fitness for catching the food
       if(board->get_caught_the_food())
         ind->fitness += 5000;
-    
-      if(player->get_score() >= this->total_food){
+   
+      uint16_t score = player->get_score();
+      if(score > this->best_score)
+        this->best_score = score;
+
+      if(score >= this->total_food){
         player->set_died();
         this->total_win++;
         this->total_alive--;
         ind->fitness += 20000;
+        this->update_best_fitness(ind);
         continue;
       }
 
+      if(player->is_dead()){
+        ind->fitness += -1000;
+        this->update_best_fitness(ind);
+        continue;
+      }
+
+      this->update_best_fitness(ind);
       this->update_individual_food_position(ind);
     }
   }
 
+  void Population::update_best_fitness(Individual* ind){
+    if(ind->fitness > this->best_fitness)
+      this->best_fitness = ind->fitness;
+  }
+
   void Population::next_gen(){
     this->gen++;
+    this->best_score = 0;
+    std::cout << "next gen: " << this->gen << "\n";  
     Individual** parents = this->select_parents();
     Chromosome* offspring = this->generate_offspring(parents[0]->player->get_chromossome(), parents[1]->player->get_chromossome());
+    delete parents;
     Gene* offspring_genes = offspring->get_genes();
 
     uint64_t offspring_ch_size = offspring->get_size();
 
     this->clear();
+    std::cout << "no segmentaion fault\n";  
+    this->individuals.clear();
     this->food_positions.clear();
     this->generate_food_positions(total_food, board_w, board_h);
     vec2 first_food_pos = this->food_positions.at(0);
@@ -161,7 +183,7 @@ namespace Genetic{
       else{
         Chromosome* player_chromosome = new Chromosome(offspring_ch_size);
         player_chromosome->copy_genes(offspring_genes);
-        player_chromosome->mutate(0.02);
+        player_chromosome->mutate(0.3);
 
         ind->player = new AIPlayer(board_w, board_h, player_chromosome);
       }
@@ -175,7 +197,6 @@ namespace Genetic{
 
       this->individuals.push_back(ind); 
     }
-    delete parents;
   }
 
   Individual** Population::select_parents(){
@@ -238,13 +259,7 @@ namespace Genetic{
   }
 
   uint16_t Population::get_best_score(){
-    uint16_t best_score = this->individuals.at(0)->player->get_score();
-    for(Individual* ind: this->individuals){
-      uint16_t ind_score = ind->player->get_score();
-      if(ind_score > best_score)
-        best_score = ind_score;
-    }
-    return best_score;
+    return this->best_score;
   }
   
   uint16_t Population::get_total_alive(){
@@ -256,7 +271,7 @@ namespace Genetic{
   }
   
   int64_t Population::get_best_fitness(){
-    return this->get_best_individual()->fitness;
+    return this->best_fitness;
   }
 
   void Population::clear(){

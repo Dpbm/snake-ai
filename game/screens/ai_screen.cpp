@@ -22,7 +22,7 @@ using Genetic::Individual;
 namespace Screens {
 
   AIScreen::AIScreen(SDL_Renderer* render){
-    if(!this->font){
+    if(!this->font || !this->tiny_font){
       cout << "Failed on getting font!" << TTF_GetError() << endl;
       exit(1);
     }
@@ -58,13 +58,20 @@ namespace Screens {
     this->timer_text_texture = SDL_CreateTextureFromSurface(render, timer_text_surface);
     this->timer_text_shape = SDL_Rect{20, 370, timer_text_surface->w, timer_text_surface->h};
     SDL_FreeSurface(timer_text_surface);
+    
+
+    SDL_Surface* weights_text_surface = TTF_RenderText_Solid(this->tiny_font, "'S' save weights", this->text_color);
+    this->weights_text_texture = SDL_CreateTextureFromSurface(render, weights_text_surface);
+    this->weights_text_shape = SDL_Rect{20, 530, weights_text_surface->w, weights_text_surface->h};
+    SDL_FreeSurface(weights_text_surface);
 
     if(this->score_text_texture == nullptr || 
        this->gen_text_texture == nullptr || 
        this->alive_text_texture == nullptr ||
        this->win_text_texture == nullptr ||
        this->fitness_text_texture == nullptr ||
-       this->timer_text_texture == nullptr){
+       this->timer_text_texture == nullptr ||
+       this->weights_text_texture == nullptr){
       cout << "Failed on creating text textures!" << SDL_GetError() << endl;
       exit(1);
     }
@@ -115,6 +122,7 @@ namespace Screens {
     SDL_RenderCopy(render, this->win_text_texture, NULL, &this->win_text_shape);
     SDL_RenderCopy(render, this->fitness_text_texture, NULL, &this->fitness_text_shape);
     SDL_RenderCopy(render, this->timer_text_texture, NULL, &this->timer_text_shape);
+    SDL_RenderCopy(render, this->weights_text_texture, NULL, &this->weights_text_shape);
     
     if(this->score_texture != nullptr)
       SDL_DestroyTexture(this->score_texture);
@@ -178,10 +186,19 @@ namespace Screens {
   }
 
   Screen* AIScreen::key_event(const SDL_Keycode& key){
+    if(key == SDLK_s)
+      this->save_weights();
+
     return nullptr;
   }
 
   void AIScreen::close_event(){
+    this->save_weights();
+  }
+
+  void AIScreen::save_weights(){
+    cout << "Saving weights!..." << endl;
+    this->population.get_best_individual()->player->save_weights();
   }
   
   AIScreen::~AIScreen(){
@@ -197,5 +214,6 @@ namespace Screens {
     SDL_DestroyTexture(this->fitness_text_texture);
     SDL_DestroyTexture(this->timer_texture);
     SDL_DestroyTexture(this->timer_text_texture);
+    SDL_DestroyTexture(this->weights_text_texture);
   }
 }

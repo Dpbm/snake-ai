@@ -21,6 +21,7 @@ namespace Players{
       AIPlayer(uint8_t board_w, uint8_t board_h, Chromosome* chromosome);
       ~AIPlayer();
   
+      void save_weights();
       void load_genes_into_weights();
       void update_input_data(const vec2& food, uint16_t w, uint16_t h);
       void compute_next_dir();

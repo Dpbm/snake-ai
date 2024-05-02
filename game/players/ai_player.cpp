@@ -1,4 +1,6 @@
+#include <ctime>
 #include <cstdint>
+#include <sstream>
 #include "ai_player.h"
 #include "../../machine/weights.h"
 #include "../../genetic/chromosome.h"
@@ -6,6 +8,7 @@
 #include "../../helpers/constants.h"
 #include "player.h"
 
+using std::stringstream;
 using Machine::Weights;
 using Chromosomes::Chromosome;
 using Utils::vec2;
@@ -100,6 +103,17 @@ namespace Players{
     this->set_dir((Directions)new_dir);
   }
 
+  void AIPlayer::save_weights(){
+    time_t now = time(0);
+    string time = asctime(localtime(&now));
+    //remove the $\n at the end of the string
+    time.pop_back();
+    
+    stringstream filename;
+    filename << time;
+    filename << ".wg"; 
+    this->nn->save_weights(filename.str());
+  }
 
   AIPlayer::~AIPlayer(){
     delete this->chromosome;
