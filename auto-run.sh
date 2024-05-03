@@ -12,18 +12,13 @@ printf "${GREEN}Cleaning directories...${ENDCOLOR}"
 ./clean.sh
 printf "\n\n"
 
-printf "${GREEN}Compiling: 'manual_tests.cpp'${ENDCOLOR}\n"
-./compile.sh manual_tests.cpp
+printf "${GREEN}Compiling: 'manual', 'snake' and 'tests'${ENDCOLOR}\n"
+./compile.sh 
 printf "\n\n"
 
 printf "${GREEN}Running: 'manual_tests'${ENDCOLOR}\n"
-./build/ga.out
+./build/manual
 printf "\n\n"
-
-printf "${GREEN}Compiling: 'main.cpp'${ENDCOLOR}\n"
-./compile.sh main.cpp
-printf "\n\n"
-
 
 printf "${GREEN}Running tests${ENDCOLOR}\n"
 cd build && rm -rf *.wg && ctest -V

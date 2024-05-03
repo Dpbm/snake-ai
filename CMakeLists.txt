@@ -16,9 +16,10 @@ FetchContent_MakeAvailable(googletest)
 
 find_package(SDL2 REQUIRED)
 
-add_executable(ga.out ${TARGET_MAIN})
+add_executable(snake main.cpp)
+target_include_directories(snake PRIVATE ${SDL2_INCLUDE_DIRS})
 
-target_include_directories(ga.out PRIVATE ${SDL2_INCLUDE_DIRS})
+add_executable(manual manual_tests.cpp)
 
 add_subdirectory(helpers)
 add_subdirectory(game)
@@ -51,7 +52,8 @@ target_link_libraries(players machine matrix genetic helpers ${SDL2_LIBRARIES})
 target_link_libraries(screens players board helpers genetic ${SDL2_LIBRARIES} SDL2_ttf)
 target_link_libraries(board helpers players)
 
-target_link_libraries(ga.out PRIVATE helpers board screens players ${SDL2_LIBRARIES} SDL2_ttf)
+target_link_libraries(snake PRIVATE helpers board screens players ${SDL2_LIBRARIES} SDL2_ttf)
+target_link_libraries(manual PRIVATE helpers board players)
 
 enable_testing()
 
