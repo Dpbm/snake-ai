@@ -19,7 +19,7 @@ namespace Screens{
   class PlayerScreen : public Screen{
     public:
       PlayerScreen(SDL_Renderer* render);
-      void execute(SDL_Renderer* render, bool& game_loop);
+      void execute(bool& game_loop);
       Screen* key_event(const SDL_Keycode& key);
       ~PlayerScreen();
       void close_event();

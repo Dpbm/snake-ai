@@ -67,7 +67,7 @@ int main(){
       }
     }
     SDL_RenderClear(render);
-    screen->execute(render, game_loop);
+    screen->execute(game_loop);
     SDL_RenderPresent(render);
   }
 

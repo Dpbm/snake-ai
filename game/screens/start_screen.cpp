@@ -52,12 +52,12 @@ namespace Screens {
     return nullptr;
   }
 
-  void StartScreen::execute(SDL_Renderer* render, bool& game_loop){
-    SDL_RenderClear(render);
-    SDL_RenderCopy(render, this->title_texture, NULL, &this->title_shape);
-    SDL_RenderCopy(render, this->ai_texture, NULL, &this->ai_shape);
-    SDL_RenderCopy(render, this->player_texture, NULL, &this->player_shape);
-    SDL_RenderPresent(render);
+  void StartScreen::execute(bool& game_loop){
+    SDL_RenderClear(this->render);
+    SDL_RenderCopy(this->render, this->title_texture, NULL, &this->title_shape);
+    SDL_RenderCopy(this->render, this->ai_texture, NULL, &this->ai_shape);
+    SDL_RenderCopy(this->render, this->player_texture, NULL, &this->player_shape);
+    SDL_RenderPresent(this->render);
   }
 
   StartScreen::~StartScreen(){

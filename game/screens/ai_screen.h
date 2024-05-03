@@ -21,7 +21,7 @@ namespace Screens{
     public:
       AIScreen(SDL_Renderer* render);
       ~AIScreen();
-      void execute(SDL_Renderer* render, bool& game_loop);
+      void execute(bool& game_loop);
       Screen* key_event(const SDL_Keycode& key);
       void close_event();     
 

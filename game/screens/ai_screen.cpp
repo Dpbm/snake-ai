@@ -77,7 +77,7 @@ namespace Screens {
     this->control_tick = SDL_GetTicks();
   }
 
-  void AIScreen::execute(SDL_Renderer* render, bool& game_loop){
+  void AIScreen::execute(bool& game_loop){
     uint8_t actual_time = (SDL_GetTicks() - this->control_tick)/1000;
 
     this->population.run();
@@ -92,20 +92,20 @@ namespace Screens {
         SDL_Rect rect = SDL_Rect{(int)((j*SQUARE_SIDE)+this->left_padding), (int)i*SQUARE_SIDE, SQUARE_SIDE, SQUARE_SIDE};
         switch(board_m[i][j]){
           case 0: {
-            SDL_SetRenderDrawColor(render, 100, 100, 100, 255);
-            SDL_RenderDrawRect(render, &rect);
+            SDL_SetRenderDrawColor(this->render, 100, 100, 100, 255);
+            SDL_RenderDrawRect(this->render, &rect);
             break;
           }
           
           case 1: {
-            SDL_SetRenderDrawColor(render, 0, 0, 255, 255);
-            SDL_RenderFillRect(render, &rect);
+            SDL_SetRenderDrawColor(this->render, 0, 0, 255, 255);
+            SDL_RenderFillRect(this->render, &rect);
             break;
           }
         
           case 2: {
-            SDL_SetRenderDrawColor(render, 0, 255, 0, 255);
-            SDL_RenderFillRect(render, &rect);
+            SDL_SetRenderDrawColor(this->render, 0, 255, 0, 255);
+            SDL_RenderFillRect(this->render, &rect);
             break;
           }
 
@@ -113,20 +113,20 @@ namespace Screens {
         }
       }
 
-    SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
-    SDL_RenderCopy(render, this->score_text_texture, NULL, &this->score_text_shape);
-    SDL_RenderCopy(render, this->gen_text_texture, NULL, &this->gen_text_shape);
-    SDL_RenderCopy(render, this->alive_text_texture, NULL, &this->alive_text_shape);
-    SDL_RenderCopy(render, this->win_text_texture, NULL, &this->win_text_shape);
-    SDL_RenderCopy(render, this->fitness_text_texture, NULL, &this->fitness_text_shape);
-    SDL_RenderCopy(render, this->timer_text_texture, NULL, &this->timer_text_shape);
-    SDL_RenderCopy(render, this->weights_text_texture, NULL, &this->weights_text_shape);
+    SDL_SetRenderDrawColor(this->render, 0, 0, 0, 255);
+    SDL_RenderCopy(this->render, this->score_text_texture, NULL, &this->score_text_shape);
+    SDL_RenderCopy(this->render, this->gen_text_texture, NULL, &this->gen_text_shape);
+    SDL_RenderCopy(this->render, this->alive_text_texture, NULL, &this->alive_text_shape);
+    SDL_RenderCopy(this->render, this->win_text_texture, NULL, &this->win_text_shape);
+    SDL_RenderCopy(this->render, this->fitness_text_texture, NULL, &this->fitness_text_shape);
+    SDL_RenderCopy(this->render, this->timer_text_texture, NULL, &this->timer_text_shape);
+    SDL_RenderCopy(this->render, this->weights_text_texture, NULL, &this->weights_text_shape);
     
     if(this->score_texture != nullptr)
       SDL_DestroyTexture(this->score_texture);
    
     SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(this->population.get_best_score()).c_str(), this->text_color);
-    this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
+    this->score_texture = SDL_CreateTextureFromSurface(this->render, score_surface);
     this->score_shape = SDL_Rect{this->score_text_shape.x, this->score_text_shape.y+30, score_surface->w, score_surface->h};
     SDL_FreeSurface(score_surface);
     
@@ -134,7 +134,7 @@ namespace Screens {
       SDL_DestroyTexture(this->gen_texture);
     
     SDL_Surface* gen_surface = TTF_RenderText_Solid(this->font, to_string(this->population.get_gen()).c_str(), this->text_color);
-    this->gen_texture = SDL_CreateTextureFromSurface(render, gen_surface);
+    this->gen_texture = SDL_CreateTextureFromSurface(this->render, gen_surface);
     this->gen_shape = SDL_Rect{this->gen_text_shape.x, this->gen_text_shape.y+30, gen_surface->w, gen_surface->h};
     SDL_FreeSurface(gen_surface);
     
@@ -142,7 +142,7 @@ namespace Screens {
       SDL_DestroyTexture(this->alive_texture);
     
     SDL_Surface* alive_surface = TTF_RenderText_Solid(this->font, to_string(this->population.get_total_alive()).c_str(), this->text_color);
-    this->alive_texture = SDL_CreateTextureFromSurface(render, alive_surface);
+    this->alive_texture = SDL_CreateTextureFromSurface(this->render, alive_surface);
     this->alive_shape = SDL_Rect{this->alive_text_shape.x, this->alive_text_shape.y+30, alive_surface->w, alive_surface->h};
     SDL_FreeSurface(alive_surface);
 
@@ -150,7 +150,7 @@ namespace Screens {
       SDL_DestroyTexture(this->win_texture);
     
     SDL_Surface* win_surface = TTF_RenderText_Solid(this->font, to_string(this->population.get_total_win()).c_str(), this->text_color);
-    this->win_texture = SDL_CreateTextureFromSurface(render, win_surface);
+    this->win_texture = SDL_CreateTextureFromSurface(this->render, win_surface);
     this->win_shape = SDL_Rect{this->win_text_shape.x, this->win_text_shape.y+30, win_surface->w, win_surface->h};
     SDL_FreeSurface(win_surface);
     
@@ -158,7 +158,7 @@ namespace Screens {
       SDL_DestroyTexture(this->fitness_texture);
     
     SDL_Surface* fitness_surface = TTF_RenderText_Solid(this->font, to_string(this->population.get_best_fitness()).c_str(), this->text_color);
-    this->fitness_texture = SDL_CreateTextureFromSurface(render, fitness_surface);
+    this->fitness_texture = SDL_CreateTextureFromSurface(this->render, fitness_surface);
     this->fitness_shape = SDL_Rect{this->fitness_text_shape.x, this->fitness_text_shape.y+30, fitness_surface->w, fitness_surface->h};
     SDL_FreeSurface(fitness_surface);
     
@@ -166,16 +166,16 @@ namespace Screens {
       SDL_DestroyTexture(this->timer_texture);
     
     SDL_Surface* timer_surface = TTF_RenderText_Solid(this->font, to_string(actual_time).c_str(), this->text_color);
-    this->timer_texture = SDL_CreateTextureFromSurface(render, timer_surface);
+    this->timer_texture = SDL_CreateTextureFromSurface(this->render, timer_surface);
     this->timer_shape = SDL_Rect{this->timer_text_shape.x, this->timer_text_shape.y+30, timer_surface->w, timer_surface->h};
     SDL_FreeSurface(timer_surface);
 
-    SDL_RenderCopy(render, this->score_texture, NULL, &this->score_shape);
-    SDL_RenderCopy(render, this->gen_texture, NULL, &this->gen_shape);
-    SDL_RenderCopy(render, this->alive_texture, NULL, &this->alive_shape);
-    SDL_RenderCopy(render, this->win_texture, NULL, &this->win_shape);
-    SDL_RenderCopy(render, this->fitness_texture, NULL, &this->fitness_shape);
-    SDL_RenderCopy(render, this->timer_texture, NULL, &this->timer_shape);
+    SDL_RenderCopy(this->render, this->score_texture, NULL, &this->score_shape);
+    SDL_RenderCopy(this->render, this->gen_texture, NULL, &this->gen_shape);
+    SDL_RenderCopy(this->render, this->alive_texture, NULL, &this->alive_shape);
+    SDL_RenderCopy(this->render, this->win_texture, NULL, &this->win_shape);
+    SDL_RenderCopy(this->render, this->fitness_texture, NULL, &this->fitness_shape);
+    SDL_RenderCopy(this->render, this->timer_texture, NULL, &this->timer_shape);
     
     if(actual_time > this->gen_time || this->population.get_total_alive() == 0){
       this->control_tick = SDL_GetTicks();

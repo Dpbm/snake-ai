@@ -67,29 +67,29 @@ namespace Screens{
     return nullptr;
   }
 
-  void PlayerScreen::execute(SDL_Renderer* render, bool& game_loop){
+  void PlayerScreen::execute(bool& game_loop){
     bool won = this->player->get_score() >= this->max_score; 
     this->finished_game = won || this->player->is_dead();
     if(this->finished_game){
       SDL_Surface* game_over_surface = TTF_RenderText_Solid(this->title_font, won ? "Player Wins!!!" : "Game Over", this->text_color);
-      SDL_Texture* game_over_texture = SDL_CreateTextureFromSurface(render, game_over_surface);
+      SDL_Texture* game_over_texture = SDL_CreateTextureFromSurface(this->render, game_over_surface);
       SDL_Rect game_over_shape = SDL_Rect{(WIDTH/2)-(game_over_surface->w/2), (HEIGHT/2)-(game_over_surface->h), game_over_surface->w, game_over_surface->h};
       SDL_FreeSurface(game_over_surface);
       
       SDL_Surface* reset_surface = TTF_RenderText_Solid(this->font, "Press 'r' to reset", this->text_color);
-      SDL_Texture* reset_texture = SDL_CreateTextureFromSurface(render, reset_surface);
+      SDL_Texture* reset_texture = SDL_CreateTextureFromSurface(this->render, reset_surface);
       SDL_Rect reset_shape = SDL_Rect{(WIDTH/2)-(reset_surface->w/2), (HEIGHT/2)+(reset_surface->h)+20, reset_surface->w, reset_surface->h};
       SDL_FreeSurface(reset_surface);
       
       SDL_Surface* back_surface = TTF_RenderText_Solid(this->font, "Press 'g' to back to the start screen", this->text_color);
-      SDL_Texture* back_texture = SDL_CreateTextureFromSurface(render, back_surface);
+      SDL_Texture* back_texture = SDL_CreateTextureFromSurface(this->render, back_surface);
       SDL_Rect back_shape = SDL_Rect{(WIDTH/2)-(back_surface->w/2), (HEIGHT/2)+(back_surface->h)+50, back_surface->w, back_surface->h};
       SDL_FreeSurface(back_surface);
 
-      SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
-      SDL_RenderCopy(render, game_over_texture, NULL, &game_over_shape);
-      SDL_RenderCopy(render, reset_texture, NULL, &reset_shape);
-      SDL_RenderCopy(render, back_texture, NULL, &back_shape);
+      SDL_SetRenderDrawColor(this->render, 0, 0, 0, 255);
+      SDL_RenderCopy(this->render, game_over_texture, NULL, &game_over_shape);
+      SDL_RenderCopy(this->render, reset_texture, NULL, &reset_shape);
+      SDL_RenderCopy(this->render, back_texture, NULL, &back_shape);
       SDL_DestroyTexture(game_over_texture); 
       SDL_DestroyTexture(back_texture); 
       SDL_DestroyTexture(reset_texture); 
@@ -102,20 +102,20 @@ namespace Screens{
         SDL_Rect rect = SDL_Rect{(int)((j*SQUARE_SIDE)+this->left_padding), (int)i*SQUARE_SIDE, SQUARE_SIDE, SQUARE_SIDE};
         switch(board[i][j]){
           case 0: {
-            SDL_SetRenderDrawColor(render, 100, 100, 100, 255);
-            SDL_RenderDrawRect(render, &rect);
+            SDL_SetRenderDrawColor(this->render, 100, 100, 100, 255);
+            SDL_RenderDrawRect(this->render, &rect);
             break;
           }
           
           case 1: {
-            SDL_SetRenderDrawColor(render, 0, 0, 255, 255);
-            SDL_RenderFillRect(render, &rect);
+            SDL_SetRenderDrawColor(this->render, 0, 0, 255, 255);
+            SDL_RenderFillRect(this->render, &rect);
             break;
           }
         
           case 2: {
-            SDL_SetRenderDrawColor(render, 0, 255, 0, 255);
-            SDL_RenderFillRect(render, &rect);
+            SDL_SetRenderDrawColor(this->render, 0, 255, 0, 255);
+            SDL_RenderFillRect(this->render, &rect);
             break;
           }
 
@@ -123,16 +123,16 @@ namespace Screens{
         }
       }
 
-    SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
-    SDL_RenderCopy(render, this->score_text_texture, NULL, &this->score_text_shape);
+    SDL_SetRenderDrawColor(this->render, 0, 0, 0, 255);
+    SDL_RenderCopy(this->render, this->score_text_texture, NULL, &this->score_text_shape);
     if(this->score_texture != nullptr)
       SDL_DestroyTexture(this->score_texture);
     SDL_Surface* score_surface = TTF_RenderText_Solid(this->font, to_string(this->player->get_score()).c_str(), this->text_color);
-    this->score_texture = SDL_CreateTextureFromSurface(render, score_surface);
+    this->score_texture = SDL_CreateTextureFromSurface(this->render, score_surface);
     this->score_shape = SDL_Rect{20, 60, score_surface->w, score_surface->h};
     SDL_FreeSurface(score_surface);
 
-    SDL_RenderCopy(render, this->score_texture, NULL, &this->score_shape);
+    SDL_RenderCopy(this->render, this->score_texture, NULL, &this->score_shape);
   } 
   
   void PlayerScreen::close_event(){}
