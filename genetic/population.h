@@ -55,8 +55,10 @@ namespace Genetic {
       uint8_t board_w = 0;
       uint8_t board_h = 0;
 
+      
       uint16_t best_score = 0;
-      int64_t best_fitness = -1000000000000;
+      int64_t default_best_fitness = -1000000000000;
+      int64_t best_fitness = default_best_fitness;
   
       void update_best_fitness(Individual* ind);
 

@@ -165,6 +165,7 @@ namespace Genetic{
     
     this->gen++;
     this->best_score = 0;
+    this->best_fitness = this->default_best_fitness;
     
     Individual** parents = this->select_parents();
     Chromosome* offspring = this->generate_offspring(parents[0]->player->get_chromossome(), parents[1]->player->get_chromossome());
