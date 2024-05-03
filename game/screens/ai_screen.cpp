@@ -21,13 +21,11 @@ using Genetic::Individual;
 
 namespace Screens {
 
-  AIScreen::AIScreen(SDL_Renderer* render){
+  AIScreen::AIScreen(SDL_Renderer* render) : Screen(render){
     if(!this->font || !this->tiny_font){
       cout << "Failed on getting font!" << TTF_GetError() << endl;
       exit(1);
     }
-
-    this->render = render;
 
     SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "Best Score", this->text_color);
     this->score_text_texture = SDL_CreateTextureFromSurface(render, score_text_surface);

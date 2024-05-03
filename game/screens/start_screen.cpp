@@ -17,8 +17,7 @@ using std::cout;
 using std::endl;
 
 namespace Screens {  
-  StartScreen::StartScreen(SDL_Renderer* render){
-    this->render = render;
+  StartScreen::StartScreen(SDL_Renderer* render) : Screen(render){
     if(!this->font){
       cout << "Failed on getting font!" << endl;
       cout << TTF_GetError() << endl;

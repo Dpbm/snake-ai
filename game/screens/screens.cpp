@@ -3,6 +3,10 @@
 #include "screens.h"
 
 namespace Screens{
+  Screen::Screen(SDL_Renderer* render){
+    this->render = render;
+  }
+
   void Screen::execute(SDL_Renderer* render, bool& game_loop){}
   
   Screen* Screen::key_event(const SDL_Keycode& key){

@@ -15,12 +15,11 @@ using std::endl;
 using std::to_string;
 
 namespace Screens{
-  PlayerScreen::PlayerScreen(SDL_Renderer* render){
+  PlayerScreen::PlayerScreen(SDL_Renderer* render) : Screen(render){
     if(!this->font){
       cout << "Failed on getting font!" << TTF_GetError() << endl;
       exit(1);
     }
-    this->render = render;
 
     SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "Score", this->text_color);
     this->score_text_texture = SDL_CreateTextureFromSurface(render, score_text_surface);
