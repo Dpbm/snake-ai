@@ -46,7 +46,6 @@ int main(){
   }
 
   Screen* screen = new StartScreen(render);
-
   bool game_loop = true;
 
   while(game_loop){

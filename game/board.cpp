@@ -87,11 +87,11 @@ namespace Game {
     return this->caught_the_food;
   }
 
-  uint16_t Board::get_width(){
+  uint8_t Board::get_width(){
     return this->w;
   }
   
-  uint16_t Board::get_height(){
+  uint8_t Board::get_height(){
     return this->h;
   }
 
