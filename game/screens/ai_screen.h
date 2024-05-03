@@ -26,7 +26,6 @@ namespace Screens{
       void close_event();     
 
     private:
-      uint16_t left_padding = 12 * SQUARE_SIDE;
       uint8_t board_w = 30;
       uint8_t board_h = 30;
 

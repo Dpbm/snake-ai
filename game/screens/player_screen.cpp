@@ -1,6 +1,5 @@
 #include <SDL2/SDL_surface.h>
 #include <cstddef>
-#include <cstdint>
 #include <iostream>
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_render.h>
@@ -9,6 +8,7 @@
 #include "player_screen.h"
 #include "screens.h"
 #include "start_screen.h"
+#include "../../helpers/constants.h"
 
 using std::cout;
 using std::endl;
@@ -32,6 +32,7 @@ namespace Screens{
     }
 
     this->board.add_player(this->player);
+    this->left_padding = 10 * SQUARE_SIDE;
   }
 
 
@@ -95,33 +96,9 @@ namespace Screens{
       SDL_DestroyTexture(reset_texture); 
       return;
     }
+  
     this->board.update_player_pos();
-    uint8_t** board = this->board.get_board();
-    for(size_t i = 0; i < this->board_h; i++)
-      for(size_t j = 0; j < this->board_w; j++){
-        SDL_Rect rect = SDL_Rect{(int)((j*SQUARE_SIDE)+this->left_padding), (int)i*SQUARE_SIDE, SQUARE_SIDE, SQUARE_SIDE};
-        switch(board[i][j]){
-          case 0: {
-            SDL_SetRenderDrawColor(this->render, 100, 100, 100, 255);
-            SDL_RenderDrawRect(this->render, &rect);
-            break;
-          }
-          
-          case 1: {
-            SDL_SetRenderDrawColor(this->render, 0, 0, 255, 255);
-            SDL_RenderFillRect(this->render, &rect);
-            break;
-          }
-        
-          case 2: {
-            SDL_SetRenderDrawColor(this->render, 0, 255, 0, 255);
-            SDL_RenderFillRect(this->render, &rect);
-            break;
-          }
-
-          default: break;
-        }
-      }
+    this->render_board(&this->board);
 
     SDL_SetRenderDrawColor(this->render, 0, 0, 0, 255);
     SDL_RenderCopy(this->render, this->score_text_texture, NULL, &this->score_text_shape);

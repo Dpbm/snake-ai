@@ -10,8 +10,8 @@
 #include <string>
 #include "screens.h"
 #include "ai_screen.h"
-#include "../../helpers/constants.h"
 #include "../../genetic/population.h"
+#include "../../helpers/constants.h"
 
 using std::to_string;
 using std::cout;
@@ -26,6 +26,8 @@ namespace Screens {
       cout << "Failed on getting font!" << TTF_GetError() << endl;
       exit(1);
     }
+
+    this->left_padding = 12 * SQUARE_SIDE;
 
     SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "Best Score", this->text_color);
     this->score_text_texture = SDL_CreateTextureFromSurface(render, score_text_surface);
@@ -86,32 +88,7 @@ namespace Screens {
     AIPlayer* player = best_ind_alive->player;
     Board* board = best_ind_alive->board;
 
-    uint8_t** board_m = board->get_board();
-    for(size_t i = 0; i < this->board_h; i++)
-      for(size_t j = 0; j < this->board_w; j++){
-        SDL_Rect rect = SDL_Rect{(int)((j*SQUARE_SIDE)+this->left_padding), (int)i*SQUARE_SIDE, SQUARE_SIDE, SQUARE_SIDE};
-        switch(board_m[i][j]){
-          case 0: {
-            SDL_SetRenderDrawColor(this->render, 100, 100, 100, 255);
-            SDL_RenderDrawRect(this->render, &rect);
-            break;
-          }
-          
-          case 1: {
-            SDL_SetRenderDrawColor(this->render, 0, 0, 255, 255);
-            SDL_RenderFillRect(this->render, &rect);
-            break;
-          }
-        
-          case 2: {
-            SDL_SetRenderDrawColor(this->render, 0, 255, 0, 255);
-            SDL_RenderFillRect(this->render, &rect);
-            break;
-          }
-
-          default: break;
-        }
-      }
+    this->render_board(board);
 
     SDL_SetRenderDrawColor(this->render, 0, 0, 0, 255);
     SDL_RenderCopy(this->render, this->score_text_texture, NULL, &this->score_text_shape);

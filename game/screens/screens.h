@@ -3,6 +3,9 @@
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL_render.h>
+#include "../board.h"
+
+using Game::Board;
 
 namespace Screens{
   class Screen{
@@ -16,5 +19,8 @@ namespace Screens{
     protected:
       SDL_Renderer* render = nullptr;
       SDL_Color text_color{ 255, 255, 255 };
+      uint16_t left_padding = 0;
+
+      void render_board(Board *board);
   };
 };
