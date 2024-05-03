@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL_keycode.h>
+#include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL_render.h>
 
 namespace Screens{
@@ -14,5 +15,6 @@ namespace Screens{
 
     protected:
       SDL_Renderer* render = nullptr;
+      SDL_Color text_color{ 255, 255, 255 };
   };
 };

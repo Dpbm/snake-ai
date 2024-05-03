@@ -37,7 +37,6 @@ namespace Screens{
 
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 20);
       TTF_Font* tiny_font = TTF_OpenFont("./assets/pressstart.ttf", 12);
-      SDL_Color text_color{ 255, 255, 255 };
      
       SDL_Rect score_text_shape;
       SDL_Rect score_shape;

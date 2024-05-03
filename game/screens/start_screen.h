@@ -17,7 +17,6 @@ namespace Screens {
     
     private:
       TTF_Font* font = TTF_OpenFont("./assets/pressstart.ttf", 35);
-      SDL_Color text_color{ 255, 255, 255 };
       
       SDL_Texture* title_texture;
       SDL_Texture* ai_texture;
