@@ -12,7 +12,7 @@ using Game::Board;
 using Players::AIPlayer;
 using Utils::vec2;
 using Players::Directions;
-using Chromosomes::Chromosome;
+using Genetic::Chromosome;
 
 namespace Genetic {
   typedef struct Individual{

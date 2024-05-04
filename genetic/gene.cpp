@@ -5,9 +5,7 @@
 using std::invalid_argument;
 using Utils::random;
 
-namespace Genes {
-  double value; 
-
+namespace Genetic {
   Gene::Gene(){
     this->rand_gene_value();
   }
@@ -32,18 +30,4 @@ namespace Genes {
     this->value = random(-1, 1);
   }
 
-  void Gene::operator= (double value){
-    this->value = value;
-  }
-
-
-  double Gene::operator+ (double value){
-    return this->value + value;
-  }
-
-  double Gene::operator* (double value){
-    return this->value*value;
-  }
-
-  
 }

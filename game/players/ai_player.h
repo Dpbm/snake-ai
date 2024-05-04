@@ -8,7 +8,7 @@
 #include "../../helpers/utils.h"
 #include "player.h"
 
-using Chromosomes::Chromosome;
+using Genetic::Chromosome;
 using Matrices::Matrix;
 using Machine::NN;
 using Machine::Layer;

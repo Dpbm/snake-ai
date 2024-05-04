@@ -9,9 +9,8 @@ using std::invalid_argument;
 using std::size_t;
 using std::cout;
 using std::endl;
-using Genes::Gene;
 
-namespace Chromosomes {
+namespace Genetic {
   Chromosome::Chromosome(){}
 
   Chromosome::Chromosome(uint64_t size){
@@ -26,7 +25,7 @@ namespace Chromosomes {
 
   void Chromosome::copy_genes(Gene* genes){
     for(size_t i = 0; i < this->total_genes; i++)
-      this->genes[i] = genes[i].get_gene_value();
+      this->genes[i].set_gene_value(genes[i].get_gene_value());
   }
 
   Gene* Chromosome::get_genes(){

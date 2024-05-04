@@ -7,7 +7,7 @@ using ::testing::AllOf;
 using ::testing::Ge;
 using ::testing::Le;
 using std::invalid_argument;
-using Genes::Gene;
+using Genetic::Gene;
 
 namespace {
   TEST(CreationTest, CreateGeneTest){
@@ -51,27 +51,5 @@ namespace {
     ASSERT_EQ(gene->get_gene_value(), 100);
     delete gene;
   }
-
-  TEST(UpdateTest, AssignOperatorTest){
-    Gene* gene = new Genes::Gene();
-    ASSERT_NE(gene->get_gene_value(), 10);
-    (*gene) = 10.0;
-    ASSERT_EQ(gene->get_gene_value(), 10);
-    delete gene;
-  }
-  
-  TEST(ValueTest, AdditionOperatorTest){
-    Gene* gene = new Genes::Gene();
-    (*gene) = 2.0;
-    ASSERT_EQ((*gene)+4.0, 6);
-    delete gene;
-  }
-
-  TEST(ValuesTest, ProductOperatorTest){
-    Gene* gene = new Genes::Gene();
-    (*gene) = 2.0;
-    ASSERT_EQ((*gene)*3.0, 6);
-    delete gene;
-  } 
 }
 

@@ -9,8 +9,8 @@ using std::invalid_argument;
 using Genetic::Population;
 using Genetic::Individual;
 using Players::Directions;
-using Chromosomes::Chromosome;
-using Genes::Gene;
+using Genetic::Chromosome;
+using Genetic::Gene;
 
 namespace {
   TEST(ValueTest, OnlyTwoIndividualsSelectParentsTest){

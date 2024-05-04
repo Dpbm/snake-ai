@@ -5,14 +5,12 @@
 #include "../../machine/weights.h"
 #include "../../genetic/chromosome.h"
 #include "../../helpers/utils.h"
-#include "../../helpers/constants.h"
 #include "player.h"
 
 using std::stringstream;
 using Machine::Weights;
-using Chromosomes::Chromosome;
+using Genetic::Chromosome;
 using Utils::vec2;
-using Utils::get_angle;
 
 namespace Players{
   AIPlayer::AIPlayer(uint8_t board_w, uint8_t board_h) : Player(board_w, board_h){
@@ -78,7 +76,6 @@ namespace Players{
 
     this->input_data->update_value(0, 0, (double)(px-fx)/w);
     this->input_data->update_value(0, 1, (double)(py-fy)/h);
-    // this->input_data->update_value(0, 2, get_angle(px, py, fx, fy) / (2*PI));
   }
 
 

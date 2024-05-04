@@ -13,8 +13,6 @@
 using std::size_t;
 using std::cout;
 using std::endl;
-using Genes::Gene;
-using Chromosomes::Chromosome;
 using Machine::Layer;
 using Machine::NN;
 using Matrices::Matrix;
@@ -24,6 +22,8 @@ using Players::Player;
 using Players::Directions;
 using Genetic::Population;
 using Genetic::Individual;
+using Genetic::Gene;
+using Genetic::Chromosome;
 
 int main(){
   cout << "---GENES---" << endl;

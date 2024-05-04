@@ -12,8 +12,8 @@ using std::cout;
 using std::endl;
 using std::invalid_argument;
 using Game::Board;
-using Chromosomes::Chromosome;
-using Genes::Gene;
+using Genetic::Chromosome;
+using Genetic::Gene;
 using Utils::random_int;
 
 namespace Genetic{

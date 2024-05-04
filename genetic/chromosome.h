@@ -5,9 +5,9 @@
 #include "gene.h"
 
 using std::vector;
-using Genes::Gene;
+using Genetic::Gene;
 
-namespace Chromosomes {
+namespace Genetic {
 
   class Chromosome{
     public:

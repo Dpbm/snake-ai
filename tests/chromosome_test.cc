@@ -4,8 +4,8 @@
 #include "../genetic/chromosome.h"
 
 using std::vector;
-using Chromosomes::Chromosome;
-using Genes::Gene;
+using Genetic::Chromosome;
+using Genetic::Gene;
 
 namespace {
 
