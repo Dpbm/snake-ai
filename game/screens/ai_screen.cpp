@@ -12,6 +12,7 @@
 #include "ai_screen.h"
 #include "../../genetic/population.h"
 #include "../../helpers/constants.h"
+#include "start_screen.h"
 
 using std::to_string;
 using std::cout;
@@ -20,7 +21,6 @@ using std::size_t;
 using Genetic::Individual;
 
 namespace Screens {
-
   AIScreen::AIScreen(SDL_Renderer* render) : Screen(render){
     if(!this->font || !this->tiny_font){
       cout << "Failed on getting font!" << TTF_GetError() << endl;
@@ -64,6 +64,11 @@ namespace Screens {
     this->weights_text_texture = SDL_CreateTextureFromSurface(render, weights_text_surface);
     this->weights_text_shape = SDL_Rect{20, 530, weights_text_surface->w, weights_text_surface->h};
     SDL_FreeSurface(weights_text_surface);
+    
+    SDL_Surface* return_text_surface = TTF_RenderText_Solid(this->tiny_font, "'R' to return", this->text_color);
+    this->return_text_texture = SDL_CreateTextureFromSurface(render, return_text_surface);
+    this->return_text_shape = SDL_Rect{20, 550, return_text_surface->w, return_text_surface->h};
+    SDL_FreeSurface(return_text_surface);
 
     if(this->score_text_texture == nullptr || 
        this->gen_text_texture == nullptr || 
@@ -71,7 +76,8 @@ namespace Screens {
        this->win_text_texture == nullptr ||
        this->fitness_text_texture == nullptr ||
        this->timer_text_texture == nullptr ||
-       this->weights_text_texture == nullptr){
+       this->weights_text_texture == nullptr||
+       this->return_text_texture == nullptr){
       cout << "Failed on creating text textures!" << SDL_GetError() << endl;
       exit(1);
     }
@@ -98,6 +104,7 @@ namespace Screens {
     SDL_RenderCopy(this->render, this->fitness_text_texture, NULL, &this->fitness_text_shape);
     SDL_RenderCopy(this->render, this->timer_text_texture, NULL, &this->timer_text_shape);
     SDL_RenderCopy(this->render, this->weights_text_texture, NULL, &this->weights_text_shape);
+    SDL_RenderCopy(this->render, this->return_text_texture, NULL, &this->return_text_shape);
     
     if(this->score_texture != nullptr)
       SDL_DestroyTexture(this->score_texture);
@@ -161,8 +168,17 @@ namespace Screens {
   }
 
   Screen* AIScreen::key_event(const SDL_Keycode& key){
-    if(key == SDLK_s)
-      this->save_weights();
+
+    switch(key){
+      case SDLK_s:
+        this->save_weights();
+        break;
+      case SDLK_r:
+        return new StartScreen(this->render);
+      default:
+        break;
+    }
+
 
     return nullptr;
   }
@@ -190,5 +206,6 @@ namespace Screens {
     SDL_DestroyTexture(this->timer_texture);
     SDL_DestroyTexture(this->timer_text_texture);
     SDL_DestroyTexture(this->weights_text_texture);
+    SDL_DestroyTexture(this->return_text_texture);
   }
 }

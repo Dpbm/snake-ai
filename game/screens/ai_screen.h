@@ -69,6 +69,9 @@ namespace Screens{
  
       SDL_Rect weights_text_shape;
       SDL_Texture* weights_text_texture = nullptr;
+      
+      SDL_Rect return_text_shape;
+      SDL_Texture* return_text_texture = nullptr;
 
       void save_weights();
   };
