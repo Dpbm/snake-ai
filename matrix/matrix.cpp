@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <stdexcept>
 #include "matrix.h"
@@ -7,16 +8,16 @@ using std::size_t;
 using std::invalid_argument;
 
 namespace Matrices{
-  Matrix::Matrix(unsigned int length){
+  Matrix::Matrix(uint16_t length){
     this->width = length;
     this->height = length;
-    this->matrix = this->generate_matrix_body(length, length);
+    this->matrix = this->generate_matrix_body();
   }
   
-  Matrix::Matrix(unsigned int width, unsigned int height){
+  Matrix::Matrix(uint16_t width, uint16_t height){
     this->height = height;
     this->width = width;
-    this->matrix = this->generate_matrix_body(width, height);
+    this->matrix = this->generate_matrix_body();
   }
 
   double** Matrix::get_matrix(){
@@ -29,29 +30,27 @@ namespace Matrices{
         this->update_value(i, j, value);
   }
  
-  void Matrix::update_value(unsigned int i, unsigned int j, double value){
+  void Matrix::update_value(uint16_t i, uint16_t j, double value){
     if(i >= this->height || j >= this->width)
       throw invalid_argument("i and j must be a value within the bounds of the matrix"); 
     this->matrix[i][j] = value;
   }
-  
 
-
-  double Matrix::get_position_value(unsigned int i, unsigned int j) const {
+  double Matrix::get_position_value(uint16_t i, uint16_t j) const {
     if(i >= this->height || j >= this->width) 
       throw invalid_argument("i and j must be a value within the bounds of the matrix");
     return this->matrix[i][j];
   }
   
-  unsigned int Matrix::get_height() const{
+  uint16_t Matrix::get_height() const{
     return this->height;
   }
   
-  unsigned int Matrix::get_width() const{
+  uint16_t Matrix::get_width() const{
     return this->width;
   }
   
-  double* Matrix::get_row(unsigned int i) const{
+  double* Matrix::get_row(uint16_t i) const{
     // REMEMBER TO DEALLOCATE AFTER USING THE RETURNED ROW
     double* row = new double[this->width];
     for(size_t j = 0; j < this->width; j++)
@@ -59,7 +58,7 @@ namespace Matrices{
     return row;
   }
   
-  double* Matrix::get_column(unsigned int j) const{
+  double* Matrix::get_column(uint16_t j) const{
     // REMEMBER TO DEALLOCATE AFTER USING THE RETURNED COLUMN
     double* column = new double[this->height];
     for(size_t i = 0; i < this->height; i++)
@@ -71,8 +70,7 @@ namespace Matrices{
     if(this->width != another_matrix.get_height())
       throw invalid_argument("The first matrix's width must be equal to the second's height!");
     
-    // here's also a better idea to instanciate in the heap
-    unsigned int second_matrix_width = another_matrix.get_width();
+    uint16_t second_matrix_width = another_matrix.get_width();
     Matrix* resulting_matrix = new Matrix(second_matrix_width, this->height);
 
     for(size_t i = 0; i < this->height; i++){
@@ -108,10 +106,10 @@ namespace Matrices{
     delete[] this->matrix;
   }
   
-  double** Matrix::generate_matrix_body(unsigned int width, unsigned int height){
-    double** new_matrix = new double*[height];
-    for(size_t i = 0; i<height; i++)
-      new_matrix[i] = new double[width];
+  double** Matrix::generate_matrix_body(){
+    double** new_matrix = new double*[this->height];
+    for(size_t i = 0; i < this->height; i++)
+      new_matrix[i] = new double[this->width];
     return new_matrix;
   } 
 }

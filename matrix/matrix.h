@@ -1,27 +1,28 @@
 #pragma once
 
+#include <cstdint>
+
 namespace Matrices {
   class Matrix{
     public:
-      Matrix(unsigned int length);
-      Matrix(unsigned int width, unsigned int height);
+      Matrix(uint16_t length);
+      Matrix(uint16_t width, uint16_t height);
       double** get_matrix();
-      void update_value(unsigned int i, unsigned int j, double value);
-      double get_position_value(unsigned int i, unsigned int j) const;
+      void update_value(uint16_t i, uint16_t j, double value);
+      double get_position_value(uint16_t i, uint16_t j) const;
       Matrix* operator *(const Matrix& another_matrix);
-      unsigned int get_height() const;
-      unsigned int get_width() const;
-      double* get_row(unsigned int i) const;
-      double* get_column(unsigned int j) const;
+      uint16_t get_height() const;
+      uint16_t get_width() const;
+      double* get_row(uint16_t i) const;
+      double* get_column(uint16_t j) const;
       void show();
       ~Matrix();
       void map_to_a_single_value(double value);
     
     private:
-      unsigned int width, height;
+      uint16_t width, height;
       double** matrix;
-      void clear_pointers();
-      double** generate_matrix_body(unsigned int width, unsigned int height);
+      double** generate_matrix_body();
   };
 
 };
