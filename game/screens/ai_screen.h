@@ -26,7 +26,7 @@ namespace Screens{
       void close_event();     
 
     private:
-      uint8_t board_w = 30;
+      uint8_t board_w = 43;
       uint8_t board_h = 30;
 
       uint8_t gen_time = 30; //in seconds

@@ -160,7 +160,7 @@ namespace Screens {
     SDL_RenderCopy(this->render, this->win_texture, NULL, &this->win_shape);
     SDL_RenderCopy(this->render, this->fitness_texture, NULL, &this->fitness_shape);
     SDL_RenderCopy(this->render, this->timer_texture, NULL, &this->timer_shape);
-    
+
     if(actual_time > this->gen_time || this->population.get_total_alive() == 0){
       this->control_tick = SDL_GetTicks();
       this->population.next_gen();
