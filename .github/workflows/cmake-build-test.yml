@@ -13,7 +13,9 @@ jobs:
 
     - name: Prepare ubuntu
       run: |
-        chmod +x ./dep-ubuntu.sh && ./dep-ubuntu.sh
+        chmod +x ./dep-ubuntu.sh && ./dep-ubuntu.sh \
+        git config --global user.name "" \
+        git config --global user.email ""
 
     - name: Run script to Build and Test
       run: |

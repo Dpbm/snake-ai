@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include "../../helpers/constants.h"
 #include "start_screen.h"
+#include "ai_screen_play.h"
 #include "player_screen.h"
 #include "ai_screen.h"
 
@@ -25,18 +26,22 @@ namespace Screens {
     }
     SDL_Surface* title_surface = TTF_RenderText_Solid(this->font, "SNAKE GAME AI", this->text_color);
     SDL_Surface* ai_surface = TTF_RenderText_Solid(this->font, "PRESS 'A' TO TRAIN THE AI", this->text_color);
+    SDL_Surface* ai_play_surface = TTF_RenderText_Solid(this->font, "PRESS 'S' TO AI PLAY", this->text_color);
     SDL_Surface* player_surface = TTF_RenderText_Solid(this->font, "PRESS 'D' TO PLAY", this->text_color);
     
     this->title_texture = SDL_CreateTextureFromSurface(render, title_surface);
     this->ai_texture = SDL_CreateTextureFromSurface(render, ai_surface);
+    this->ai_play_texture = SDL_CreateTextureFromSurface(render, ai_play_surface);
     this->player_texture = SDL_CreateTextureFromSurface(render, player_surface);
 
     this->title_shape = SDL_Rect{(WIDTH/2) - (title_surface->w/2), 60, title_surface->w, title_surface->h};
     this->ai_shape = SDL_Rect{(WIDTH/2) - (ai_surface->w/2), 240, ai_surface->w, ai_surface->h};
-    this->player_shape = SDL_Rect{(WIDTH/2) - (player_surface->w/2), this->ai_shape.y+this->ai_shape.h+20, player_surface->w, player_surface->h};
+    this->ai_play_shape = SDL_Rect{(WIDTH/2) - (ai_play_surface->w/2), this->ai_shape.y+this->ai_shape.h+20, ai_play_surface->w, ai_play_surface->h};
+    this->player_shape = SDL_Rect{(WIDTH/2) - (player_surface->w/2), this->ai_play_shape.y+this->ai_play_shape.h+20, player_surface->w, player_surface->h};
     
     SDL_FreeSurface(title_surface);
     SDL_FreeSurface(ai_surface);
+    SDL_FreeSurface(ai_play_surface);
     SDL_FreeSurface(player_surface);
   }
 
@@ -44,6 +49,8 @@ namespace Screens {
     switch (key) {
       case SDLK_a:
         return new AIScreen(this->render);
+      case SDLK_s:
+        return new AIPlayScreen(this->render);
       case SDLK_d:
         return new PlayerScreen(this->render);
       default:
@@ -56,6 +63,7 @@ namespace Screens {
     SDL_RenderClear(this->render);
     SDL_RenderCopy(this->render, this->title_texture, NULL, &this->title_shape);
     SDL_RenderCopy(this->render, this->ai_texture, NULL, &this->ai_shape);
+    SDL_RenderCopy(this->render, this->ai_play_texture, NULL, &this->ai_play_shape);
     SDL_RenderCopy(this->render, this->player_texture, NULL, &this->player_shape);
     SDL_RenderPresent(this->render);
   }
@@ -63,6 +71,7 @@ namespace Screens {
   StartScreen::~StartScreen(){
     SDL_DestroyTexture(this->title_texture);
     SDL_DestroyTexture(this->ai_texture);
+    SDL_DestroyTexture(this->ai_play_texture);
     SDL_DestroyTexture(this->player_texture);
   }
 };

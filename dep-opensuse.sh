@@ -12,4 +12,7 @@ sudo zypper install libSDL2-2_0-0 \
   libSDL2_ttf-devel \
   pattern \
   clang \
-  clang-tools 
+  clang-tools \
+  libgtk-3-0 \
+  libgtk-3-0-devel \
+  libgtkmm-3_0-1

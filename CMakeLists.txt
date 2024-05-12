@@ -3,7 +3,6 @@ project(genetic_snake VERSION 0.1)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(TARGET_MAIN)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -26,6 +25,7 @@ add_subdirectory(game)
 add_subdirectory(genetic)
 add_subdirectory(matrix)
 add_subdirectory(machine)
+add_subdirectory(nativefiledialog)
 
 file(GLOB HELPERS_FILES "helpers/*.cpp")
 add_library(helpers ${HELPERS_FILES})
@@ -49,7 +49,7 @@ add_library(board ${BOARD_FILE})
 add_library(screens ${SCREENS_FILES})
 add_library(players ${PLAYERS_FILES})
 target_link_libraries(players machine matrix genetic helpers ${SDL2_LIBRARIES})
-target_link_libraries(screens players board helpers genetic ${SDL2_LIBRARIES} SDL2_ttf)
+target_link_libraries(screens players board helpers genetic ${SDL2_LIBRARIES} SDL2_ttf nativefiledialog)
 target_link_libraries(board helpers players)
 
 target_link_libraries(snake PRIVATE helpers board screens players ${SDL2_LIBRARIES} SDL2_ttf)
