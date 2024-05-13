@@ -26,6 +26,7 @@ namespace Machine {
       ~NN();
       void feedforward();
       Layer* get_output_layer();
+      Layer* get_input_layer();
       void load_weights(vector<Matrix*> new_weights);
 
     private:

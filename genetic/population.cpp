@@ -161,7 +161,10 @@ namespace Genetic{
   void Population::next_gen(){
     cout << "gen: " << this->gen << endl;  
     cout << "best fit: " << this->best_fitness << endl;  
-    cout << "best score: " << this->best_score << endl << endl;  
+    cout << "best score: " << this->best_score << endl; 
+
+    cout << "saving weights..." << endl << endl;
+    this->get_best_individual()->player->save_weights(this->gen);
     
     this->gen++;
     this->best_score = 0;
@@ -170,17 +173,20 @@ namespace Genetic{
     Individual** parents = this->select_parents();
     Chromosome* offspring = this->generate_offspring(parents[0]->player->get_chromossome(), parents[1]->player->get_chromossome());
     delete parents;
+    cout << "no problem on delete parents..." << endl;
     Gene* offspring_genes = offspring->get_genes();
 
     uint64_t offspring_ch_size = offspring->get_size();
 
     this->clear();
+    cout << "no problem on delete pointers" << endl;
     this->individuals.clear();
+    cout << "no problem on clear individuals" << endl;
     this->food_positions.clear();
+    cout << "no problem on clear food" << endl;
     this->generate_food_positions();
     vec2 first_food_pos = this->food_positions.at(0);
     
-    this->individuals.clear();
     for(size_t i = 0; i < this->total_ind; i++){
       Individual* ind = new Individual;
       ind->board = new Board(board_w, board_h);
@@ -204,6 +210,7 @@ namespace Genetic{
 
       this->individuals.push_back(ind); 
     }
+    cout << "no problem at the end of the function" << endl << endl;
   }
 
   Individual** Population::select_parents(){

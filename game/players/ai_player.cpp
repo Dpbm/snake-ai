@@ -1,16 +1,20 @@
 #include <ctime>
 #include <cstdint>
 #include <sstream>
+#include <string>
 #include "ai_player.h"
 #include "../../machine/weights.h"
 #include "../../genetic/chromosome.h"
 #include "../../helpers/utils.h"
+#include "../../matrix/matrix.h"
 #include "player.h"
 
+using std::to_string;
 using std::stringstream;
 using Machine::Weights;
 using Genetic::Chromosome;
 using Utils::vec2;
+using Matrices::Matrix;
 
 namespace Players{
   AIPlayer::AIPlayer(uint8_t board_w, uint8_t board_h) : Player(board_w, board_h){
@@ -31,9 +35,7 @@ namespace Players{
   }
 
   void AIPlayer::setup_nn(){
-    this->input_layer->set_values(this->input_data); 
-
-    this->nn->add_layer(this->input_layer);
+    this->nn->add_layer(2);
     this->nn->add_layer(4);
     this->nn->add_layer(4);
 
@@ -79,8 +81,9 @@ namespace Players{
     int16_t fx = food.x;
     int16_t fy = food.y;
 
-    this->input_data->update_value(0, 0, (double)(px-fx)/w);
-    this->input_data->update_value(0, 1, (double)(py-fy)/h);
+    Matrix* input = this->nn->get_input_layer()->get_values();
+    input->update_value(0, 0, (double)(px-fx)/w);
+    input->update_value(0, 1, (double)(py-fy)/h);
   }
 
 
@@ -90,7 +93,6 @@ namespace Players{
 
   void AIPlayer::update_dir(){
     Matrix* output = this->nn->get_output_layer()->get_values();
-
     size_t new_dir = 0;
     double biggest = 0;
     for(size_t i = 0; i < 4; i++){
@@ -113,6 +115,20 @@ namespace Players{
     
     stringstream filename;
     filename << time;
+    filename << ".wg"; 
+    this->nn->save_weights(filename.str());
+  }
+  
+  void AIPlayer::save_weights(uint32_t gen){
+    time_t now = time(0);
+    string time = asctime(localtime(&now));
+    //remove the $\n at the end of the string
+    time.pop_back();
+    
+    stringstream filename;
+    filename << time;
+    filename << "gen-";
+    filename << to_string(gen);
     filename << ".wg"; 
     this->nn->save_weights(filename.str());
   }

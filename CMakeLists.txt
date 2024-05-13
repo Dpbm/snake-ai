@@ -49,7 +49,7 @@ add_library(board ${BOARD_FILE})
 add_library(screens ${SCREENS_FILES})
 add_library(players ${PLAYERS_FILES})
 target_link_libraries(players machine matrix genetic helpers ${SDL2_LIBRARIES})
-target_link_libraries(screens players board helpers genetic ${SDL2_LIBRARIES} SDL2_ttf nfd)
+target_link_libraries(screens players board helpers genetic matrix ${SDL2_LIBRARIES} SDL2_ttf nfd)
 target_link_libraries(board helpers players)
 
 target_link_libraries(snake PRIVATE helpers board screens players ${SDL2_LIBRARIES} SDL2_ttf)

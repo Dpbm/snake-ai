@@ -11,7 +11,6 @@
 using Genetic::Chromosome;
 using Matrices::Matrix;
 using Machine::NN;
-using Machine::Layer;
 using Utils::vec2;
 
 namespace Players{
@@ -23,6 +22,8 @@ namespace Players{
       ~AIPlayer();
   
       void save_weights();
+      void save_weights(uint32_t gen);
+
       void load_genes_into_weights();
       void update_input_data(const vec2& food, uint16_t w, uint16_t h);
       void compute_next_dir();
@@ -32,8 +33,6 @@ namespace Players{
     private:
       Chromosome* chromosome = nullptr;
       NN* nn = new NN;   
-      Layer* input_layer = new Layer(2, true);
-      Matrix* input_data = new Matrix(2, 1);
 
       void setup_nn();
       void setup_chromosome();

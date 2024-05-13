@@ -17,9 +17,6 @@ using Screens::Screen;
 using Screens::StartScreen;
 
 int main(){
-  setlocale(LC_ALL, "en_US.UTF-8");
-  setlocale(LC_NUMERIC, "en_US.UTF-8");
-  
   if(SDL_Init(SDL_INIT_EVERYTHING) < 0){
     cout << "SDL_Init Error: " << SDL_GetError() << endl;
     return 1;

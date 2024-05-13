@@ -29,7 +29,7 @@ namespace Screens{
       uint8_t board_w = 43;
       uint8_t board_h = 30;
 
-      uint8_t gen_time = 30; //in seconds
+      uint8_t gen_time = 40; //in seconds
       uint32_t control_tick = 0;
 
       Population population{3000, board_w, board_h, 20};

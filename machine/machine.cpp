@@ -146,4 +146,8 @@ namespace Machine {
   Layer* NN::get_output_layer(){
     return this->layers.at(this->total_layers-1);
   }
+  
+  Layer* NN::get_input_layer(){
+    return this->layers.at(0);
+  }
 }

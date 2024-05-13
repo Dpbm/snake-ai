@@ -49,7 +49,7 @@ namespace Machine{
     delete this->values;
     this->values = values;
   }
-
+  
   void Layer::set_activation_function(void(*activation)(Matrix*)){
    if(this->input)
       throw invalid_argument("Input layer must not have a activation function!");   
