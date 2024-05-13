@@ -19,6 +19,7 @@ namespace Players{
     public:
       AIPlayer(uint8_t board_w, uint8_t board_h);
       AIPlayer(uint8_t board_w, uint8_t board_h, Chromosome* chromosome);
+      AIPlayer(uint8_t board_w, uint8_t board_h, NN* nn);
       ~AIPlayer();
   
       void save_weights();

@@ -1,5 +1,5 @@
-#include <cmath>
 #include <cstdint>
+#include <cstdlib>
 #include <cstring>
 #include <string>
 #include <vector>
@@ -10,14 +10,9 @@
 #include "exceptions.h"
 #include "../matrix/matrix.h"
 #include "../machine/machine.h"
-#include "constants.h"
 
-using std::asin;
-using std::pow;
-using std::sqrt;
-using std::abs;
-using std::stoi;
 using std::stod;
+using std::stoi;
 using std::vector;
 using std::ofstream;
 using std::ifstream;
@@ -100,7 +95,6 @@ namespace Utils {
 
         case 2:{
           uint8_t* activations = parse_activations(line,total_layers);
-          
           for(size_t i = 0; i < total_layers; i++){
             
             nn->add_layer(layers_sizes[i]);
@@ -131,14 +125,12 @@ namespace Utils {
 
         default:{
           if(line[0] == 'l'){
-          
             weights.push_back(parse_weights_head(line));
             row_width = weights.at(weights_counter)->get_width();
             row_i = 0;
             weights_counter++;
           
           } else{
-
             double* row = parse_row(line, row_width);
             for(size_t j = 0; j < row_width; j++)
               weights.at(weights_counter-1)->update_value(row_i, j, row[j]);
@@ -155,6 +147,7 @@ namespace Utils {
     }
     
     nn->load_weights(weights);
+    
 
     delete layers_amount;
     delete layers_sizes;
@@ -257,7 +250,7 @@ namespace Utils {
     string weight = "";
       
     for(char a : line){
-      if(a == ',' || a == '.'){
+      if(a == ',' || a == ';'){
         row[i] = stod(weight);
         i++;
         weight = "";
@@ -269,33 +262,4 @@ namespace Utils {
     return row;
   }
   
-  double get_angle(int16_t px, int16_t py, int16_t fx, int16_t fy){
-    int8_t sector = 0;
-
-    //fx-px diffenrece of height
-    //fy-py difference of width
-
-    if(px == fx && py <= fy) //0
-      return 0;
-    else if(px == fx && py > fy) //180
-      return PI;
-    else if(px < fx && py == fy) //270
-      return (3*PI)/2;
-    else if(px > fx && py > fy) // second sector
-      sector = 1;
-    else if(px < fx && py > fy) // third sector
-      sector = 2;
-    else if(px < fx && py < fy) // fourth sector
-      sector = 3;
-
-    double dh = (double)(abs(px-fx));   
-    double dw = (double)(abs(fy-py));
-    double hip = (double)(sqrt(pow(dw,2)+pow(dh,2)));
-
-    if(hip == 0)
-      return 0;
-
-    double angle = abs(asin(dh/hip)) + (sector*(PI/2));
-    return angle;
-  }
 }

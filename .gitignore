@@ -28,4 +28,4 @@ build/
 matrix_test
 *.wg
 !test.wg
-nativefiledialog/
+nativefiledialog-extended/

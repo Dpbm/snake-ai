@@ -24,6 +24,11 @@ namespace Players{
     this->chromosome = chromosome;
     this->load_genes_into_weights();
   }
+  
+  AIPlayer::AIPlayer(uint8_t board_w, uint8_t board_h, NN* nn) : Player(board_w, board_h){
+    this->nn = nn;
+    this->chromosome = nullptr;
+  }
 
   void AIPlayer::setup_nn(){
     this->input_layer->set_values(this->input_data); 
