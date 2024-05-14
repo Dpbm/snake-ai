@@ -1,0 +1,16 @@
+*.wg
+build/
+bin/
+CMakeFiles/
+CMakeCache.txt
+.git*
+nativefiledialog-extended
+*.md
+Testing
+tests*
+*.cmake
+auto-run.sh
+dep-opensuse.sh
+lib/
+Makefile
+manual_tests.cpp
