@@ -22,7 +22,7 @@ namespace Machine {
       Weights* get_weight(unsigned int i);
       unsigned int get_total_layers();
       unsigned int get_total_weights();
-      void save_weights(string filename);
+      void save_weights(string path);
       ~NN();
       void feedforward();
       Layer* get_output_layer();

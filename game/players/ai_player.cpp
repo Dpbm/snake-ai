@@ -112,7 +112,6 @@ namespace Players{
     string time = asctime(localtime(&now));
     //remove the $\n at the end of the string
     time.pop_back();
-    
     stringstream filename;
     filename << time;
     filename << ".wg"; 

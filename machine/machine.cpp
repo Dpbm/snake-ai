@@ -1,3 +1,5 @@
+#include <iostream>
+#include <cstdlib>
 #include <sstream>
 #include <stdexcept>
 #include <vector>
@@ -6,6 +8,8 @@
 #include "machine.h"
 #include "../helpers/utils.h"
 
+using std::cout;
+using std::endl;
 using std::stringstream;
 using std::vector;
 using std::string;
@@ -43,13 +47,26 @@ namespace Machine {
 
    
   void NN::save_weights(string filename){
-    this->save_arch(filename);
+    char* weights_path = getenv("WPATH");
+
+    stringstream path_construct;
+
+    if(weights_path != nullptr)
+       path_construct << weights_path;
+    
+    path_construct << filename;
+
+
+    string path = path_construct.str();
+    cout << "Path: " << path << endl;
+
+    this->save_arch(path);
     for(Weights* weight: this->weights)
-      weight->save_weights(filename);
+      weight->save_weights(path);
   }
 
 
-  void NN::save_arch(string filename){
+  void NN::save_arch(string path){
     stringstream arch;
  
     if(this->total_layers <= 1)
@@ -80,7 +97,7 @@ namespace Machine {
         arch << ",";
     }
   
-    append_to_file(filename, arch.str());
+    append_to_file(path, arch.str());
   }
    
   Layer* NN::get_layer(unsigned int i){

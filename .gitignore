@@ -29,3 +29,4 @@ matrix_test
 *.wg
 !test.wg
 nativefiledialog-extended/
+weights_input/*.wg

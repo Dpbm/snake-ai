@@ -24,20 +24,20 @@ namespace Machine{
     this->weights = weights;
   }
 
-  void Weights::save_weights(string filename){
+  void Weights::save_weights(string path){
     stringstream header;
     header << "l" << this->width << "," << this->height << "." << "\n"; 
     
-    append_to_file(filename, header.str());
+    append_to_file(path, header.str());
 
     for(unsigned int i = 0; i < this->height; i++){
       for(unsigned int j = 0; j < this->width; j++){
         stringstream data;
         data << this->weights->get_position_value(i, j) << (j+1 < this->width ? "," : ";");
-        append_to_file(filename, data.str());
+        append_to_file(path, data.str());
       }
 
-      append_to_file(filename, "\n");
+      append_to_file(path, "\n");
     }
   }
 

@@ -20,7 +20,7 @@ namespace Machine{
       uint16_t get_height();
       uint64_t get_total_weights();  
 
-      void save_weights(string filename);
+      void save_weights(string path);
 
     private:
       unsigned int width, height;

@@ -1,0 +1,16 @@
+services:
+  game:
+    build: .
+    environment:
+      DISPLAY: $DISPLAY
+      WPATH: /snake/weights_output/
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+      - weights_output:/snake/weights_output:rw
+      - ./weights_input/:/snake/weights_input
+
+volumes:
+  weights_output:
+    external: false
+  weights_input:
+    external: true
