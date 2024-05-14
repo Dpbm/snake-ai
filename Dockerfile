@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM ubuntu:22.04
+LABEL org.opencontainers.image.source=https://github.com/Dpbm/snake-ai
 
 ENV TZ "America/New_York"
 ENV DEBIAN_FRONTEND noninteractive
