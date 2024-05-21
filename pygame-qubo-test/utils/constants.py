@@ -1,0 +1,2 @@
+BOARD_W = 10
+BOARD_H = 10
