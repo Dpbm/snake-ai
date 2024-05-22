@@ -1,5 +1,7 @@
-from .element import Element
+from .position import Position
 
-class Food(Element):
+class Food(Position):
     def __init__(self):
         super().__init__()
+
+        self._representation = 2
