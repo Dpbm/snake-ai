@@ -32,6 +32,10 @@ class Board:
     def width(self):
         return self._w
 
+    @property
+    def score(self):
+        return self._player.score
+
     def step(self):
         self._player.move(self._h, self._w, self._food.x, self._food.y)
 

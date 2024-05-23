@@ -1,4 +1,4 @@
-from random import choice, randint
+from random import choice
 import numpy as np
 from copy import deepcopy
 from .position import Position

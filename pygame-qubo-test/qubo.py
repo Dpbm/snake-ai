@@ -21,5 +21,5 @@ def qubo(Q, P):
         results[str_comb] = result
     min_key = min(results, key=results.get)
 
-    #print(f'[*] QUBO result: {min_key} {results[min_key]}')
+    print(f'[*] QUBO result: {min_key} {results[min_key]}')
     return min_key
