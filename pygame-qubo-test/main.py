@@ -19,7 +19,7 @@ board = Board(TOTAL_ROWS, TOTAL_COLS)
 
 running = True
 
-font = pygame.font.SysFont("../assets/pressstart.ttf", 20)
+font = pygame.font.SysFont("../assets/pressstart.ttf", 24)
 
 while running:
     for event in pygame.event.get():
@@ -39,7 +39,5 @@ while running:
     if(board.game_over()):
         print("[!] game over")
         running = False
-   
-
 
 pygame.quit()
