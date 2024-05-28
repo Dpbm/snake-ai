@@ -33,6 +33,10 @@ class Player(Position):
 
     def move(self, x_bound, y_bound, fx, fy):
         print(f'[i] direction: {self._dir}')
+        
+        if(self._x > x_bound or self._y > y_bound):
+            return
+
         qubo_result = self._get_qubo_result(fx, fy, x_bound, y_bound)
 
         match qubo_result:
