@@ -1,3 +1,4 @@
+#include <cmath>
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
@@ -11,6 +12,8 @@
 #include "../matrix/matrix.h"
 #include "../machine/machine.h"
 
+using std::pow;
+using std::sqrt;
 using std::stod;
 using std::stoi;
 using std::vector;
@@ -261,5 +264,9 @@ namespace Utils {
     }
     return row;
   }
-  
+
+  double distance(int16_t x1, int16_t y1, int16_t x2, int16_t y2){
+    return sqrt(pow(x1-x2, 2) + pow(y1-y2, 2));
+  }
+
 }
