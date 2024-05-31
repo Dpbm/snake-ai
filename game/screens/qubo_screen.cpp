@@ -22,7 +22,7 @@ namespace Screens {
       exit(1);
     }
 
-    SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "QUBO Score", this->text_color);
+    SDL_Surface* score_text_surface = TTF_RenderText_Solid(this->font, "Score", this->text_color);
     this->score_text_texture = SDL_CreateTextureFromSurface(render, score_text_surface);
     this->score_text_shape = SDL_Rect{20, 20, score_text_surface->w, score_text_surface->h};
     SDL_FreeSurface(score_text_surface);
