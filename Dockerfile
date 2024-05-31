@@ -31,6 +31,7 @@ COPY genetic ./genetic
 COPY helpers ./helpers
 COPY machine ./machine
 COPY matrix ./matrix
+COPY qubo ./qubo
 
 # fake files
 RUN echo "int main(){ return 0; }" >> ./manual_tests.cpp 
