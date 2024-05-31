@@ -23,7 +23,6 @@ namespace Players{
 
       bool will_collide_itself(int16_t x, int16_t y);
   
-  
       bool will_collide_top_border();
       bool will_collide_bottom_border();
       bool will_collide_left_border();
