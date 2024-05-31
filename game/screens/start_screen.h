@@ -22,11 +22,13 @@ namespace Screens {
       SDL_Texture* ai_texture;
       SDL_Texture* player_texture;
       SDL_Texture* ai_play_texture;
+      SDL_Texture* qubo_texture;
 
       SDL_Rect title_shape;
       SDL_Rect ai_shape;
       SDL_Rect player_shape;
       SDL_Rect ai_play_shape;
+      SDL_Rect qubo_shape;
   };
 
 };
