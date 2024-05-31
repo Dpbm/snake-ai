@@ -42,14 +42,14 @@ namespace Players {
   }
   
   bool QuboPlayer::will_collide_right_border(){
-    return this->get_x() >= this->board_w-1;
+    return this->get_y() >= this->board_w-1;
   }
 
   void QuboPlayer::next_mov(const vec2& food){
     double q0 = 10000.0; //distance forward
     double q1 = 10000.0; //distance down/right
     double q2 = 10000.0; //distance up/left
-    
+   
     switch (this->dir) {
       case RIGHT:
         this->get_distances_right(food.x, food.y, &q0, &q1, &q2);
@@ -66,13 +66,15 @@ namespace Players {
       default:
         break;
     }
-
+  
+  
     uint8_t* next_mov = this->qubo->minimize(q0, q1, q2);
-    
+
+ 
     if(next_mov[0] == 0 && next_mov[1] == 0 && next_mov[2] == 1)
-      this->move_down_right();
-    else if(next_mov[0] == 0 && next_mov[1] == 1 && next_mov[2] == 0)
       this->move_up_left();
+    else if(next_mov[0] == 0 && next_mov[1] == 1 && next_mov[2] == 0)
+      this->move_down_right();
 
     delete next_mov;
   } 

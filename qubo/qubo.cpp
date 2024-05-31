@@ -10,11 +10,11 @@ namespace Qubo{
   }
   
   double QuboFunc::evaluate(double q0, double q1, double q2, uint8_t x0, uint8_t x1, uint8_t x2){
-    return (q0*x0 + q1*x1 + q2*x2) - P*(pow(x0 + x1 + x2 - 1, 2));
+    return (q0*x0 + q1*x1 + q2*x2) + P*(pow(x0 + x1 + x2 - 1, 2));
   }
 
   uint8_t* QuboFunc::minimize(double q0, double q1, double q2){
-    //REMEMBER TO CLEAN IT AFTER USING!
+    //REMEMBER TO CLEAN AFTER USING IT!
     uint8_t* result = new uint8_t[3];
     double best = 1000000000000;
    
@@ -25,7 +25,7 @@ namespace Qubo{
 
       double val = this->evaluate(q0, q1, q2, x0, x1, x2);
       
-      if(val < best){
+      if(val <= best){
         best = val;
         result[0] = x0; 
         result[1] = x1;

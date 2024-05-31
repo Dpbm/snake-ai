@@ -12,6 +12,7 @@
 #include "ai_screen_play.h"
 #include "player_screen.h"
 #include "ai_screen.h"
+#include "qubo_screen.h"
 
 using std::exit;
 using std::cout;
@@ -58,7 +59,7 @@ namespace Screens {
       case SDLK_d:
         return new PlayerScreen(this->render);
       case SDLK_q:
-        return nullptr;
+        return new QuboScreen(this->render);
       default:
         break;
     }
