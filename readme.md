@@ -167,4 +167,4 @@ https://github.com/Dpbm/snake-ai/assets/75098594/511d45d6-3f93-40ca-bb0c-b842d3f
 
 ## Credits
 
-Fonts were took from: [CodeMan38 Google fonts](https://fonts.google.com/specimen/Press+Start+2P)
+Fonts were taken from: [CodeMan38 Google fonts](https://fonts.google.com/specimen/Press+Start+2P)
