@@ -1,21 +1,13 @@
-# Snake game genetic algorithm
+# Snake AI
 
-![Build-Test workflow (cmake)](https://github.com/Dpbm/genetic-algorithm/actions/workflows/cmake-build-test.yml/badge.svg)
+![Build-Test workflow (cmake)](https://github.com/Dpbm/snake-ai/actions/workflows/cmake-build-test.yml/badge.svg)
+![Docker Hub publish](https://github.com/Dpbm/snake-ai/actions/workflows/dockerhub.yml/badge.svg)
+![GHRC publish](https://github.com/Dpbm/snake-ai/actions/workflows/ghrc.yml/badge.svg)
 
-*🚧In Progress🚧*
+For this project, my idea was to explore some algorithms, such as genetic algorithms and Qubo, and 
+technologies, like C++, and develop something I've always wanted to, all from scratch! 
 
-The idea for this project came as a joint between my urge to learn `C++` and to implement a `AI` from scratch.\
-So, actually, this project is a big lab for me, the main goal is to learn things like:
-
-* c++
-* cmake/make
-* ctest
-* AI algorithms
-* docker
-* SDL2
-
-Bellow there're some youtube videos that have inspired me to create this project:
-
+The urge to build a snake game AI came after I watched some YouTube videos, which inspired me to create something different and just for fun, some of them are listed bellow:
 
 [![Artificial Intelligence in Google's Dinosaur (English Sub)](https://img.youtube.com/vi/P7XHzqZjXQs/0.jpg)](https://youtu.be/P7XHzqZjXQs)
 [![Rede Neural aprendendo a jogar o jogo da cobrinha (SNAKE)
@@ -25,7 +17,7 @@ Bellow there're some youtube videos that have inspired me to create this project
 
 ## Technologies
 
-Here are listed the technologies used for this project:
+The Technologies used were:
 
 * [git](https://git-scm.com/)
 * [SDL2](https://www.libsdl.org/)
@@ -34,11 +26,76 @@ Here are listed the technologies used for this project:
 * [googletest (ctest)](https://google.github.io/googletest/)
 * [sh](https://www.gnu.org/software/bash/)
 * [Github actions](https://docs.github.com/en/actions)
+* [python 3.10](https://www.python.org/) (used to test the QUBO model)
+* [pygame](https://www.pygame.org/)
+* [docker](https://www.docker.com/)
+* [docker compose](https://docs.docker.com/compose/)
 
+## Usage
 
-## Dev usage
+All the following usage ways are focused on `Ubuntu` based distros, so some steps may differ for different OS. Remember to check the tools documentation for your system. 
 
-to build the and run the project you must have a `linux distro` and the following tools and libraries installed:
+## Docker
+
+The simplest way to run it, is by using Docker. 
+
+First pull the image:
+```bash
+docker pull dpbm32/snake-ai
+
+# or using the GHRC version
+docker pull ghcr.io/dpbm/snake-ai:latest
+```
+
+Then you must grant access to your `XDisplay`.
+
+```bash
+xhost +local:root
+
+# remeber revoking access after using it
+xhost -local:root
+```
+
+Also, setup a docker volume for the neural network weights output.
+
+```bash
+docker volume create weights-out
+```
+
+Finally run the image:
+
+```bash
+docker run -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
+           -v /path/to/your/weights/input/folder/optional/:/snake/weights_input/ \
+           --mount source=weights-out,target=/snake/weights_output/ \
+           -e DISPLAY=$DISPLAY \
+           -e WPATH=/snake/weights_output/ \
+           snake-ai
+```
+
+## Docker build local
+
+Another way to do that is build the image by yourself. To do that run:
+
+```bash
+docker build -t snake-ai .
+```
+
+Then follow the steps after the `docker pull` from the [#docker section](#docker).
+
+## Docker compose
+
+Finally, There's a [compose file](compose.yaml) in the project directory that you can use to orchestrate the image requirements. 
+
+After creating a volume and giving the `XDisplay` permissions, run:
+
+```bash
+docker compose up
+```
+
+## Dev Build
+
+To build the and run the project, you must the following tools and libraries installed:
 
 * [git](https://git-scm.com/)
 * [SDL2](https://www.libsdl.org/)
@@ -47,41 +104,52 @@ to build the and run the project you must have a `linux distro` and the followin
 * [cmake](https://cmake.org/)
 * [sh](https://www.gnu.org/software/bash/)
 
-with all that seted up, clone the project, go to thedirectory and run the `compilation script` as:
+Then, clone the project and run the `compilation script`:
 
 ```bash
-git clone https://github.com/Dpbm/genetic-algorithm
-cd ./genetic-algorithm
+git clone https://github.com/Dpbm/snake-ai
+cd ./snake-ai
 chmod +x ./compile.sh ./clean.sh
 ./clean.sh && ./compile.sh main.cpp
 ```
 
-then, to run the project type:
+Finally, run the game:
+
 ```bash
-./build/ga.out
+LC_NUMERIC="C" ./build/snake
+
+# or, if you want to set a different path to the output weights
+LC_NUMERIC="C" WPATH="/path/to/save/the/weights/" ./build/snake
+
 ```
 
-and to run the tests:
+
+### Tests
+
+In case you want to run the tests by your own, do the following:
 
 ```bash
 cd build
 ctest
 ```
 
-## Project Structure
+### Qubo test
 
-The project implements all from scratch, and the sub-libraries are organized in the following structure:
+Finally, inside this repo, there's a subproject made in python to test the Qubo model and how we could use it to play snake game.
+To access this piece of software:
 
-1. [game](./game): This folder contains all the implementation of the snake game itself, 
-SDL abstractions, etc.
+Install the dependencies: 
 
-2. [genetic](./genetic): The genetic algorithm utils, like genes and chromossomes code.
+```bash
+pip install -r requirements.txt #use python>=3.10
 
-3. [matrix](./matrix): The sub-library to handle matrices in a simple way.
+#or using conda (recommended)
+conda env create -f environment.yml
+conda activate snake-ai
+```
 
-4. [helpers](./helpers): Some uility functions, like random.
+and run:
 
-5. [machine](./machine): Parts to build a Neural Network. 
-
-Then all this is embedded into the [main.cpp](./main.cpp) file, to build the project altogether.
-
+```bash
+python ./pygame-qubo-test/main.py
+```
