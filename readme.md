@@ -38,11 +38,56 @@ The Technologies used were:
 * [docker](https://www.docker.com/)
 * [docker compose](https://docs.docker.com/compose/)
 
+
+## Different modes
+
+In this version of snake game, I've implemented 3 game modes:
+
+### Play as human
+
+As the classic one, your can play and enjoy the game by yourself, without any machine inteligent agent.
+
+`PRESS D` to start playing and use the `WASD` to move the snake around.
+
+
+### AI
+
+In the AI version, you have 2 screens to select either train the AI or let the AI play.
+
+#### Train AI
+To train the AI `PRESS A` and let her learn to play. If you want you can `PRESS S` during the training to save the best individual weights, but after each generation a weights file is save with the best one. If you want to go back from the training module, you can also `PRESS R` to return to the main Screen.
+
+
+#### Let the AI play
+
+After acquaring the weights file (`.wg`), you can put them into an AI agent to play. To do that, just `PRESS S` at the main SCreen, and import your `.wg` file.
+
+
+### QUBO
+
+The last mode, is based on QUBO model. This one has a mathematical an expression with some binary variables, and the goal is to minimize it using different combinations for these binary variables.
+
+$\sum_{i = 0}^{2}{Q_{ii}x_{i}} + P((\sum_{i = 0}^{2}{x_{i}})-1)^2$
+
+In this expression, $Q$ is a matrix with the distances between the player and the food, which:
+
+```
+Q[0][0] = distance if the player go foward (in the same direction he was)
+Q[1][1] = distance if the player go down/right 
+Q[2][2] = distance if the player go up/left
+
+anything else are just zeros
+```
+
+$x_i$ is the binary variable $i$. $P$ is a penality value, in this case we used $(window_{height}*window_{width}) + 10$, the penality part ensures that only one movement will be passed as outcome (either $001$, $010$ or $100$).
+
+
+
 ## Usage
 
 All the following usage ways are focused on `Ubuntu` based distros, so some steps may differ for different OS. Remember to check the tools documentation for your system. 
 
-## Docker
+### Docker
 
 The simplest way to run it, is by using Docker. 
 
@@ -80,7 +125,7 @@ docker run -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
            snake-ai
 ```
 
-## Docker build local
+### Docker build local
 
 Another way to do that is build the image by yourself. To do that run:
 
@@ -90,7 +135,7 @@ docker build -t snake-ai .
 
 Then follow the steps after the `docker pull` from the [#docker section](#docker).
 
-## Docker compose
+### Docker compose
 
 Finally, There's a [compose file](compose.yaml) in the project directory that you can use to orchestrate the image requirements. 
 
@@ -100,7 +145,7 @@ After creating a volume and giving the `XDisplay` permissions, run:
 docker compose up
 ```
 
-## Dev Build
+### Dev Build
 
 To build the and run the project, you must the following tools and libraries installed:
 
