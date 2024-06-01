@@ -14,3 +14,7 @@ dep-opensuse.sh
 lib/
 Makefile
 manual_tests.cpp
+.tool-versions
+environment.yml
+requirements.txt
+pygame-qubo-test
