@@ -1,5 +1,12 @@
 # Snake AI
 
+
+
+https://github.com/Dpbm/snake-ai/assets/75098594/61c30739-3a47-45c2-9f6f-177e18ba154f
+
+
+
+
 ![Build-Test workflow (cmake)](https://github.com/Dpbm/snake-ai/actions/workflows/cmake-build-test.yml/badge.svg)
 ![Docker Hub publish](https://github.com/Dpbm/snake-ai/actions/workflows/dockerhub.yml/badge.svg)
 ![GHRC publish](https://github.com/Dpbm/snake-ai/actions/workflows/ghrc.yml/badge.svg)
@@ -153,3 +160,8 @@ and run:
 ```bash
 python ./pygame-qubo-test/main.py
 ```
+
+
+https://github.com/Dpbm/snake-ai/assets/75098594/511d45d6-3f93-40ca-bb0c-b842d3fd8a32
+
+
