@@ -2,7 +2,8 @@
 
 
 
-https://github.com/Dpbm/snake-ai/assets/75098594/61c30739-3a47-45c2-9f6f-177e18ba154f
+
+https://github.com/Dpbm/snake-ai/assets/75098594/81120c76-1979-4c08-8647-6a0fb24e64d4
 
 
 
@@ -50,12 +51,22 @@ As the classic one, your can play and enjoy the game by yourself, without any ma
 `PRESS D` to start playing and use the `WASD` to move the snake around.
 
 
+
+https://github.com/Dpbm/snake-ai/assets/75098594/c66b2d44-d027-446a-ba97-bae4b6e7269e
+
+
+
 ### AI
 
 In the AI version, you have 2 screens to select either train the AI or let the AI play.
 
 #### Train AI
 To train the AI `PRESS A` and let her learn to play. If you want you can `PRESS S` during the training to save the best individual weights, but after each generation a weights file is save with the best one. If you want to go back from the training module, you can also `PRESS R` to return to the main Screen.
+
+
+
+https://github.com/Dpbm/snake-ai/assets/75098594/71f9e79c-d6b0-4472-a7f9-cab7c918636b
+
 
 
 #### Let the AI play
@@ -82,6 +93,12 @@ anything else are just zeros
 $x_i$ is the binary variable $i$. $P$ is a penality value, in this case we used $(window_{height}*window_{width}) + 10$, the penality part ensures that only one movement will be passed as outcome (either $001$, $010$ or $100$).
 
 To play this one, `PRESS Q` at the start Screen.
+
+
+
+https://github.com/Dpbm/snake-ai/assets/75098594/341a7d76-11cf-4371-9a8f-ba7a36f9fcd3
+
+
 
 ## Usage
 
@@ -207,7 +224,9 @@ python ./pygame-qubo-test/main.py
 ```
 
 
-https://github.com/Dpbm/snake-ai/assets/75098594/511d45d6-3f93-40ca-bb0c-b842d3fd8a32
+
+https://github.com/Dpbm/snake-ai/assets/75098594/783bd111-b414-4b62-893c-becf346cb6c8
+
 
 
 ## Credits
