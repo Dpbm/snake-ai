@@ -67,7 +67,7 @@ After acquaring the weights file (`.wg`), you can put them into an AI agent to p
 
 The last mode, is based on QUBO model. This one has a mathematical an expression with some binary variables, and the goal is to minimize it using different combinations for these binary variables.
 
-$\sum_{i = 0}^{2}{Q_{ii}x_{i}} + P((\sum_{i = 0}^{2}{x_{i}})-1)^2$
+$$\sum_{i = 0}^{2}{Q_{ii}x_{i}} + P((\sum_{i = 0}^{2}{x_{i}})-1)^2$$
 
 In this expression, $Q$ is a matrix with the distances between the player and the food, which:
 
@@ -81,7 +81,7 @@ anything else are just zeros
 
 $x_i$ is the binary variable $i$. $P$ is a penality value, in this case we used $(window_{height}*window_{width}) + 10$, the penality part ensures that only one movement will be passed as outcome (either $001$, $010$ or $100$).
 
-
+To play this one, `PRESS Q` at the start Screen.
 
 ## Usage
 
