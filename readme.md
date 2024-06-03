@@ -231,5 +231,5 @@ https://github.com/Dpbm/snake-ai/assets/75098594/783bd111-b414-4b62-893c-becf346
 
 ## Credits
 
-Fonts were taken from: [CodeMan38 Google fonts](https://fonts.google.com/specimen/Press+Start+2P)
+Fonts were taken from: [CodeMan38 Google fonts](https://fonts.google.com/specimen/Press+Start+2P)\
 nativefiledialog-extended by [btzy](https://github.com/btzy/nativefiledialog-extended)
