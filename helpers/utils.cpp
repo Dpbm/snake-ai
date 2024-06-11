@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <stdexcept>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -12,6 +13,7 @@
 #include "../matrix/matrix.h"
 #include "../machine/machine.h"
 
+using std::invalid_argument;
 using std::pow;
 using std::sqrt;
 using std::stod;
@@ -166,14 +168,25 @@ namespace Utils {
     for(char a: line){
       if(a == ',' || a == '.'){
         
+        if(actual_layer >= 3)
+          throw invalid_argument("you must have 3 layers only!");
+
+
         sizes[actual_layer] = stoi(value);
         actual_layer ++;
         value = "";
+        
+        if(a == '.')
+          break;
+
         continue;
       }
       
       value += a;
     }
+
+    if(actual_layer != 3)
+      throw invalid_argument("provided arch has less than 3 layers!");
 
     return sizes;
   }
