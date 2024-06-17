@@ -10,6 +10,7 @@ using Matrices::Matrix;
 using Utils::distance;
 using Utils::parse_nn_arch;
 using Utils::parse_weights_head;
+using Utils::parse_layers_sizes;
 
 namespace {
   TEST(ValueTest, ZeroDistanceTest){
@@ -108,4 +109,42 @@ namespace {
     delete result;
   }
   
+  TEST(ValueTest, ParseLayersSizesEmptyLineTest){
+    string line = "";
+    EXPECT_THROW({ parse_layers_sizes(line, 1); }, invalid_argument);
+  }
+  
+  TEST(ValueTest, ParseLayersSizesTotalSizesAndInputLayersDoesntMatchLessThanArgumentTest){
+    string line = "10,10.";
+    EXPECT_THROW({ parse_layers_sizes(line, 3); }, invalid_argument);
+  }
+  
+  TEST(ValueTest, ParseLayersSizesTotalSizesAndInputLayersDoesntMatchMoreThanArgumentTest){
+    string line = "10,10,10,10.";
+    EXPECT_THROW({ parse_layers_sizes(line, 3); }, invalid_argument);
+  }
+  
+  TEST(ValueTest, ParseLayersSizesUnexpectedSepartionTest){
+    string line = "10.10,10.";
+    EXPECT_THROW({ parse_layers_sizes(line, 3); }, invalid_argument);
+  }
+  
+  TEST(ValueTest, ParseLayersSizesAllCorrectValuesTest){
+    string line = "10,30.";
+    uint8_t* result = parse_layers_sizes(line, 2);
+
+    ASSERT_EQ(result[0], 10);
+    ASSERT_EQ(result[1], 30);
+    delete result;
+  }
+  
+  TEST(ValueTest, ParseLayersSizesAllCorrectValuesIgnoreRestTest){
+    string line = "10,30.40,30.";
+    uint8_t* result = parse_layers_sizes(line, 2);
+
+    ASSERT_EQ(result[0], 10);
+    ASSERT_EQ(result[1], 30);
+    delete result;
+  }
+
 }

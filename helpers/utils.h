@@ -22,9 +22,10 @@ namespace Utils {
   void create_file(string filename, string data);
   vector<Matrix*> parse_weigths(string filename);
   NN* parse_nn(string filename);
-  uint8_t* parse_layers_sizes(string line, uint8_t total_layers);
   uint8_t* parse_activations(string line, uint8_t total_layers);
   double* parse_row(string line, uint8_t width);
+  
+  uint8_t* parse_layers_sizes(string line, uint8_t total_layers);
 
   //tested
   uint8_t* parse_nn_arch(string line);

@@ -198,18 +198,29 @@ namespace Utils {
     uint8_t* sizes = new uint8_t[total_layers]; 
     uint8_t actual_i = 0;
 
+    if(line.size() <= 0)
+      throw invalid_argument("Invalid Layers sizes empty line!");
+
     string value = "";
     for(char a: line){
       if(a == ',' || a == '.'){
         
+        if(actual_i >= total_layers)
+          throw invalid_argument("Invalid layers amount!");
+        
         sizes[actual_i] = stoi(value);
         actual_i ++;
         value = "";
+        if(a == '.')
+          break;
         continue;
       }
       
       value += a;
     }
+
+    if(actual_i != total_layers)
+      throw invalid_argument("Invalid layers amount!");
 
     return sizes;
   }
