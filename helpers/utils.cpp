@@ -99,7 +99,7 @@ namespace Utils {
           break;
 
         case 2:{
-          uint8_t* activations = parse_activations(line,total_layers);
+          uint8_t* activations = parse_activations(line,total_layers-1);
           for(size_t i = 0; i < total_layers; i++){
             
             nn->add_layer(layers_sizes[i]);
@@ -225,13 +225,20 @@ namespace Utils {
     return sizes;
   }
   
-  uint8_t* parse_activations(string line, uint8_t total_layers){
-    uint8_t* activations = new uint8_t[total_layers]; 
+  uint8_t* parse_activations(string line, uint8_t total_activations){
+    uint8_t* activations = new uint8_t[total_activations]; 
     uint8_t actual_i = 0;
+
+    if(line.size() <= 0)
+      throw invalid_argument("activations line is empty!");
 
     string value = "";
     for(char a: line){
       if(a == ',' || a == '.'){
+
+        if(actual_i >= total_activations)
+          throw invalid_argument("Invalid amount of activations!");
+
         if(strcmp(value.c_str(), "relu") == 0)
           activations[actual_i] = 0;
         else if(strcmp(value.c_str(), "sigmoid") == 0)
@@ -245,11 +252,17 @@ namespace Utils {
           
         actual_i ++;
         value = "";
+        if(a == '.')
+          break;
+
         continue;
       }
       
       value += a;
     }
+
+    if(actual_i != total_activations)
+      throw invalid_argument("Different amount of activations!");
 
     return activations;
   }

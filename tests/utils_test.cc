@@ -11,6 +11,7 @@ using Utils::distance;
 using Utils::parse_nn_arch;
 using Utils::parse_weights_head;
 using Utils::parse_layers_sizes;
+using Utils::parse_activations;
 
 namespace {
   TEST(ValueTest, ZeroDistanceTest){
@@ -147,4 +148,50 @@ namespace {
     delete result;
   }
 
+  TEST(ValueTest, ParseActivationsEmptyLineTest){
+    string line = "";
+    EXPECT_THROW({ parse_activations(line, 3); }, invalid_argument);
+  }
+  
+  TEST(ValueTest, ParseActivationsLessThanTotalActivationsTest){
+    string line = "relu,sigmoid.";
+    EXPECT_THROW({ parse_activations(line, 3); }, invalid_argument);
+  }
+  
+  TEST(ValueTest, ParseActivationsMoreThanTotalActivationsTest){
+    string line = "relu,sigmoid,relu,relu.";
+    EXPECT_THROW({ parse_activations(line, 3); }, invalid_argument);
+  }
+  
+  TEST(ValueTest, ParseActivationsWrongSignSequenceTest){
+    string line = "relu.sigmoid,relu.";
+    EXPECT_THROW({ parse_activations(line, 3); }, invalid_argument);
+  }
+
+
+  TEST(ValueTest, ParseActivationsCorrectValuesTest){
+    string line = "relu,sigmoid,tanh,softmax,none,test.";
+    uint8_t* result = parse_activations(line, 6);
+
+    ASSERT_EQ(result[0], 0);
+    ASSERT_EQ(result[1], 1);
+    ASSERT_EQ(result[2], 2);
+    ASSERT_EQ(result[3], 3);
+    ASSERT_EQ(result[4], 4);
+    ASSERT_EQ(result[5], 4);
+    delete result;
+  }
+  
+  TEST(ValueTest, ParseActivationsCorrectValuesIgnoreRestTest){
+    string line = "relu,sigmoid,tanh,softmax,none,test.relu,softmax.";
+    uint8_t* result = parse_activations(line, 6);
+
+    ASSERT_EQ(result[0], 0);
+    ASSERT_EQ(result[1], 1);
+    ASSERT_EQ(result[2], 2);
+    ASSERT_EQ(result[3], 3);
+    ASSERT_EQ(result[4], 4);
+    ASSERT_EQ(result[5], 4);
+    delete result;
+  }
 }
