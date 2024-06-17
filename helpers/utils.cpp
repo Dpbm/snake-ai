@@ -164,6 +164,9 @@ namespace Utils {
     uint8_t* sizes = new uint8_t[3]; 
     uint8_t actual_layer = 0;
 
+    if(line.size() <= 0)
+      throw invalid_argument("no arch was provided!");
+
     string value = "";
     for(char a: line){
       if(a == ',' || a == '.'){
@@ -244,19 +247,33 @@ namespace Utils {
   Matrix* parse_weights_head(string line){
     uint8_t values[2];
     uint8_t i = 0;
+    
+    if(line.size() <= 0)
+      throw invalid_argument("no weights head was provided!");
 
     string value = "";
     for(char a: line){
       if(a == ',' || a == '.'){
+        
+        if(i >= 2)
+          throw invalid_argument("Weights head must have only 2 values!");
+
         values[i] = stoi(value);
         i++;
         value = "";
+        if(a == '.')
+          break;
+
         continue;
       }
 
       if(a != 'l')
         value += a;
     }
+    
+    if(i != 2)
+      throw invalid_argument("weights head must constist of 2 values!");
+
     return new Matrix(values[0], values[1]);
   }
 
