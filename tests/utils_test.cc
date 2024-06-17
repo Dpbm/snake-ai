@@ -12,6 +12,7 @@ using Utils::parse_nn_arch;
 using Utils::parse_weights_head;
 using Utils::parse_layers_sizes;
 using Utils::parse_activations;
+using Utils::parse_row;
 
 namespace {
   TEST(ValueTest, ZeroDistanceTest){
@@ -192,6 +193,45 @@ namespace {
     ASSERT_EQ(result[3], 3);
     ASSERT_EQ(result[4], 4);
     ASSERT_EQ(result[5], 4);
+    delete result;
+  }
+  
+  TEST(ValueTest, ParseRowEmptyLineTest){
+    string line = "";
+    EXPECT_THROW({ parse_row(line, 3); }, invalid_argument);
+  }
+  
+  TEST(ValueTest, ParseRowLessThanTotalWidthTest){
+    string line = "30.2,30.3;";
+    EXPECT_THROW({ parse_row(line, 3); }, invalid_argument);
+  }
+  
+  TEST(ValueTest, ParseRowMoreThanTotalWidthTest){
+    string line = "30.2,30.3,30.4,30.5;";
+    EXPECT_THROW({ parse_row(line, 3); }, invalid_argument);
+  }
+  
+  TEST(ValueTest, ParseRowWrongSignSequenceTest){
+    string line = "30.3;30.4,405.3;";
+    EXPECT_THROW({ parse_row(line, 3); }, invalid_argument);
+  }
+
+
+  TEST(ValueTest, ParseRowCorrectValuesTest){
+    string line = "30.4,30.5;";
+    double* result = parse_row(line, 2);
+
+    ASSERT_EQ(result[0], 30.4);
+    ASSERT_EQ(result[1], 30.5);
+    delete result;
+  }
+  
+  TEST(ValueTest, ParseRowCorrectValuesIgnoreRestTest){
+    string line = "30.4,30.5;30.6,304.5;";
+    double* result = parse_row(line, 2);
+
+    ASSERT_EQ(result[0], 30.4);
+    ASSERT_EQ(result[1], 30.5);
     delete result;
   }
 }

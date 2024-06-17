@@ -306,16 +306,33 @@ namespace Utils {
     uint8_t i = 0;
     string weight = "";
       
+    
+    if(line.size() <= 0)
+      throw invalid_argument("Invalid empty weights row!");
+
     for(char a : line){
       if(a == ',' || a == ';'){
+
+        if(i >= width)
+          throw invalid_argument("Invalid row width!");
+        
+
         row[i] = stod(weight);
         i++;
         weight = "";
+        
+        if(a == ';')
+          break;
+
         continue;
       }
 
       weight += a;
     }
+
+    if(i != width)
+      throw invalid_argument("Invalid row width!");
+
     return row;
   }
 
