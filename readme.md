@@ -13,7 +13,7 @@ https://github.com/Dpbm/snake-ai/assets/75098594/81120c76-1979-4c08-8647-6a0fb24
 ![GHRC publish](https://github.com/Dpbm/snake-ai/actions/workflows/ghrc.yml/badge.svg)
 
 For this project, my idea was to explore some algorithms, such as genetic algorithms and Qubo, and 
-technologies, like C++, and develop something I've always wanted to, all from scratch! 
+technologies, like C++, to develop something I've always wanted to, all from scratch! 
 
 The urge to build a snake game AI came after I watched some YouTube videos, which inspired me to create something different and just for fun, some of them are listed bellow:
 
