@@ -19,10 +19,10 @@ namespace Utils {
   double random(double start, double end);
   int64_t random_int(uint64_t start, uint64_t end);
   void append_to_file(string filename, string data);
-  void create_file(string filename, string data);
   vector<Matrix*> parse_weigths(string filename);
   NN* parse_nn(string filename);
   
+  void create_file(string filename, string data);
   
 
   //tested

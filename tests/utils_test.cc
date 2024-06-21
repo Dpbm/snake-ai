@@ -1,10 +1,12 @@
 #include <cstdint>
+#include <fstream>
 #include <gtest/gtest.h>
 #include <stdexcept>
 #include "../helpers/utils.h"
 #include "../matrix/matrix.h"
 
-
+using std::getline;
+using std::ifstream;
 using std::invalid_argument;
 using Matrices::Matrix;
 using Utils::distance;
@@ -13,6 +15,7 @@ using Utils::parse_weights_head;
 using Utils::parse_layers_sizes;
 using Utils::parse_activations;
 using Utils::parse_row;
+using Utils::create_file;
 
 namespace {
   TEST(ValueTest, ZeroDistanceTest){
@@ -233,5 +236,19 @@ namespace {
     ASSERT_EQ(result[0], 30.4);
     ASSERT_EQ(result[1], 30.5);
     delete result;
+  }
+
+  TEST(ValueTest, CreateFileTest){
+    string data = "anything!";
+    string filename = "test.txt";
+    
+    create_file(filename, data);
+
+    ifstream file(filename);
+    ASSERT_TRUE(file.good());
+    
+    string line;
+    getline(file, line);
+    ASSERT_EQ(line, data);
   }
 }
