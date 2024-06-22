@@ -16,6 +16,7 @@ using Utils::parse_layers_sizes;
 using Utils::parse_activations;
 using Utils::parse_row;
 using Utils::create_file;
+using Utils::append_to_file;
 
 namespace {
   TEST(ValueTest, ZeroDistanceTest){
@@ -238,6 +239,7 @@ namespace {
     delete result;
   }
 
+  
   TEST(ValueTest, CreateFileTest){
     string data = "anything!";
     string filename = "test.txt";
@@ -250,5 +252,30 @@ namespace {
     string line;
     getline(file, line);
     ASSERT_EQ(line, data);
+    
+    file.close();
+  }
+  
+  TEST(ValueTest, AppendToFileTest){
+    string filename = "test2.txt";
+    string data1 = "test1";
+    string data2 = "test2";
+    
+    append_to_file(filename, data1);
+    append_to_file(filename, "\n");
+    append_to_file(filename, data2);
+
+    ifstream file(filename);
+    ASSERT_TRUE(file.good());
+    
+    string line1;
+    string line2;
+    getline(file, line1);
+    file.seekg(data1.size()+1);
+    getline(file, line2);
+    ASSERT_EQ(line1, data1);
+    ASSERT_EQ(line2, data2);
+    
+    file.close();
   }
 }

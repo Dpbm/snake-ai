@@ -26,5 +26,5 @@ printf "${GREEN}Running: 'manual_tests'${ENDCOLOR}\n"
 printf "\n\n"
 
 printf "${GREEN}Running tests${ENDCOLOR}\n"
-cd build && rm -rf *.wg && ctest -V
+cd build && rm -rf *.wg && rm -rf *.txt && ctest -V
 printf "\n\n"

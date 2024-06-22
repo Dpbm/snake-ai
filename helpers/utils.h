@@ -18,14 +18,14 @@ namespace Utils {
 
   double random(double start, double end);
   int64_t random_int(uint64_t start, uint64_t end);
-  void append_to_file(string filename, string data);
   vector<Matrix*> parse_weigths(string filename);
   NN* parse_nn(string filename);
   
-  void create_file(string filename, string data);
+  void append_to_file(string filename, string data);
   
 
   //tested
+  void create_file(string filename, string data);
   uint8_t* parse_nn_arch(string line);
   double distance(int16_t x1, int16_t y1, int16_t x2, int16_t y2);
   Matrix* parse_weights_head(string line);
