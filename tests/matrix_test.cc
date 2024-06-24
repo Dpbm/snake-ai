@@ -10,6 +10,16 @@ using Matrices::Matrix;
 using std::invalid_argument;
 
 namespace {
+  TEST(ValueTest, WidthTest){
+    Matrix m{3};
+    ASSERT_EQ(m.get_width(), 3);
+  }
+  
+  TEST(ValueTest, HeightTest){
+    Matrix m{5};
+    ASSERT_EQ(m.get_height(), 5);
+  }
+
   TEST(CreationTest, SquareMatrixTest){
     Matrix* matrix = new Matrix(3);
     matrix->update_value(0, 0, 1);
