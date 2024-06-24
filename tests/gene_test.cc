@@ -51,5 +51,11 @@ namespace {
     ASSERT_EQ(gene->get_gene_value(), 100);
     delete gene;
   }
+
+  TEST(ValueTest, GetGeneValueTest){
+    Gene gene;
+    gene.set_gene_value(10);
+    ASSERT_EQ(gene.get_gene_value(), 10);
+  }
 }
 
