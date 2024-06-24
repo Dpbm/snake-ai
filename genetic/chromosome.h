@@ -20,7 +20,7 @@ namespace Genetic {
       uint64_t get_size();
       ~Chromosome();
       void copy_genes(Gene* genes);
-      Gene** slice(uint64_t start, uint64_t end);
+      Gene* slice(uint64_t start, uint64_t end);
     
     private:
       Gene* genes = nullptr;

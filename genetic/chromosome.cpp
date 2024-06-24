@@ -47,15 +47,15 @@ namespace Genetic {
     return this->total_genes;
   }
  
-  Gene** Chromosome::slice(uint64_t start, uint64_t end){
-    if(start > end) 
+  Gene* Chromosome::slice(uint64_t start, uint64_t end){
+    if(start >= end) 
       throw invalid_argument("invalid start end order!");
     else if(start > this->total_genes || end > this->total_genes)
       throw invalid_argument("start end out of bounds!");
 
-    Gene** genes_slice = new Gene*[end-start];
+    Gene* genes_slice = new Gene[end-start];
     for(size_t i = start; i < end; i++)
-      genes_slice[i-start] = &this->genes[i];
+      genes_slice[i-start].set_gene_value(this->genes[i].get_gene_value());
 
     //Remember to clean the returning pointer after using that
     return genes_slice;

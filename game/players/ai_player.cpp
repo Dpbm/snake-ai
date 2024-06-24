@@ -62,13 +62,13 @@ namespace Players{
       Matrix* genes_m = new Matrix(w->get_width(), w->get_height());
       uint64_t total_weights = w->get_total_weights();
 
-      Gene** genes = this->chromosome->slice(last_index, last_index + total_weights);
+      Gene* genes = this->chromosome->slice(last_index, last_index + total_weights);
       last_index += total_weights;
  
       uint64_t gene_i = 0;
       for(size_t i = 0; i < w->get_height(); i++)
         for(size_t j = 0; j < w->get_width(); j++)
-          genes_m->update_value(i, j, genes[gene_i++]->get_gene_value());
+          genes_m->update_value(i, j, genes[gene_i++].get_gene_value());
 
       w->load_weights(genes_m);
       delete[] genes;
