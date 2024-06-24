@@ -1,6 +1,7 @@
 #include <cstdint>
 #include <fstream>
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <stdexcept>
 #include "../helpers/utils.h"
 #include "../matrix/matrix.h"
@@ -8,6 +9,9 @@
 #include "../machine/layer.h"
 #include "../machine/weights.h"
 
+using ::testing::AllOf;
+using ::testing::Ge;
+using ::testing::Le;
 using std::getline;
 using std::ifstream;
 using std::invalid_argument;
@@ -21,6 +25,8 @@ using Utils::parse_activations;
 using Utils::parse_row;
 using Utils::create_file;
 using Utils::append_to_file;
+using Utils::random_int;
+using Utils::random;
 using Machine::NN;
 using Machine::Layer;
 using Machine::Weights;
@@ -339,6 +345,14 @@ namespace {
     delete nn;
   }
 
+   
+  TEST(ValueTest, RandomIntTest){
+    for(size_t i = 0; i < 10; i++)
+      ASSERT_THAT(random_int(1, 2), AllOf(Ge(1), Le(2)));
+  }
   
-
+  TEST(ValueTest, RandomTest){
+    for(size_t i = 0; i < 10; i++)
+      ASSERT_THAT(random(0,1), AllOf(Ge(0), Le(1)));
+  }
 }
