@@ -5,6 +5,7 @@
 #include "population.h"
 #include "../game/board.h"
 #include "../helpers/utils.h"
+#include "../helpers/constants.h"
 #include "chromosome.h"
 #include "gene.h"
 
@@ -15,11 +16,13 @@ using Game::Board;
 using Genetic::Chromosome;
 using Genetic::Gene;
 using Utils::random_int;
+using Players::Directions::LEFT;
 
 namespace Genetic{
-  //for tests
   Population::Population(uint16_t total){
+    //It was created especially for tests, don't use it for any real code! 
     this->total_ind = total;
+    this->total_alive = total;
   }
 
   Population::Population(uint16_t total, uint8_t board_w, uint8_t board_h, uint8_t total_food){
@@ -27,11 +30,12 @@ namespace Genetic{
     this->total_food = total_food;
     this->board_h = board_h;
     this->board_w = board_w;
-    
+    this->total_alive = total;
+
     this->generate_food_positions();
     vec2 first_food_pos = this->food_positions.at(0);
     
-    for(size_t i = 0; i < this->total_ind; i++){
+    for(size_t i = 0; i < total; i++){
       Individual* ind = new Individual;
       ind->board = new Board(board_w, board_h);
       ind->player = new AIPlayer(board_w, board_h);
@@ -41,7 +45,7 @@ namespace Genetic{
       ind->fitness = 0;
       ind->same_dir_counter = 0;
       ind->index = i;
-      ind->las_dir = ind->player->get_dir();
+      ind->last_dir = ind->player->get_dir();
 
       this->individuals.push_back(ind); 
     }
@@ -114,11 +118,11 @@ namespace Genetic{
       player->update_dir();
       board->update_player_pos();
 
-      if(player->get_dir() == ind->las_dir){
+      if(player->get_dir() == ind->last_dir){
         ind->same_dir_counter++;
       }else{
         ind->same_dir_counter = 0;
-        ind->las_dir = player->get_dir();
+        ind->last_dir = player->get_dir();
       }
 
       // fitness for going in the same direction a bunch of times
@@ -168,7 +172,7 @@ namespace Genetic{
     
     this->gen++;
     this->best_score = 0;
-    this->best_fitness = this->default_best_fitness;
+    this->best_fitness = DEFAULT_BEST_FITNESS;
     
     Individual** parents = this->select_parents();
     Chromosome* offspring = this->generate_offspring(parents[0]->player->get_chromossome(), parents[1]->player->get_chromossome());
@@ -202,7 +206,7 @@ namespace Genetic{
       ind->fitness = 0;
       ind->same_dir_counter = 0;
       ind->index = i;
-      ind->las_dir = ind->player->get_dir();
+      ind->last_dir = ind->player->get_dir();
 
       this->individuals.push_back(ind); 
     }
@@ -289,6 +293,22 @@ namespace Genetic{
       delete ind->player;
       delete ind;
     }   
+  }
+
+  uint16_t Population::get_total_ind(){
+    return this->total_ind;
+  } 
+
+  vector<vec2> Population::get_foods(){
+    return  this->food_positions;    
+  }
+
+  uint8_t Population::get_total_food(){
+    return this->total_food;
+  }
+
+  vector<Individual*> Population::get_individuals(){
+    return this->individuals;
   }
 
   Population::~Population(){

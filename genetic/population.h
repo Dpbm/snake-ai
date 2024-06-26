@@ -6,6 +6,7 @@
 #include "../game/board.h"
 #include "../helpers/utils.h"
 #include "../genetic/chromosome.h"
+#include "../helpers/constants.h"
 
 using std::vector;
 using Game::Board;
@@ -20,7 +21,7 @@ namespace Genetic {
     AIPlayer *player;
     int64_t fitness;
     uint8_t same_dir_counter;
-    Directions las_dir;
+    Directions last_dir;
     uint16_t index;
   } Individual;
 
@@ -31,7 +32,6 @@ namespace Genetic {
       Individual* get_best_individual();
       void next_gen();
       void run();
-      uint32_t get_gen();
       Chromosome* generate_offspring(Chromosome* ch1, Chromosome* ch2);
       uint16_t get_total_alive();
       uint8_t get_total_win();
@@ -40,10 +40,16 @@ namespace Genetic {
       ~Population();
       
       
-      //for tests (these ones could be private)
+      Population(uint16_t total);
+
+      uint16_t get_total_ind();
+      uint32_t get_gen();
+      vector<vec2> get_foods();
+      uint8_t get_total_food();
+      vector<Individual*> get_individuals();
+  
       Individual** select_parents();
       void append_individual(Individual* ind);
-      Population(uint16_t total);
       
 
     private:
@@ -55,10 +61,8 @@ namespace Genetic {
       uint8_t board_w = 0;
       uint8_t board_h = 0;
 
-      
       uint16_t best_score = 0;
-      int64_t default_best_fitness = -1000000000000;
-      int64_t best_fitness = default_best_fitness;
+      int64_t best_fitness = DEFAULT_BEST_FITNESS;
   
       void update_best_fitness(Individual* ind);
 

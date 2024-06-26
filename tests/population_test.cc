@@ -4,6 +4,7 @@
 #include "../game/players/player.h"
 #include "../genetic/chromosome.h"
 #include "../genetic/gene.h"
+#include "../helpers/constants.h"
 
 using std::invalid_argument;
 using Genetic::Population;
@@ -13,6 +14,45 @@ using Genetic::Chromosome;
 using Genetic::Gene;
 
 namespace {
+  TEST(CreationTest, CreateByTotalTest){
+    Population p(2);
+
+    ASSERT_EQ(p.get_total_alive(), 2);
+    ASSERT_EQ(p.get_gen(), 1);
+    ASSERT_EQ(p.get_total_win(), 0);
+    ASSERT_EQ(p.get_best_score(), 0);
+    ASSERT_EQ(p.get_total_ind(), 2);
+    ASSERT_EQ(p.get_total_food(), 0);
+    ASSERT_EQ(p.get_foods().size(), 0);
+    ASSERT_EQ(p.get_best_fitness(), DEFAULT_BEST_FITNESS);
+    ASSERT_EQ(p.get_individuals().size(), 0);
+  }
+  
+  TEST(CreationTest, CreateCompleteModelTest){
+    Population p{2, 10, 10, 2};
+
+    vector<Individual*> individuals = p.get_individuals();
+
+    ASSERT_EQ(p.get_total_alive(), 2);
+    ASSERT_EQ(p.get_gen(), 1);
+    ASSERT_EQ(p.get_total_win(), 0);
+    ASSERT_EQ(p.get_best_score(), 0);
+    ASSERT_EQ(p.get_total_ind(), 2);
+    ASSERT_EQ(p.get_total_food(), 2);
+    ASSERT_EQ(p.get_foods().size(), 2);
+    ASSERT_EQ(p.get_best_fitness(), DEFAULT_BEST_FITNESS);
+    ASSERT_EQ(individuals.size(), 2);
+
+    for(size_t i = 0; i < 2; i ++){
+      Individual* ind = individuals.at(i);
+      ASSERT_EQ(ind->index, i);
+      ASSERT_EQ(ind->fitness, 0);
+      ASSERT_EQ(ind->same_dir_counter, 0);
+      ASSERT_EQ(ind->last_dir, ind->player->get_dir());
+    }
+
+  }
+
   TEST(ValueTest, OnlyTwoIndividualsSelectParentsTest){
     Population p(2);
     Individual* ind1 = new Individual{nullptr, nullptr, 0, 0, Directions::LEFT, 0};
