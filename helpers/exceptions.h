@@ -12,5 +12,11 @@ namespace Utils {
       FileNotFound();
       const char* what() const throw();
   };
+  
+  class InvalidValues : public exception{ 
+    public:
+      InvalidValues();
+      const char* what() const throw();
+  };
 
 };

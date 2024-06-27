@@ -27,7 +27,6 @@ namespace Genetic {
 
   class Population{
     public:
-      Individual* get_best_alive_individual();
       void next_gen();
       void run();
       uint16_t get_total_alive();
@@ -50,6 +49,7 @@ namespace Genetic {
       uint8_t get_total_food();
       
       Individual* get_best_individual();
+      Individual* get_best_alive_individual();
       
       Chromosome* generate_offspring(Chromosome* ch1, Chromosome* ch2);
       Individual** select_parents();

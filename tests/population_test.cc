@@ -2,16 +2,20 @@
 #include <stdexcept>
 #include "../genetic/population.h"
 #include "../game/players/player.h"
+#include "../game/players/ai_player.h"
 #include "../genetic/chromosome.h"
 #include "../genetic/gene.h"
 #include "../helpers/constants.h"
+#include "../helpers/exceptions.h"
 
 using std::invalid_argument;
 using Genetic::Population;
 using Genetic::Individual;
 using Players::Directions;
+using Players::AIPlayer;
 using Genetic::Chromosome;
 using Genetic::Gene;
+using Utils::InvalidValues;
 
 namespace {
   TEST(CreationTest, CreateByTotalTest){
@@ -209,5 +213,77 @@ namespace {
     p.append_individual(ind3);
 
     ASSERT_EQ(p.get_best_individual(), ind3);
+  }
+  
+  TEST(ValuesTest, GetBestIndividualNoIndividualsTest){
+    Population p(3);
+
+    ASSERT_THROW({ p.get_best_individual(); }, InvalidValues);
+  }
+  
+  TEST(ValuesTest, GetBestIndividualAliveAllPlayersAreAliveTest){
+    Population p(3);
+   
+    AIPlayer* player1 = new AIPlayer{10, 10}; 
+    AIPlayer* player2 = new AIPlayer{10, 10}; 
+    AIPlayer* player3 = new AIPlayer{10, 10}; 
+
+    Individual* ind1 = new Individual{nullptr, player1, 1000, 0, Directions::LEFT, 0};
+    Individual* ind2 = new Individual{nullptr, player2, 0, 0, Directions::LEFT, 0};
+    Individual* ind3 = new Individual{nullptr, player3, 10, 0, Directions::LEFT, 0};
+
+    p.append_individual(ind1);
+    p.append_individual(ind2);
+    p.append_individual(ind3);
+    
+    ASSERT_EQ(p.get_best_alive_individual(), ind1);
+  }
+  
+  TEST(ValuesTest, GetBestIndividualAliveTest){
+    Population p(3);
+   
+    AIPlayer* player1 = new AIPlayer{10, 10}; 
+    AIPlayer* player2 = new AIPlayer{10, 10}; 
+    AIPlayer* player3 = new AIPlayer{10, 10}; 
+
+    Individual* ind1 = new Individual{nullptr, player1, 1000, 0, Directions::LEFT, 0};
+    Individual* ind2 = new Individual{nullptr, player2, 0, 0, Directions::LEFT, 0};
+    Individual* ind3 = new Individual{nullptr, player3, 10, 0, Directions::LEFT, 0};
+
+    p.append_individual(ind1);
+    p.append_individual(ind2);
+    p.append_individual(ind3);
+
+    player1->set_died();
+    
+    ASSERT_EQ(p.get_best_alive_individual(), ind3);
+  }
+  
+  TEST(ValuesTest, GetBestIndividualAliveNoIndividualsAliveTest){
+    Population p(3);
+   
+    AIPlayer* player1 = new AIPlayer{10, 10}; 
+    AIPlayer* player2 = new AIPlayer{10, 10}; 
+    AIPlayer* player3 = new AIPlayer{10, 10}; 
+
+    Individual* ind1 = new Individual{nullptr, player1, 1000, 0, Directions::LEFT, 0};
+    Individual* ind2 = new Individual{nullptr, player2, 0, 0, Directions::LEFT, 0};
+    Individual* ind3 = new Individual{nullptr, player3, 10, 0, Directions::LEFT, 0};
+
+    p.append_individual(ind1);
+    p.append_individual(ind2);
+    p.append_individual(ind3);
+
+    player1->set_died();
+    player2->set_died();
+    player3->set_died();
+    
+    ASSERT_EQ(p.get_best_alive_individual(), ind1);
+  }
+  
+  TEST(ValuesTest, GetBestIndividualAliveNoIndividualsTest){
+    Population p(3);
+
+    ASSERT_THROW({ p.get_best_alive_individual(); }, InvalidValues);
   }
 }

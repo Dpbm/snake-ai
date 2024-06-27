@@ -5,6 +5,7 @@
 #include "population.h"
 #include "../game/board.h"
 #include "../helpers/utils.h"
+#include "../helpers/exceptions.h"
 #include "../helpers/constants.h"
 #include "chromosome.h"
 #include "gene.h"
@@ -16,6 +17,7 @@ using Game::Board;
 using Genetic::Chromosome;
 using Genetic::Gene;
 using Utils::random_int;
+using Utils::InvalidValues;
 using Players::Directions::LEFT;
 
 namespace Genetic{
@@ -58,6 +60,9 @@ namespace Genetic{
   }
 
   Individual* Population::get_best_individual(){
+    if(this->individuals.size() <= 0)
+      throw InvalidValues();
+
     Individual* best_ind = this->individuals.at(0);
     int64_t best_fit = best_ind->fitness;
     for(Individual* ind: this->individuals){
@@ -71,6 +76,9 @@ namespace Genetic{
   }
   
   Individual* Population::get_best_alive_individual(){
+    if(this->individuals.size() <= 0)
+      throw InvalidValues();
+    
     Individual* best_ind = nullptr;
     int64_t best_fit = 0;
 
