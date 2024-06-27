@@ -151,4 +151,63 @@ namespace {
     Chromosome ch2(10);
     ASSERT_NO_THROW({ p.generate_offspring(&ch1, &ch2); });
   }
+
+  TEST(ValuesTest, GetBestIndividualTest){
+    Population p(3);
+    
+    Individual* ind1 = new Individual{nullptr, nullptr, 40, 0, Directions::LEFT, 0};
+    Individual* ind2 = new Individual{nullptr, nullptr, 1000, 0, Directions::LEFT, 0};
+    Individual* ind3 = new Individual{nullptr, nullptr, 200, 0, Directions::LEFT, 0};
+
+    p.append_individual(ind1);
+    p.append_individual(ind2);
+    p.append_individual(ind3);
+
+    ASSERT_EQ(p.get_best_individual(), ind2);
+    
+  }
+  
+  TEST(ValuesTest, GetBestIndividualWithSameValuesTest){
+    Population p(3);
+    
+    Individual* ind1 = new Individual{nullptr, nullptr, 1000, 0, Directions::LEFT, 0};
+    Individual* ind2 = new Individual{nullptr, nullptr, 1000, 0, Directions::LEFT, 0};
+    Individual* ind3 = new Individual{nullptr, nullptr, 1000, 0, Directions::LEFT, 0};
+
+    p.append_individual(ind1);
+    p.append_individual(ind2);
+    p.append_individual(ind3);
+
+    ASSERT_EQ(p.get_best_individual(), ind1);
+    
+  }
+  
+  TEST(ValuesTest, GetBestIndividualWithNegativeValuesTest){
+    Population p(3);
+    
+    Individual* ind1 = new Individual{nullptr, nullptr, -1000, 0, Directions::LEFT, 0};
+    Individual* ind2 = new Individual{nullptr, nullptr, -3, 0, Directions::LEFT, 0};
+    Individual* ind3 = new Individual{nullptr, nullptr, -100, 0, Directions::LEFT, 0};
+
+    p.append_individual(ind1);
+    p.append_individual(ind2);
+    p.append_individual(ind3);
+
+    ASSERT_EQ(p.get_best_individual(), ind2);
+    
+  }
+  
+  TEST(ValuesTest, GetBestIndividualWithMixedValuesTest){
+    Population p(3);
+    
+    Individual* ind1 = new Individual{nullptr, nullptr, -1000, 0, Directions::LEFT, 0};
+    Individual* ind2 = new Individual{nullptr, nullptr, 0, 0, Directions::LEFT, 0};
+    Individual* ind3 = new Individual{nullptr, nullptr, 10, 0, Directions::LEFT, 0};
+
+    p.append_individual(ind1);
+    p.append_individual(ind2);
+    p.append_individual(ind3);
+
+    ASSERT_EQ(p.get_best_individual(), ind3);
+  }
 }
