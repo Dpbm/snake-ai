@@ -1,13 +1,18 @@
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <stdexcept>
 #include "../genetic/population.h"
 #include "../game/players/player.h"
+#include "../game/board.h"
 #include "../game/players/ai_player.h"
 #include "../genetic/chromosome.h"
 #include "../genetic/gene.h"
 #include "../helpers/constants.h"
 #include "../helpers/exceptions.h"
 
+using ::testing::AllOf;
+using ::testing::Ge;
+using ::testing::Le;
 using std::invalid_argument;
 using Genetic::Population;
 using Genetic::Individual;
@@ -16,6 +21,8 @@ using Players::AIPlayer;
 using Genetic::Chromosome;
 using Genetic::Gene;
 using Utils::InvalidValues;
+using Utils::vec2;
+using Game::Board;
 
 namespace {
   TEST(CreationTest, CreateByTotalTest){
@@ -286,4 +293,56 @@ namespace {
 
     ASSERT_THROW({ p.get_best_alive_individual(); }, InvalidValues);
   }
+
+  TEST(ValuesTest, GetFoodsTest){
+    Population p{2, 10, 10, 5};
+    for(vec2 food : p.get_foods()){
+      ASSERT_THAT(food.x, AllOf(Ge(0), Le(9))); 
+      ASSERT_THAT(food.y, AllOf(Ge(0), Le(9))); 
+    }
+  }
+
+  TEST(ValuesTest, GetIndividualsTest){
+    Population p(3);
+   
+    AIPlayer* player1 = new AIPlayer{10, 10}; 
+    AIPlayer* player2 = new AIPlayer{10, 10}; 
+    AIPlayer* player3 = new AIPlayer{10, 10}; 
+
+    Board* board1 = new Board{10, 10};
+    Board* board2 = new Board{10, 10};
+    Board* board3 = new Board{10, 10};
+
+    Individual* ind1 = new Individual{board1, player1, 1000, 100, Directions::LEFT, 3};
+    Individual* ind2 = new Individual{board2, player2, 0, 10, Directions::RIGHT, 5};
+    Individual* ind3 = new Individual{board3, player3, 10, 5, Directions::UP, 10};
+
+    p.append_individual(ind1);
+    p.append_individual(ind2);
+    p.append_individual(ind3);
+
+    vector<Individual*> inds = p.get_individuals();
+
+    ASSERT_EQ(inds.at(0)->board, board1);
+    ASSERT_EQ(inds.at(0)->player, player1);
+    ASSERT_EQ(inds.at(0)->fitness, 1000);
+    ASSERT_EQ(inds.at(0)->same_dir_counter, 100);
+    ASSERT_EQ(inds.at(0)->last_dir, Directions::LEFT);
+    ASSERT_EQ(inds.at(0)->index, 3);
+
+    ASSERT_EQ(inds.at(1)->board, board2);
+    ASSERT_EQ(inds.at(1)->player, player2);
+    ASSERT_EQ(inds.at(1)->fitness, 0);
+    ASSERT_EQ(inds.at(1)->same_dir_counter, 10);
+    ASSERT_EQ(inds.at(1)->last_dir, Directions::RIGHT);
+    ASSERT_EQ(inds.at(1)->index, 5);
+    
+    ASSERT_EQ(inds.at(2)->board, board3);
+    ASSERT_EQ(inds.at(2)->player, player3);
+    ASSERT_EQ(inds.at(2)->fitness, 10);
+    ASSERT_EQ(inds.at(2)->same_dir_counter, 5);
+    ASSERT_EQ(inds.at(2)->last_dir, Directions::UP);
+    ASSERT_EQ(inds.at(2)->index, 10);
+  }
+  
 }

@@ -34,11 +34,6 @@ namespace Genetic {
       uint16_t get_best_score();
       int64_t get_best_fitness();
       ~Population();
-      
-      vector<vec2> get_foods();
-      vector<Individual*> get_individuals();
-  
-    
 
       //tested
       Population(uint16_t total);
@@ -50,6 +45,9 @@ namespace Genetic {
       
       Individual* get_best_individual();
       Individual* get_best_alive_individual();
+      
+      vector<vec2> get_foods();
+      vector<Individual*> get_individuals();
       
       Chromosome* generate_offspring(Chromosome* ch1, Chromosome* ch2);
       Individual** select_parents();
