@@ -150,24 +150,24 @@ namespace Genetic{
         this->total_win++;
         this->total_alive--;
         ind->fitness += 20000;
-        this->update_best_fitness(ind);
+        this->update_best_fitness(ind->fitness);
         continue;
       }
 
       if(player->is_dead()){
         ind->fitness += -1000;
-        this->update_best_fitness(ind);
+        this->update_best_fitness(ind->fitness);
         continue;
       }
 
-      this->update_best_fitness(ind);
+      this->update_best_fitness(ind->fitness);
       this->update_individual_food_position(ind);
     }
   }
 
-  void Population::update_best_fitness(Individual* ind){
-    if(ind->fitness > this->best_fitness)
-      this->best_fitness = ind->fitness;
+  void Population::update_best_fitness(int64_t fit){
+    if(fit > this->best_fitness)
+      this->best_fitness = fit;
   }
 
   void Population::next_gen(){

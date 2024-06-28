@@ -32,7 +32,6 @@ namespace Genetic {
       uint16_t get_total_alive();
       uint8_t get_total_win();
       uint16_t get_best_score();
-      int64_t get_best_fitness();
       ~Population();
 
       //tested
@@ -48,6 +47,9 @@ namespace Genetic {
       
       vector<vec2> get_foods();
       vector<Individual*> get_individuals();
+      
+      void update_best_fitness(int64_t fit);
+      int64_t get_best_fitness();
       
       Chromosome* generate_offspring(Chromosome* ch1, Chromosome* ch2);
       Individual** select_parents();
@@ -65,7 +67,6 @@ namespace Genetic {
       uint16_t best_score = 0;
       int64_t best_fitness = DEFAULT_BEST_FITNESS;
   
-      void update_best_fitness(Individual* ind);
 
       vector<Individual*> individuals;
       vector<vec2> food_positions; 

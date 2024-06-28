@@ -344,5 +344,28 @@ namespace {
     ASSERT_EQ(inds.at(2)->last_dir, Directions::UP);
     ASSERT_EQ(inds.at(2)->index, 10);
   }
-  
+ 
+  TEST(UpdateTest, UpdateBestFitnessTest){
+    Population p(0);
+    Individual* ind = new Individual{nullptr, nullptr, -1000, 0, Directions::LEFT, 0};
+    p.update_best_fitness(ind->fitness);
+    ASSERT_EQ(p.get_best_fitness(), ind->fitness);
+    delete ind;
+  }
+
+  TEST(UpdaTest, UpdateBestFitnessNoChangesTest){
+    Population p(0);
+    Individual* ind1 = new Individual{nullptr, nullptr, -1000, 0, Directions::LEFT, 0};
+    Individual* ind2 = new Individual{nullptr, nullptr, -10000, 0, Directions::LEFT, 0};
+    p.update_best_fitness(ind1->fitness);
+    p.update_best_fitness(ind2->fitness);
+    ASSERT_EQ(p.get_best_fitness(), ind1->fitness);
+    delete ind1;
+    delete ind2;
+  }
+
+  TEST(ValuesTest, GetBestFitnessNoUpdatesTest){
+    Population p(0);  
+    ASSERT_EQ(p.get_best_fitness(), DEFAULT_BEST_FITNESS);
+  }
 }
