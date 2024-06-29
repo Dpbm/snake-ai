@@ -27,10 +27,6 @@ namespace Genetic {
 
   class Population{
     public:
-      void next_gen();
-      ~Population();
-
-      //tested
       Population(uint16_t total);
       Population(uint16_t total, uint8_t board_w, uint8_t board_h, uint8_t total_food);
       
@@ -51,10 +47,14 @@ namespace Genetic {
       uint16_t get_total_alive();
       uint8_t get_total_win();
       uint16_t get_best_score();
+      void next_gen();
       
       Chromosome* generate_offspring(Chromosome* ch1, Chromosome* ch2);
       Individual** select_parents();
       void append_individual(Individual* ind);
+      
+      ~Population();
+
 
     private:
       uint32_t gen = 1;

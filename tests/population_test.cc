@@ -429,4 +429,20 @@ namespace {
     ASSERT_THAT(p.get_total_win(), AllOf(Ge(1), Le(3)));
     ASSERT_THAT(p.get_best_score(), 4);
   }
+
+  TEST(ValuesTest, NextGenerationTest){
+    Population p(3, 10, 10, 3);
+    
+    for(size_t i = 0; i < 20; i++){
+      p.run();
+    }
+
+    p.next_gen();
+
+    ASSERT_EQ(p.get_gen(), 2);
+    ASSERT_EQ(p.get_best_score(), 0);
+    ASSERT_EQ(p.get_best_fitness(), DEFAULT_BEST_FITNESS);
+    ASSERT_EQ(p.get_total_win(), 0);
+    ASSERT_EQ(p.get_total_alive(), 3);
+  }
 }

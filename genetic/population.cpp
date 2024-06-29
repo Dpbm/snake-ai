@@ -180,6 +180,7 @@ namespace Genetic{
     
     this->gen++;
     this->best_score = 0;
+    this->total_alive = this->total_ind; 
     this->best_fitness = DEFAULT_BEST_FITNESS;
     
     Individual** parents = this->select_parents();
