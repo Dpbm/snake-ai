@@ -19,6 +19,7 @@ namespace {
     ASSERT_EQ(weights->get_height(), 3);
     ASSERT_EQ(weights->get_weights()->get_width(), 2);
     ASSERT_EQ(weights->get_weights()->get_height(), 3);
+    ASSERT_EQ(weights->get_total_weights(), 6);
     delete weights;
   }
 
@@ -32,6 +33,7 @@ namespace {
     ASSERT_EQ(weights->get_height(), 3);
     ASSERT_EQ(weights->get_weights()->get_width(), 2);
     ASSERT_EQ(weights->get_weights()->get_height(), 3);
+    ASSERT_EQ(weights->get_total_weights(), 6);
     delete weights;
   }
 
