@@ -19,6 +19,7 @@ namespace Machine{
   void Weights::load_weights(Matrix* weights){
     if(this->weights != nullptr)
       delete this->weights;
+
     this->width = weights->get_width();
     this->height = weights->get_height();
     this->weights = weights;

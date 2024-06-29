@@ -244,4 +244,70 @@ namespace {
     ASSERT_EQ(nn->get_layer(1)->is_input(), false);
     delete nn;
   }
+  
+  TEST(ValueTest, GetInputLayerTest){
+    NN* nn = new NN;
+    nn->add_layer(1);
+    nn->add_layer(2);
+    ASSERT_EQ(nn->get_input_layer(), nn->get_layer(0));
+    delete nn;
+  }
+  
+  TEST(ValueTest, GetOutputLayerTest){
+    NN* nn = new NN;
+    nn->add_layer(1);
+    nn->add_layer(2);
+    ASSERT_EQ(nn->get_output_layer(), nn->get_layer(1));
+    delete nn;
+  }
+
+  TEST(UpdateTest, LoadWeightsVectorTest){
+    NN* nn = new NN;
+    nn->add_layer(1);
+    nn->add_layer(2);
+    
+    vector<Matrix*> weights;
+    Matrix* w1 = new Matrix(1,2);
+    weights.push_back(w1);
+    w1->map_to_a_single_value(0);
+
+    nn->load_weights(weights);
+
+    ASSERT_EQ(nn->get_weight(0)->get_weights(), w1); 
+  
+    delete nn;
+  }
+
+  TEST(ValueTest, FeedForwardTest){
+    NN* nn = new NN;
+    nn->add_layer(1);
+    nn->add_layer(2);
+    nn->add_layer(2);
+
+    nn->get_layer(1)->relu();
+    nn->get_layer(2)->relu();
+    
+    vector<Matrix*> weights;
+    Matrix* w1 = new Matrix(1,2);
+    w1->map_to_a_single_value(1);
+
+    Matrix* w2 = new Matrix(2,2);
+    w2->map_to_a_single_value(1);
+    
+    weights.push_back(w1);
+    weights.push_back(w2);
+
+    nn->load_weights(weights);
+
+    nn->get_input_layer()->get_values()->map_to_a_single_value(-1);
+
+    Matrix* output = nn->get_output_layer()->get_values();
+
+    ASSERT_EQ(output->get_position_value(0, 0), 0); 
+    ASSERT_EQ(output->get_position_value(0, 1), 0); 
+  
+    delete nn;
+  }
+   
+  
 }
