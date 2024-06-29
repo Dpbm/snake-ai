@@ -4,6 +4,9 @@
 #include "../game/board.h"
 #include "../game/players/player.h"
 
+using ::testing::AllOf;
+using ::testing::Ge;
+using ::testing::Le;
 using Game::Board;
 using Players::Player;
 using Players::Directions;
@@ -16,11 +19,16 @@ namespace {
     b.add_player(&p);
     b.set_food_pos(0, 1);
     uint8_t** board = b.get_board();
-
     ASSERT_EQ(board[0][0], 1);
     ASSERT_EQ(board[0][1], 2);
     ASSERT_EQ(board[1][0], 0);
     ASSERT_EQ(board[1][1], 0);
+  }
+  
+  TEST(CreationTest, DimensionsTest){
+    Board b{2,3};
+    ASSERT_EQ(b.get_width(), 2);
+    ASSERT_EQ(b.get_height(), 3);
   }
 
   TEST(UpdateTest, UpdatedPlayerPosTest){
@@ -117,5 +125,20 @@ namespace {
     b.set_food_pos(0,1);
     b.check_border_collision();
     ASSERT_TRUE(p.is_dead());
+  }
+
+  TEST(ValueTest, RandomFoodTest){
+    Board b{2,2};
+    vec2 food = b.get_food();
+    ASSERT_THAT(food.x, AllOf(Ge(0), Le(1)));
+    ASSERT_THAT(food.y, AllOf(Ge(0), Le(1)));
+  }
+  
+  TEST(ValueTest, SetFoodPosTest){
+    Board b{2,3};
+    b.set_food_pos(1, 2);
+    vec2 food = b.get_food();
+    ASSERT_THAT(food.x, 1);
+    ASSERT_THAT(food.y, 2);
   }
 }

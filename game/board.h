@@ -12,16 +12,20 @@ namespace Game {
     public:
       Board(uint8_t w, uint8_t h);
       uint8_t** get_board();
-      void random_food();
-      void set_food_pos(int16_t x, int16_t y);
-      void add_player(Player* player);
-      void update_player_pos();
-      void check_border_collision();
-      ~Board();
       uint8_t get_width();
       uint8_t get_height();
+      
       vec2 get_food();
+      void random_food();
+      void set_food_pos(int16_t x, int16_t y);
+      
+      void update_player_pos();
+      void check_border_collision();
+      
+      void add_player(Player* player);
       bool get_caught_the_food();
+      
+      ~Board();
 
     private:
       uint8_t w, h;
