@@ -28,10 +28,6 @@ namespace Genetic {
   class Population{
     public:
       void next_gen();
-      void run();
-      uint16_t get_total_alive();
-      uint8_t get_total_win();
-      uint16_t get_best_score();
       ~Population();
 
       //tested
@@ -51,6 +47,11 @@ namespace Genetic {
       void update_best_fitness(int64_t fit);
       int64_t get_best_fitness();
       
+      void run();
+      uint16_t get_total_alive();
+      uint8_t get_total_win();
+      uint16_t get_best_score();
+      
       Chromosome* generate_offspring(Chromosome* ch1, Chromosome* ch2);
       Individual** select_parents();
       void append_individual(Individual* ind);
@@ -67,7 +68,6 @@ namespace Genetic {
       uint16_t best_score = 0;
       int64_t best_fitness = DEFAULT_BEST_FITNESS;
   
-
       vector<Individual*> individuals;
       vector<vec2> food_positions; 
       

@@ -368,4 +368,65 @@ namespace {
     Population p(0);  
     ASSERT_EQ(p.get_best_fitness(), DEFAULT_BEST_FITNESS);
   }
+
+  TEST(ValuesTest, RunTest){
+    Population p(3, 10, 10, 3);
+   
+    for(Individual* ind : p.get_individuals()){
+      ind->player->set_dir(Directions::RIGHT);
+      ind->player->set_pos(4, 4);
+    }
+
+    for(size_t i = 0; i < 3; i++){
+      p.run(); 
+    } 
+
+    ASSERT_EQ(p.get_total_alive(), 3);
+    ASSERT_THAT(p.get_total_win(), AllOf(Ge(0), Le(3)));
+    ASSERT_THAT(p.get_best_score(), AllOf(Ge(0), Le(3)));
+
+  }
+  
+  TEST(ValuesTest, RunChangeTotalAliveTest){
+    Population p(3, 10, 10, 3);
+   
+    for(Individual* ind : p.get_individuals()){
+      ind->player->set_dir(Directions::RIGHT);
+      ind->player->set_pos(4, 4);
+    
+      if(ind->index == 1){
+        ind->player->set_died();
+      }
+    }
+
+    for(size_t i = 0; i < 3; i++){
+      p.run(); 
+    } 
+
+    ASSERT_EQ(p.get_total_alive(), 2);
+    ASSERT_THAT(p.get_total_win(), AllOf(Ge(0), Le(3)));
+    ASSERT_THAT(p.get_best_score(), AllOf(Ge(0), Le(3)));
+  }
+  
+  TEST(ValuesTest, RunChangeTotalWinAndBestScoreTest){
+    Population p(3, 10, 10, 3);
+   
+    for(Individual* ind : p.get_individuals()){
+      ind->player->set_dir(Directions::RIGHT);
+      ind->player->set_pos(4, 4);
+    
+      if(ind->index == 1){
+        for(size_t j = 0; j<4; j++)
+          ind->player->update_score();
+      }
+    }
+
+    for(size_t i = 0; i < 3; i++){
+      p.run(); 
+    } 
+
+    ASSERT_EQ(p.get_total_alive(), 2);
+    ASSERT_THAT(p.get_total_win(), AllOf(Ge(1), Le(3)));
+    ASSERT_THAT(p.get_best_score(), 4);
+  }
 }
