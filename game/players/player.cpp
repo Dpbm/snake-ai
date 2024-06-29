@@ -21,8 +21,8 @@ namespace Players {
   }  
 
   void Player::random_pos(uint8_t w, uint8_t h){
-    int16_t x = random_int(0,h);
-    int16_t y = random_int(0,w);
+    int16_t x = random_int(0,h-1);
+    int16_t y = random_int(0,w-1);
     this->add_body_part(x, y); 
   }
 

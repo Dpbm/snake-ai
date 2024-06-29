@@ -66,13 +66,13 @@ namespace {
     ASSERT_EQ(p.get_mov_x(), 0);
     ASSERT_EQ(p.get_mov_y(), 0);
     ASSERT_EQ(p.get_dir(), Directions::UP);
+    p.direction_left();
     p.direction_down();
     ASSERT_EQ(p.get_mov_x(), 1);
     ASSERT_EQ(p.get_mov_y(), 0);
-    ASSERT_EQ(p.get_dir(), Directions::DOWN);
-    
+    ASSERT_EQ(p.get_dir(), Directions::DOWN);  
   }
-  
+
   TEST(UpdateTest, SetDirectionLeftTest){
     Player p;
 
@@ -160,4 +160,58 @@ namespace {
 
     ASSERT_TRUE(p.is_dead());
   }
+
+  TEST(ValueTest, RandomPosTest){
+    Player p;
+    p.random_pos(10, 13);
+    ASSERT_THAT(p.get_x(), AllOf(Ge(0), Le(12)));
+    ASSERT_THAT(p.get_y(), AllOf(Ge(0), Le(9)));
+  }
+  
+  TEST(ValueTest, RandomDirTest){
+    Player p;
+    p.random_dir();
+    ASSERT_THAT((int)p.get_dir(), AllOf(Ge(0), Le(3)));
+  }
+
+
+  TEST(ValueTest, InvalidDirChangeLeftToRightTest){
+    Player p;
+    p.direction_left();
+    p.direction_right();
+    ASSERT_EQ(p.get_dir(), Directions::LEFT);
+    ASSERT_EQ(p.get_mov_x(), 0);
+    ASSERT_EQ(p.get_mov_y(), -1);
+  }
+  
+  TEST(ValueTest, InvalidDirChangeRightToLeftTest){
+    Player p;
+    p.direction_right();
+    p.direction_left();
+    ASSERT_EQ(p.get_dir(), Directions::RIGHT);
+    ASSERT_EQ(p.get_mov_x(), 0);
+    ASSERT_EQ(p.get_mov_y(), 1);
+  }
+  
+  TEST(ValueTest, InvalidDirChangeUpToDownTest){
+    Player p;
+    p.direction_up();
+    p.direction_down();
+    ASSERT_EQ(p.get_dir(), Directions::UP);
+    ASSERT_EQ(p.get_mov_x(), -1);
+    ASSERT_EQ(p.get_mov_y(), 0);
+  }
+  
+  TEST(ValueTest, InvalidDirChangeDownToUpTest){
+    Player p;
+    p.direction_down();
+    p.direction_up();
+    ASSERT_EQ(p.get_dir(), Directions::DOWN);
+    ASSERT_EQ(p.get_mov_x(), 1);
+    ASSERT_EQ(p.get_mov_y(), 0);
+  }
+
+
+
 }
+
