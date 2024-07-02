@@ -94,6 +94,9 @@ namespace Players {
   }
 
   void Player::random_dir(){
+    if(this->mov_x == 0 && this->mov_y == 0)
+      this->mov_x = -1;
+
     this->set_dir((Directions)random_int(0, 3)); 
   }
   
