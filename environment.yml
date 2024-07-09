@@ -8,3 +8,5 @@ dependencies:
   - pip:
     - numpy
     - pygame
+    - jupyterlab
+    - matplotlib
