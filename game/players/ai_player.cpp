@@ -132,6 +132,11 @@ namespace Players{
     this->nn->save_weights(filename.str());
   }
 
+  NN* AIPlayer::get_nn(){
+    return this->nn;
+  }
+
+
   AIPlayer::~AIPlayer(){
     delete this->chromosome;
     delete this->nn;
