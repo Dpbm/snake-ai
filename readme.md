@@ -231,7 +231,7 @@ https://github.com/Dpbm/snake-ai/assets/75098594/783bd111-b414-4b62-893c-becf346
 If you want to understand how the tests to map the qubo version were done, you can do:
 
 ```
-# case you used pip before
+# in case you used pip before
 # pip install -r requirements-dev.txt
 
 jupyter lab qubo-test.ipynb
