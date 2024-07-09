@@ -24,7 +24,7 @@ class Player(Position):
         self._score += 1
 
     @property
-    def _head(self):
+    def head(self):
         return self._body[0]
 
     @property
@@ -52,7 +52,7 @@ class Player(Position):
         self._update_body()
 
     def _update_body(self):
-        self._last_pos = deepcopy(self._head)
+        self._last_pos = deepcopy(self.head)
 
         if(len(self._body) == 1):
             self._body[0] = [self._x, self._y]
@@ -175,5 +175,5 @@ class Player(Position):
                 raise Exception("Invalid forward movement")
 
     def collide_itself(self):
-        return self._body.count(self._head) > 1
+        return self._body.count(self.head) > 1
     

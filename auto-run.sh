@@ -28,3 +28,9 @@ printf "\n\n"
 printf "${GREEN}Running tests${ENDCOLOR}\n"
 cd build && rm -rf *.wg && rm -rf *.txt && ctest -VV
 printf "\n\n"
+
+printf "${GREEN}Python tests${ENDCOLOR}\n"
+cd ..
+cd pygame-qubo-test
+python -m unittest tests/*.py
+printf "\n\n"

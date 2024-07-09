@@ -14,8 +14,8 @@ class Board:
         self._update_board()
 
     def _randomize_player_food_positions(self):
-        self._food.randomize(self._w, self._h)
-        self._player.randomize(self._w, self._h)
+        self._food.randomize(self._h, self._w)
+        self._player.randomize(self._h, self._w)
 
     def _update_board(self):
         self._board = np.zeros((self._h, self._w), dtype=np.int8)
@@ -35,15 +35,22 @@ class Board:
     @property
     def score(self):
         return self._player.score
+    
+    @property
+    def player(self):
+        return self._player
+    
+    @property
+    def food(self):
+        return self._food
 
     def step(self):
         self._player.move(self._w, self._h, self._food.x, self._food.y)
 
         if(self._caught_food()):
             print("[+] caught a food")
-            self._food.randomize(self._w, self._h)
+            self._food.randomize(self._h, self._w)
             self._player.update_score()
-
         self._update_board()
 
     def draw(self, screen, side):
@@ -60,7 +67,7 @@ class Board:
                 pygame.draw.rect(screen, color, (i*side, j*side, side, side))
     
     def game_over(self):
-        return self._player.x < 0 or self._player.x > self._h or self._player.y < 0 or self._player.y > self._w or self._player.collide_itself()
+        return self._player.x < 0 or self._player.x >= self._h or self._player.y < 0 or self._player.y >= self._w or self._player.collide_itself()
 
     def _caught_food(self):
         return self._player.x == self._food.x and self._food.y == self._player.y
