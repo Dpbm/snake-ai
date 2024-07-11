@@ -213,7 +213,10 @@ Install the dependencies:
 pip install -r requirements.txt #use python>=3.10
 
 #or using conda (recommended)
-conda env create -f conda-lock.yml
+
+# in case you don't have conda-lock installed
+# pip install conda-lock 
+conda-lock install -n snake-ai conda-lock.yml
 conda activate snake-ai
 ```
 
